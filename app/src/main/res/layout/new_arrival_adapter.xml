@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendar_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5sp"
+        android:elevation="14sp"
+        card_view:cardCornerRadius="8dp">
+
+        <RelativeLayout
+            android:id="@+id/rel_arrival_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/arrival_adptr_img"
+                android:layout_width="70sp"
+                android:layout_height="70sp"
+                android:layout_margin="5sp"
+                android:src="@mipmap/image_dummy" />
+
+            <TextView
+                android:id="@+id/arrival_adptr_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12sp"
+                android:layout_toRightOf="@+id/arrival_adptr_img"
+                android:text="もちりーな" />
+
+            <TextView
+                android:id="@+id/arrival_adptr_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrival_adptr_name"
+                android:layout_toRightOf="@+id/arrival_adptr_img"
+                android:text="2018/11/21 14:40" />
+
+            <TextView
+                android:id="@+id/arrival_adptr_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20sp"
+                android:gravity="center"
+                android:text="@string/expenditure" />
+
+            <TextView
+                android:id="@+id/arrival_adptr_price_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrival_adptr_price"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="20sp"
+                android:gravity="center"
+                android:text="1,000円"
+                android:textColor="@color/price_txt_color"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="30sp"
+                android:layout_height="30sp"
+                android:layout_marginTop="12sp"
+                android:layout_toLeftOf="@+id/arrival_adptr_price_val"
+                android:layout_toRightOf="@+id/arrival_adptr_date"
+                android:src="@mipmap/order" />
+
+            <TextView
+                android:id="@+id/arrival_adptr_comment_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrival_adptr_img"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="4sp"
+                android:layout_marginRight="20sp"
+                android:layout_marginBottom="4sp"
+                android:text="@string/grilled_meat_for_lunch" />
+
+            <View
+                android:id="@+id/arrival_adapter_view"
+                android:layout_width="match_parent"
+                android:layout_height="1sp"
+                android:layout_below="@+id/arrival_adapter_big_heart"
+                android:layout_marginTop="-36dp"
+                android:background="@color/view_color" />
+
+            <ImageButton
+                android:id="@+id/arrival_adapter_like"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_below="@+id/arrival_adapter_view"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="6sp"
+                android:layout_marginBottom="4sp"
+                android:background="@mipmap/heart" />
+
+            <TextView
+                android:id="@+id/arrival_adapter_like_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrival_adapter_view"
+                android:layout_marginLeft="6sp"
+                android:layout_marginTop="6sp"
+                android:layout_marginBottom="4sp"
+                android:layout_toRightOf="@+id/arrival_adapter_like"
+                android:text="3" />
+
+            <ImageButton
+                android:id="@+id/arrival_adapter_comment"
+                android:layout_width="20sp"
+                android:layout_height="20sp"
+                android:layout_below="@+id/arrival_adapter_view"
+                android:layout_marginLeft="20sp"
+                android:layout_marginTop="6sp"
+                android:layout_marginBottom="4sp"
+                android:layout_toRightOf="@+id/arrival_adapter_like_val"
+                android:background="@mipmap/comment" />
+
+            <TextView
+                android:id="@+id/arrival_adapter_comment_val"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrival_adapter_view"
+                android:layout_marginLeft="6sp"
+                android:layout_marginTop="6sp"
+                android:layout_marginBottom="4sp"
+                android:layout_toRightOf="@+id/arrival_adapter_comment"
+                android:text="2" />
+
+            <ImageButton
+                android:id="@+id/arrival_adapter_more"
+                android:layout_width="40sp"
+                android:layout_height="20sp"
+                android:layout_below="@+id/arrival_adapter_view"
+                android:layout_marginTop="6sp"
+                android:layout_marginRight="5sp"
+                android:layout_toLeftOf="@+id/arrival_adapter_big_heart"
+                android:background="@mipmap/more_option" />
+
+            <ImageView
+                android:id="@+id/arrival_adapter_big_heart"
+                android:layout_width="65sp"
+                android:layout_height="65sp"
+                android:layout_below="@+id/arrival_adptr_comment_txt"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20sp"
+                android:layout_marginBottom="6sp"
+                android:background="@drawable/heart_yellow_bg"
+                android:padding="12sp"
+                android:src="@mipmap/heart_unselect" />
+
+            <ImageView
+                android:id="@+id/liked_big_heart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/arrival_adptr_comment_txt"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20sp"
+                android:layout_marginBottom="6sp"
+                android:background="@drawable/heart_yellow_bg"
+                android:padding="12sp"
+                android:src="@mipmap/heart"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>
+
+    <!--
+
+    <?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.CardView
+            xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/calendar_card_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5sp"
+            android:elevation="14sp"
+            card_view:cardCornerRadius="8dp">
+
+            <RelativeLayout
+                android:id="@+id/rel_arrival_adapter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/arrival_adptr_img"
+                    android:layout_width="70sp"
+                    android:layout_height="70sp"
+                    android:layout_margin="5sp"
+                    android:src="@mipmap/image_dummy"/>
+
+                <TextView
+                    android:id="@+id/arrival_adptr_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/arrival_adptr_img"
+                    android:layout_marginTop="12sp"
+                    android:text="もちりーな"/>
+
+                <TextView
+                    android:id="@+id/arrival_adptr_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@+id/arrival_adptr_img"
+                    android:layout_below="@+id/arrival_adptr_name"
+                    android:text="2018/11/21 14:40"/>
+
+                <TextView
+                    android:id="@+id/arrival_adptr_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="12sp"
+                    android:layout_marginRight="20sp"
+                    android:text="支出"/>
+
+                <TextView
+                    android:id="@+id/arrival_adptr_price_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/arrival_adptr_price"
+                    android:layout_marginRight="20sp"
+                    android:text="1,000円"
+                    android:textColor="@color/price_txt_color"/>
+
+                <ImageView
+                    android:layout_width="30sp"
+                    android:layout_height="30sp"
+                    android:src="@mipmap/order"
+                    android:layout_marginTop="12sp"
+                    android:layout_toRightOf="@+id/arrival_adptr_date"
+                    android:layout_toLeftOf="@+id/arrival_adptr_price_val"/>
+
+                <TextView
+                    android:id="@+id/arrival_adptr_comment_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrival_adptr_img"
+                    android:layout_marginTop="4sp"
+                    android:layout_marginBottom="4sp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:text="昼ごはんに焼肉！"/>
+
+                <View
+                    android:id="@+id/arrival_adapter_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="1sp"
+                    android:layout_marginTop="-36dp"
+                    android:background="@color/view_color"
+                    android:layout_below="@+id/arrival_adapter_big_heart"/>
+
+                <ImageButton
+                    android:id="@+id/arrival_adapter_like"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_below="@+id/arrival_adapter_view"
+                    android:background="@mipmap/heart"
+                    android:layout_marginTop="6sp"
+                    android:layout_marginBottom="4sp"
+                    android:layout_marginLeft="20sp"/>
+
+                <TextView
+                    android:id="@+id/arrival_adapter_like_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrival_adapter_view"
+                    android:layout_toRightOf="@+id/arrival_adapter_like"
+                    android:text="3"
+                    android:layout_marginTop="6sp"
+                    android:layout_marginBottom="4sp"
+                    android:layout_marginLeft="6sp"/>
+
+                <ImageButton
+                    android:id="@+id/arrival_adapter_comment"
+                    android:layout_width="20sp"
+                    android:layout_height="20sp"
+                    android:layout_below="@+id/arrival_adapter_view"
+                    android:layout_toRightOf="@+id/arrival_adapter_like_val"
+                    android:background="@mipmap/comment"
+                    android:layout_marginTop="6sp"
+                    android:layout_marginBottom="4sp"
+                    android:layout_marginLeft="20sp"/>
+
+                <TextView
+                    android:id="@+id/arrival_adapter_comment_val"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrival_adapter_view"
+                    android:layout_toRightOf="@+id/arrival_adapter_comment"
+                    android:text="2"
+                    android:layout_marginTop="6sp"
+                    android:layout_marginBottom="4sp"
+                    android:layout_marginLeft="6sp"/>
+
+                <ImageButton
+                    android:id="@+id/arrival_adapter_more"
+                    android:layout_width="40sp"
+                    android:layout_height="20sp"
+                    android:layout_marginTop="6sp"
+                    android:layout_marginRight="5sp"
+                    android:background="@mipmap/more_option"
+                    android:layout_below="@+id/arrival_adapter_view"
+                    android:layout_toLeftOf="@+id/arrival_adapter_big_heart"/>
+
+                <ImageView
+                    android:id="@+id/arrival_adapter_big_heart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/heart"
+                    android:background="@drawable/heart_yellow_bg"
+                    android:padding="12sp"
+                    android:layout_marginRight="20sp"
+                    android:layout_marginBottom="6sp"
+                    android:layout_below="@+id/arrival_adptr_comment_txt"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </RelativeLayout>
+
+
+    -->

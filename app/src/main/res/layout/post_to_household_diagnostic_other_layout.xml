@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <RelativeLayout
+        android:id="@+id/rel_img_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/arrival_adptr_img"
+            android:layout_width="60sp"
+            android:layout_height="60sp"
+            android:layout_margin="5sp"
+            android:src="@mipmap/image_dummy"/>
+
+        <TextView
+            android:id="@+id/arrival_adptr_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/arrival_adptr_img"
+            android:layout_marginTop="12sp"
+            android:text="もちりーな"/>
+
+        <TextView
+            android:id="@+id/arrival_adptr_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/arrival_adptr_img"
+            android:layout_below="@+id/arrival_adptr_name"
+            android:text="2018/11/21 14:40"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/rel_img_text"
+        android:background="@drawable/heart_yellow_bg"
+        android:layout_marginRight="5sp"
+        android:layout_marginLeft="7px"
+        android:layout_marginTop="5sp"
+
+
+        android:paddingTop="5sp"
+        android:paddingBottom="5dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+
+        >
+
+        <TextView
+            android:id="@+id/arrival_adptr_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+
+            android:layout_marginBottom="3sp"
+            android:layout_centerHorizontal="true"
+
+
+            android:text="雑談への投稿"
+            android:textColor="@color/price_txt_color"/>
+
+        <TextView
+            android:id="@+id/arrival_adptr_price_val"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@+id/arrival_adptr_price"
+            android:textSize="10sp"
+            android:layout_centerHorizontal="true"
+
+            android:text="1,お金を貯めて何をする？"
+            android:textColor="@color/price_txt_color"
+            android:singleLine="true"/>
+
+
+
+    </RelativeLayout>
+
+
+</LinearLayout>

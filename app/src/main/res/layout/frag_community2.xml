@@ -1,0 +1,73 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/home_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:orientation="horizontal"
+        android:paddingTop="0sp"
+        android:paddingBottom="0sp"
+        android:paddingLeft="10sp"
+        android:paddingRight="10sp"
+        android:gravity="center_vertical"
+        android:background="@color/colorPrimaryDark">
+
+        <TextView
+            android:id="@+id/notifications"
+            android:layout_width="0dp"
+            android:layout_weight=".33"
+            android:layout_height="wrap_content"
+            android:text="@string/recommendation"
+            android:padding="8sp"
+            android:textAlignment="center"
+            android:textColor="@color/tab_selected"/>
+
+        <TextView
+            android:id="@+id/new_arrival"
+            android:layout_width="0dp"
+            android:layout_weight=".33"
+            android:layout_height="wrap_content"
+            android:text="@string/chat"
+            android:padding="8sp"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:background="@drawable/tab_select_bg"/>
+
+        <TextView
+            android:id="@+id/followings"
+            android:layout_width="0dp"
+            android:layout_weight=".33"
+            android:layout_height="wrap_content"
+            android:text="@string/household_diagnosis"
+            android:padding="8sp"
+            android:textAlignment="center"
+            android:textColor="@color/tab_selected"/>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_bulletin_board"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:text="@string/bulletin_board_list"
+        android:padding="8sp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:background="@drawable/heart_white_bg"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="5sp"
+        android:paddingRight="5sp"
+        android:paddingLeft="5sp"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_community"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

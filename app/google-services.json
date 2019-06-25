@@ -1,0 +1,35 @@
+{
+  "project_info": {
+    "project_number": "454363577529",
+    "firebase_url": "https://rumbo-84d11.firebaseio.com",
+    "project_id": "rumbo-84d11",
+    "storage_bucket": "rumbo-84d11.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454363577529:android:7100b423190c777f",
+        "android_client_info": {
+          "package_name": "com.wa.rumbo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvT6dPBRpqoyGyaayYXh5vHSmdZf1g3Cg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454363577529-j6scjutdse1eskl8jcb0smgaoao5ukc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,99 @@
+<resources>
+    <string name="app_name">Rumbo</string>
+
+    <!--  Home Top Bar-->
+    <string name="notice"> 通知 </string>
+    <string name="notice1"> 43 </string>
+    <string name="new_arrival"> 新着 </string>
+    <string name="follow"> フォロー </string>
+
+    <!--  Bottom Bar-->
+    <string name="timeline"> タイムライン </string>
+    <string name="community"> コミュニティ </string>
+    <string name="kakebo"> カケーボ </string>
+    <string name="my_page"> マイページ </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="expenditure"> 支出 </string>
+    <string name="edt_save_money">コメントを入力してください</string>
+    <string name="save_money_and_do_what">お金を貯めて何をする？</string>
+    <string name="tv_title_chatwrite">もちりーなさんのコメント</string>
+    <string name="tv_name_chatwrite">もちりーな</string>
+    <string name="tv_price_chatwrite">支出</string>
+    <string name="edt_commentopen_hint">フェイスブック＜FB.O＞は１１日、５月までに実施される予定のインドの総選挙を控え、ファクトチェック（事実検証）体制を強化すると発表した。ユーザー数で最大の市場で、誤った情報が拡散するのを防ぐ。</string>
+    <string name="reply_to_comment">コメントへ返信</string>
+    <string name="send">送信</string>
+    <string name="bulletin_board_list">掲示板一覧</string>
+    <string name="new_arrival_order">新着順</string>
+    <string name="popularity_order">人気順</string>
+    <string name="tv_community">掲示板一覧</string>
+    <string name="comment_concern">コメント（今気になっていることは？）</string>
+    <string name="whatisyourconcernnow">今気になっていることは</string>
+    <string name="comment">コメント</string>
+    <string name="tv_title_mypagefollow">もちりーな</string>
+    <string name="household_diagnosis_post">家計診断 投稿する</string>
+    <string name="profile_n_settings">プロフィールと設定</string>
+    <string name="calendar">カレンダー</string>
+    <string name="househpld_book">家計簿</string>
+    <string name="my_post">自分の投稿</string>
+    <string name="change_profile_photo">プロフィールと設定</string>
+    <string name="preservation">保存</string>
+    <string name="chanfe_profile_photo">プロフィール写真を変更する</string>
+    <string name="nickname">ニックネーム</string>
+    <string name="edt_nickname_profsetting">もちりーな</string>
+    <string name="self_intro_comment">自己紹介コメント</string>
+    <string name="edt_self_intro_hint">最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。</string>
+    <string name="save_money_ndo_what">お金を貯めて何をする？</string>
+    <string name="if_it_does_movebyanychance">もし万が一緊急で動かないと</string>
+
+
+    <string name="comment_number_community">151</string>
+    <string name="save_money">お金を貯めて</string>
+    <string name="it_is_followed_closely">もちりーなにフォローされました。</string>
+    <string name="lunch">昼ごはんに焼肉！</string>
+    <string name="family_composition">家族構成</string>
+    <string name="current_saving_balance">現在貯蓄残高</string>
+    <string name="annual_income">年間収入</string>
+    <string name="annual_expenditure">年間支出</string>
+    <string name="annual_savings_amount">年間貯蓄額</string>
+    <string name="your_worries_future_plans">あなたの悩み（心配事、将来の計画、 見直しをしたいこと、保険相談、その他）</string>
+    <!--  <string name="send">送信</string>-->
+    <string name="post_to_household_diagnostic">家計診断へ投稿</string>
+
+
+    <string name="sun">Sun</string>
+    <string name="mon">Mon</string>
+    <string name="tue">Tue</string>
+    <string name="wed">Wed</string>
+    <string name="thu">Thu</string>
+    <string name="fri">Fri</string>
+    <string name="sat">Sat</string>
+    <string name="resume_key">ユーザー再開キーの入力</string>
+    <string name="register_email_address">メールアドレス登録</string>
+    <string name="block_list">ブロックリスト</string>
+    <string name="food_expenses">食費</string>
+    <string name="daily_necessities">日用品雑貨</string>
+    <string name="clothes_n_beauty">衣服・美容</string>
+    <string name="education">教育</string>
+    <string name="companionship">交際</string>
+    <string name="entertainment">娯楽</string>
+    <string name="insurance_n_tax">保険・税金</string>
+    <string name="transportation_n_movement">交通・移動</string>
+    <string name="utility_expenses">水道光熱費</string>
+    <string name="mobile_n_communication">携帯・通信</string>
+    <string name="residence">住居</string>
+    <string name="other">その他</string>
+    <string name="please_enter_content_of_expenses">出費の内容を入力してください</string>
+    <string name="title">タイトル</string>
+    <!--<string name="expenditure">支出</string>-->
+    <string name="circle">円</string>
+    <string name="income">収入</string>
+    <string name="todays_tweet">今日のつぶやき</string>
+    <string name="grilled_meat_for_lunch">昼ごはんに焼肉！</string>
+    <string name="date">日付！</string>
+    <string name="recommendation">オススメ</string>
+    <string name="chat">雑談</string>
+    <string name="household_diagnosis">家計診断</string>
+
+</resources>

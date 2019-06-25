@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.CalendarFragment"
+    android:orientation="vertical">
+
+
+    <com.wa.rumbo.custom_calendar.CalenderEvent
+        android:id="@+id/calender_event"
+        android:layout_width="match_parent"
+        app:selector_color="@color/tab_unselected"
+        app:selected_day_text_color="@color/black"
+        app:current_month_day_color="@color/black"
+        app:week_name_color="@color/black"
+        android:background="@drawable/drawable_rectangular"
+        app:month_color="@color/colorPrimaryDark"
+        app:next_icon="@drawable/ic_arrow_forward_ios"
+        app:previous_icon="@drawable/ic_arrow_back_ios"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

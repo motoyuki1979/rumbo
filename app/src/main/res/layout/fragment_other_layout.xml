@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/home_tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10sp"
+        android:paddingTop="5sp"
+        android:paddingRight="10sp"
+        android:paddingBottom="5sp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="31.5px"
+            android:layout_marginRight="80.5px"
+            android:src="@mipmap/back"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/followings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight=".33"
+            android:padding="8sp"
+            android:text="もちりーな"
+            android:textAlignment="center"
+            android:textColor="@color/tab_selected" />
+
+    </LinearLayout>
+
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendar_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:elevation="14sp"
+        card_view:cardCornerRadius="0dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/rel_arrival_adapter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/arrival_adptr_img"
+                android:layout_width="70sp"
+                android:layout_height="90sp"
+                android:layout_centerVertical="true"
+                android:layout_margin="5sp"
+                android:src="@mipmap/image_dummy" />
+
+
+            <TextView
+                android:id="@+id/tv_prof_settings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="5dp"
+                android:background="@drawable/border_black_bg"
+                android:paddingLeft="20sp"
+                android:paddingTop="5dp"
+                android:paddingRight="20sp"
+                android:paddingBottom="5dp"
+                android:text="@string/profile_n_settings"
+                android:textAlignment="center"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_others"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_prof_settings"
+                android:layout_margin="10dp"
+                android:layout_toRightOf="@id/arrival_adptr_img"
+                android:text="最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。" />
+
+            <LinearLayout
+                android:id="@+id/lin_number_of_follower"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_others"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:paddingBottom="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/design_default_color_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="73px"
+
+                    android:text="フォロー" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:textColor="@color/design_default_color_primary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="フォロワー" />
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/home_tabs1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="10sp"
+                android:paddingTop="0sp"
+                android:paddingRight="10sp"
+                android:paddingBottom="5sp">
+
+                <TextView
+                    android:id="@+id/tv_calendar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:padding="8sp"
+                    android:text="@string/calendar"
+                    android:textAlignment="center"
+                    android:textColor="@color/tab_selected" />
+
+                <TextView
+                    android:id="@+id/tv_household"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:background="@drawable/tab_select_bg"
+                    android:padding="8sp"
+                    android:text="@string/househpld_book"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+
+                <TextView
+                    android:id="@+id/tv_mypost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".33"
+                    android:padding="8sp"
+                    android:text="@string/my_post"
+                    android:textAlignment="center"
+                    android:textColor="@color/tab_selected" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
+
+
+
+
+   <!-- <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/black" />-->
+
+    <FrameLayout
+        android:id="@+id/frameLayout_other"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
+
+
+</LinearLayout>
+
+
+
+
