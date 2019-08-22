@@ -1,10 +1,13 @@
 package com.wa.rumbo.fragments;
 
 //https://stackoverflow.com/questions/54208999/get-data-from-retrofit-call-and-send-it-to-another-activity
+
 import android.app.Dialog;
-        import android.app.Fragment;
-        import android.graphics.Color;
+import android.app.Fragment;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -25,14 +28,17 @@ import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.BookingAdapter;
-        import com.wa.rumbo.common.CommonData;
+import com.wa.rumbo.common.CommonData;
 import com.wa.rumbo.common.ConstantValue;
 import com.wa.rumbo.interfaces.Category_Interf;
-        import com.wa.rumbo.interfaces.Register_Interfac;
+import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.CategoryResponse;
 import com.wa.rumbo.model.Category_Data;
 
-        import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -54,8 +60,8 @@ public class BookingFragment extends Fragment implements ConstantValue {
     @BindView(R.id.rv_kakebo)
     RecyclerView rv_kakebo;
 
-    @BindView(R.id.datePicker)
-    TextView datePicker;
+    @BindView(R.id.tv_datePicker)
+    TextView tv_datePicker;
 
     @BindView(R.id.edt_expense_content)
     EditText edt_expense_content;
@@ -72,10 +78,18 @@ public class BookingFragment extends Fragment implements ConstantValue {
     BookingAdapter kakebo_adapter;
     Retrofit retrofit = RetrofitInstance.getClient();
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
+    @BindView(R.id.tv_expence)
+    TextView tvExpence;
+    @BindView(R.id.tv_income)
+    TextView tvIncome;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_kakebo, container, false);
+        View view = inflater.inflate(R.layout.fragment_booking, container, false);
+
+       // MainActivity.booking_RL.setBackgroundResource(R.drawable.tab_select_bg);
+        ((MainActivity) getActivity()).getBottomSelectedTabs(2);
 
         commonData = new CommonData(getActivity());
         commonData.getString(TOKEN);
@@ -84,11 +98,13 @@ public class BookingFragment extends Fragment implements ConstantValue {
         MainActivity.homeTabsLL.setVisibility(View.GONE);
         ButterKnife.bind(this, view);
 
+        getCurrentDate();
+
         getCategoryList();
 
-        datePicker.setText("12/2/12");
-        datePicker.setTextColor(Color.GREEN);
-        datePicker.setOnClickListener(new View.OnClickListener() {
+        //  datePicker.setText();
+        tv_datePicker.setTextColor(Color.GREEN);
+        tv_datePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 /*
@@ -111,35 +127,83 @@ public class BookingFragment extends Fragment implements ConstantValue {
 
                 dialog.getWindow().setAttributes(lp);
 
-                final DatePicker datePicker = (DatePicker) dialog.findViewById(R.id.simpleDatePicker);
+                final DatePicker datePicker1 = (DatePicker) dialog.findViewById(R.id.simpleDatePicker);
                 Button dialogButton = (Button) dialog.findViewById(R.id.msg_popup_btn);
 
                 dialogButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         dialog.dismiss();
-                        int month = datePicker.getMonth() + 1;
-                        dateData = datePicker.getDayOfMonth() + "-" + month + "-" + datePicker.getYear();
+                        int month = datePicker1.getMonth() + 1;
+                        dateData = datePicker1.getDayOfMonth() + "-" + month + "-" + datePicker1.getYear();
+                        tv_datePicker.setText(dateData);
+
 
 //                        Log.e("DATE PICKER", datePicker.getDayOfMonth() + "-" + datePicker.getMonth() + "-" + datePicker.getYear());
                     }
                 });
+                //tv_datePicker.setText(dateData);
                 dialog.show();
 
             }
         });
 
-       // datePicker.setText(dateData);
-        datePicker.setTextColor(Color.BLACK);
+        tvExpence.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tvExpence.setBackgroundResource(R.drawable.tab_select_bg);
+                tvExpence.setTextColor(getResources().getColor(R.color.white));
+
+
+
+                tvIncome.setBackgroundResource(R.color.colorPrimaryDark);
+                tvIncome.setTextColor(getResources().getColor(R.color.tab_text_color));
+
+
+
+            }
+        });
+
+        tvIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                tvIncome.setBackgroundResource(R.drawable.tab_select_bg);
+                tvIncome.setTextColor(getResources().getColor(R.color.white));
+
+                tvExpence.setBackgroundResource(R.color.colorPrimaryDark);
+                tvExpence.setTextColor(getResources().getColor(R.color.tab_text_color));
+
+
+            }
+        });
+        tv_datePicker.setTextColor(getResources().getColor(R.color.black));
+
 
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String date = datePicker.getText().toString();
+
+                if (edt_expense_content.getText().toString().equals(""))
+                {
+                    Toast.makeText(getActivity(),"Please enter the title",Toast.LENGTH_LONG).show();
+                }
+                else  if (edt_expenditure.getText().toString().equals(""))
+                {
+                    Toast.makeText(getActivity(),"Please enter the amount",Toast.LENGTH_LONG).show();
+                }
+                else if (edt_comment.getText().toString().equals(""))
+                {
+                    Toast.makeText(getActivity(),"Please enter your tweet",Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+
+
+                String date = tv_datePicker.getText().toString();
                 String expense_content = edt_expense_content.getText().toString();
                 String comment = edt_comment.getText().toString();
-                String expenditure= edt_expenditure.getText().toString();
-
+                String expenditure = edt_expenditure.getText().toString();
 
 
                 GetPost getPost = new GetPost();
@@ -150,8 +214,8 @@ public class BookingFragment extends Fragment implements ConstantValue {
                 getPost.setTodays_tweets(comment);
                 getPost.setExpenditure(expenditure);
 
-                if (category_id==null){
-                    Toast.makeText(getActivity(),"Please Select a Category",Toast.LENGTH_SHORT).show();
+                if (category_id == null) {
+                    Toast.makeText(getActivity(), "Please Select a Category", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -178,11 +242,13 @@ public class BookingFragment extends Fragment implements ConstantValue {
 
 
 
-                          //  getPost.setCategory_id();
+
+                            //  getPost.setCategory_id();
 
 
                         }
                     }
+
                     @Override
                     public void onFailure(Call call, Throwable t) {
 
@@ -191,16 +257,16 @@ public class BookingFragment extends Fragment implements ConstantValue {
                     }
                 });
 
-            }
+            }}
         });
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         rv_kakebo.setLayoutManager(layoutManager);
 
         return view;
+}
 
 
-    }
 
 
     public void getCategoryList() {
@@ -227,9 +293,9 @@ public class BookingFragment extends Fragment implements ConstantValue {
                         @Override
                         public void cat_data(String catgry_id, String catgry_name) {
 
-                            category_name= catgry_name;
-                            category_id= catgry_id;
-                            Log.i("cattt1",catgry_name);
+                            category_name = catgry_name;
+                            category_id = catgry_id;
+                            Log.i("cattt1", catgry_name);
                         }
                     });
                     rv_kakebo.setAdapter(kakebo_adapter);
@@ -244,6 +310,18 @@ public class BookingFragment extends Fragment implements ConstantValue {
             }
         });
     }
+
+    public  void getCurrentDate()
+    {
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c);
+        tv_datePicker.setText(formattedDate);
+    }
+
+
 
 
 

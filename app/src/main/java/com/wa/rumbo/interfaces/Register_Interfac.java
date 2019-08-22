@@ -5,8 +5,11 @@ import com.wa.rumbo.model.CategoryResponse;
 import com.wa.rumbo.model.Comment_Request_Model;
 import com.wa.rumbo.model.GetAllPost;
 import com.wa.rumbo.model.GetCommentPost;
+import com.wa.rumbo.model.NotificationResponse;
+import com.wa.rumbo.model.PostDetailModel;
 import com.wa.rumbo.model.Register_Model;
 import com.wa.rumbo.model.Status_Model;
+import com.wa.rumbo.model.User_Post_Model;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -29,11 +32,9 @@ public interface Register_Interfac {
             @Header("user_id") String user_id, @Header("authenticate") String authenticate,
             @Body BookingFragment.GetPost getPost);
 
-
     @POST("get_all_post")
     Call<GetAllPost>allPostGet(
             @Header("user_id") String user_id, @Header("authenticate") String authenticate/*, @Body KakeboFragment.GetPost getPost*/);
-
 
     @POST("post_comment")
     Call<GetAllPost>post_coment(
@@ -45,6 +46,13 @@ public interface Register_Interfac {
             @Header("user_id") String user_id, @Header("authenticate") String authenticate,
             @Query("post_id") String postID);
 
+    //get_post_details
+
+    @POST("get_post_detail")
+    Call<PostDetailModel>getPostDetails(
+            @Header("user_id") String user_id, @Header("authenticate") String authenticate,
+            @Query("post_id") String postID);
+
     @POST("post_like")
     Call<Status_Model>getPostLike(
             @Header("user_id") String user_id, @Header("authenticate") String authenticate,
@@ -53,7 +61,20 @@ public interface Register_Interfac {
     @POST("comment_like")
     Call<Status_Model>getCommentLike(
             @Header("user_id") String user_id, @Header("authenticate") String authenticate,
-            @Query("comment_id") String commentID);
+            @Query("comment_id") String commentID,@Query("post_id") String postID);
+
+
+
+    @POST("notifications")
+    Call<NotificationResponse>getNotifications(
+            @Header("user_id") String user_id, @Header("authenticate") String authenticate);
+
+
+    @POST("get_user_by_id")
+    Call<User_Post_Model> getUserPostList(
+            @Header("user_id")String user_id, @Header("authenticate") String authenticate,
+            @Query("user_id") String from_user_id);
+
 
 
 

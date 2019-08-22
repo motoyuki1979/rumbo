@@ -73,7 +73,8 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
             @Override
             public void onClick(View v) {
 
-                Call call = register_interfac.getCommentLike(commonData.getString(USER_ID), commonData.getString(TOKEN), getCommentDetail.get(position).getCommentId());
+                Call call = register_interfac.getCommentLike(commonData.getString(USER_ID), commonData.getString(TOKEN),
+                        getCommentDetail.get(position).getCommentId(), getCommentDetail.get(position).getPostId());
                 call.enqueue(new Callback() {
                     @Override
                     public void onResponse(Call call, Response response) {
@@ -99,7 +100,6 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
                             }
                         }
                     }
-
 
                     @Override
                     public void onFailure(Call call, Throwable t) {

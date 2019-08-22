@@ -2,7 +2,9 @@ package com.wa.rumbo.fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +30,7 @@ import com.wa.rumbo.model.CommentDetail;
 import com.wa.rumbo.model.Comment_Request_Model;
 import com.wa.rumbo.model.GetAllPost_Data;
 import com.wa.rumbo.model.GetCommentPost;
+import com.wa.rumbo.model.PostDetailModel;
 import com.wa.rumbo.model.Status_Model;
 
 import java.util.ArrayList;
@@ -68,49 +72,46 @@ public class Fragment_ChatWrite extends Fragment {
 
     @BindView(R.id.rv_chat_write)
     RecyclerView rv_chat_write;
-
     CommonData commonData;
     GetCommentPost getCommentPost;
+    PostDetailModel postDetailModel;
     GetAllPost_Data commentDetailModel;
+    String post_id;
     Chat_Write_Adapter chat_write_adapter;
     List<CommentDetail> commentDetailList = new ArrayList<>();
 
     Retrofit retrofit = RetrofitInstance.getClient();
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
+    @BindView(R.id.img_back)
+    ImageView imgBack;
+    @BindView(R.id.home_tabs)
+    LinearLayout homeTabs;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_write_layout, container, false);
 
+
+
         ButterKnife.bind(this, view);
+        ((MainActivity) getActivity()).getBottomSelectedTabs(0);
 
         commonData = new CommonData(getActivity());
         MainActivity.homeTabsLL.setVisibility(View.GONE);
         Bundle extras = getArguments();
 
         if (extras != null) {
-            commentDetailModel = new Gson().fromJson(extras.getString("data"), GetAllPost_Data.class);
+            post_id = extras.getString("post_id");
         }
 
-        try {
-            if (commentDetailModel.getUserImage() != null)
-                Picasso.with(getActivity()).load(commentDetailModel.getUserImage()).into(img_clicked_post_user);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       /* Fragment myFragment = new Fragment_ChatWrite();
+        FragmentManager fragmentManager = getActivity().getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("data", new Gson().toJson(commentDetailModel)); //key and value
+        myFragment.setArguments(bundle);*/
 
-        tv_user_name.setText(commentDetailModel.getTitle());
-        tv_comment.setText(commentDetailModel.getTodaysTweets());
-        tv_expenditure.setText(commentDetailModel.getExpenditure());
-        tv_clicked_post_date.setText(commentDetailModel.getDate());
-        tv_clicked_total_like.setText(commentDetailModel.getLikes_count());
-        tv_comments_count.setText(commentDetailModel.getComments_count());
-
-        if (commentDetailModel.getIs_like()) {
-            iv_post_like.setImageResource(R.mipmap.heart);
-        } else {
-            iv_post_like.setImageResource(R.mipmap.heart_unselect);
-        }
 
         rv_chat_write.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -132,7 +133,40 @@ public class Fragment_ChatWrite extends Fragment {
             }
         });
 
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                getActivity().onBackPressed();
+
+
+            }
+        });
+
         return view;
+    }
+
+    public void setPostData() {
+
+        try {
+            if (commentDetailModel.getUserImage() != null)
+                Picasso.with(getActivity()).load(commentDetailModel.getUserImage()).into(img_clicked_post_user);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        tv_user_name.setText(commentDetailModel.getTitle());
+        tv_comment.setText(commentDetailModel.getTodaysTweets());
+        tv_expenditure.setText(commentDetailModel.getExpenditure());
+        tv_clicked_post_date.setText(commentDetailModel.getDate());
+        tv_clicked_total_like.setText(commentDetailModel.getLikes_count());
+        tv_comments_count.setText(commentDetailModel.getComments_count());
+
+        if (commentDetailModel.getIs_like()) {
+            iv_post_like.setImageResource(R.mipmap.heart);
+        } else {
+            iv_post_like.setImageResource(R.mipmap.heart_unselect);
+        }
     }
 
     public void comment_post() {
@@ -189,7 +223,8 @@ public class Fragment_ChatWrite extends Fragment {
         progressDialog.setMessage("Please Wait"); // set message
         progressDialog.show();
 
-        Call call = register_interfac.getpost_coment(commonData.getString(USER_ID), commonData.getString(TOKEN), commentDetailModel.getPostId());
+        Call call = register_interfac.getPostDetails(commonData.getString(USER_ID), commonData.getString(TOKEN), post_id);
+        //Call call = register_interfac.getpost_coment(commonData.getString(USER_ID), commonData.getString(TOKEN), commentDetailModel.getPostId());
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
@@ -204,9 +239,13 @@ public class Fragment_ChatWrite extends Fragment {
                     String resp = new Gson().toJson(response.body());
 
                     //convert to model
-                    getCommentPost = new Gson().fromJson(resp, GetCommentPost.class);
+                    //getCommentPost = new Gson().fromJson(resp, GetCommentPost.class);
+                    postDetailModel = new Gson().fromJson(resp, PostDetailModel.class);
 
-                    commentDetailList = getCommentPost.getObject();
+                    commentDetailList = postDetailModel.getPost_comments();
+                    commentDetailModel = postDetailModel.getPost();
+
+                    setPostData();
 
                     chat_write_adapter = new Chat_Write_Adapter(getActivity(), commentDetailList);
                     rv_chat_write.setAdapter(chat_write_adapter);
@@ -220,6 +259,7 @@ public class Fragment_ChatWrite extends Fragment {
             @Override
             public void onFailure(Call call, Throwable t) {
 
+
             }
         });
 
@@ -228,7 +268,7 @@ public class Fragment_ChatWrite extends Fragment {
 
     @OnClick(R.id.iv_post_like)
     public void doPostLike() {
-        Call call = register_interfac.getPostLike(commonData.getString(USER_ID), commonData.getString(TOKEN), commentDetailModel.getPostId());
+        Call call = register_interfac.getPostLike(commonData.getString(USER_ID), commonData.getString(TOKEN), post_id);
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
@@ -241,15 +281,15 @@ public class Fragment_ChatWrite extends Fragment {
                         if (commentDetailModel.getIs_like()) {
                             commentDetailModel.setIs_like(false);
                             int likesCount = Integer.parseInt(commentDetailModel.getLikes_count()) - 1;
-                            commentDetailModel.setLikes_count("" +likesCount);
-                            tv_clicked_total_like.setText(""+likesCount);
+                            commentDetailModel.setLikes_count("" + likesCount);
+                            tv_clicked_total_like.setText("" + likesCount);
                             iv_post_like.setImageResource(R.mipmap.heart_unselect);
 
                         } else {
                             commentDetailModel.setIs_like(true);
-                            int likesCount = Integer.parseInt(commentDetailModel.getLikes_count())+1;
-                            commentDetailModel.setLikes_count("" +likesCount);
-                            tv_clicked_total_like.setText(""+likesCount);
+                            int likesCount = Integer.parseInt(commentDetailModel.getLikes_count()) + 1;
+                            commentDetailModel.setLikes_count("" + likesCount);
+                            tv_clicked_total_like.setText("" + likesCount);
                             iv_post_like.setImageResource(R.mipmap.heart);
                         }
                     } else {
@@ -266,5 +306,10 @@ public class Fragment_ChatWrite extends Fragment {
 
 
     }
+
+
+
+
+
 
 }

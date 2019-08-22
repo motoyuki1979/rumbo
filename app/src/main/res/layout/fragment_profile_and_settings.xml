@@ -268,7 +268,7 @@
                 android:id="@+id/tv_publify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="家計簿公開"
+                android:text="@string/household_ac_book_release"
                 android:layout_marginBottom="10sp"
 
                 />
@@ -302,7 +302,7 @@
                 android:id="@+id/tv_notify"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ポップアップ通知"
+                android:text="@string/popup_notification"
                 android:layout_marginBottom="10sp"
 
 

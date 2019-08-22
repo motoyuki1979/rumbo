@@ -15,13 +15,23 @@
         android:paddingRight="10sp"
         android:paddingBottom="5sp">
 
-        <ImageView
+      <!--  <ImageView
+            android:id="@+id/img_back"
             android:layout_width="20dp"
             android:layout_height="25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="31.5px"
             android:layout_marginRight="80.5px"
-            android:src="@mipmap/back" />
+            android:src="@mipmap/back" />-->
+
+
+        <ImageView
+            android:id="@+id/img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="25sp"
+            android:layout_gravity="center"
+            android:src="@mipmap/back"
+            android:padding="5dp"/>
 
         <!-- <TextView
              android:id="@+id/notifications"

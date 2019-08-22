@@ -1,12 +1,15 @@
 package com.wa.rumbo.fragments;
 
+import android.annotation.TargetApi;
 import android.app.DatePickerDialog;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,20 +60,43 @@ public class Fragment_other extends Fragment {
 
 
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        ((MainActivity) getActivity()).getBottomSelectedTabs(3);
 
         View view = inflater.inflate(R.layout.fragment_other_layout, container, false);
         MainActivity.homeTabsLL.setVisibility(View.GONE);
 
         ButterKnife.bind(this, view);
 
-        final FragmentTransaction ft = getFragmentManager().beginTransaction();
+      //  MainActivity.mypage_RL.setBackgroundResource(R.drawable.tab_select_bg);
+        final FragmentTransaction ft = getChildFragmentManager().beginTransaction();
         ft.replace(R.id.frameLayout_other, new Fragment_Other_Household(), "NewFragmentTag");
 
         ft.addToBackStack(null);
         ft.commit();
+
+
+      /* Fragment fragment= new Fragment_other();
+       FragmentManager fm= getFragmentManager();
+        FragmentTransaction ft= fm.beginTransaction();
+        ft.replace(R.id.frameLayout_other,fragment).addToBackStack(null);
+        ft.commit();*/
+
+
+
+        /*
+         Fragment fragment = new Fragment_other();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
+       // clearStack();
+        ft.commit();
+         */
 
 
 

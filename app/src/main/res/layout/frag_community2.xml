@@ -17,7 +17,7 @@
         android:background="@color/colorPrimaryDark">
 
         <TextView
-            android:id="@+id/notifications"
+            android:id="@+id/tv_recommend"
             android:layout_width="0dp"
             android:layout_weight=".33"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textColor="@color/tab_selected"/>
 
         <TextView
-            android:id="@+id/new_arrival"
+            android:id="@+id/tv_chat"
             android:layout_width="0dp"
             android:layout_weight=".33"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:background="@drawable/tab_select_bg"/>
 
         <TextView
-            android:id="@+id/followings"
+            android:id="@+id/tv_ac_review"
             android:layout_width="0dp"
             android:layout_weight=".33"
             android:layout_height="wrap_content"

@@ -120,13 +120,14 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 >
+
                 <TextView
                     android:id="@+id/tv_rc2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="price"
+                    android:layout_marginLeft="10sp"
 
-                    android:layout_marginLeft="10sp"/>
+                    android:text="@string/price" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/rv2_itemname_other"
@@ -168,19 +169,19 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Incomee"
+                        android:text="@string/total_income"
                         android:layout_weight="1"
                         android:layout_marginLeft="10sp"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Expenditure"
+                        android:text="@string/total_expence"
                         android:layout_weight="1"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Total"
+                        android:text="@string/net"
                         android:layout_weight="1"/>
 
                 </LinearLayout>

@@ -32,7 +32,7 @@ import retrofit2.Retrofit;
 import static com.wa.rumbo.common.ConstantValue.TOKEN;
 import static com.wa.rumbo.common.ConstantValue.USER_ID;
 
-public class NewArrivalFragment extends Fragment {
+public class FollowingFragment extends Fragment {
 
     @BindView(R.id.new_arrival_rv)
     RecyclerView Arrival_recyclerView;
@@ -47,18 +47,14 @@ public class NewArrivalFragment extends Fragment {
     List<GetAllPost_Data> getAllPost_data = new ArrayList<>();
 
 
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_new_arrival, container, false);
         ButterKnife.bind(this, view);
 
-        ((MainActivity)getActivity()).getSelectedTab(1);
-
+        ((MainActivity)getActivity()).getSelectedTab(2);
         ((MainActivity) getActivity()).getBottomSelectedTabs(0);
-
-//getBottomSelectedTabs(int type)
         commonData = new CommonData(getActivity());
 
 
@@ -118,9 +114,7 @@ public class NewArrivalFragment extends Fragment {
 
 
 
-
-
-    }
+}
 
 
 

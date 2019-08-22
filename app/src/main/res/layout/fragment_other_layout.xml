@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:layout_weight=".33"
             android:padding="8sp"
-            android:text="もちりーな"
+            android:text="@string/profile"
             android:textAlignment="center"
             android:textColor="@color/tab_selected" />
 
@@ -92,7 +92,7 @@
                 android:layout_below="@+id/tv_prof_settings"
                 android:layout_margin="10dp"
                 android:layout_toRightOf="@id/arrival_adptr_img"
-                android:text="最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。" />
+                android:text="@string/profile_text" />
 
             <LinearLayout
                 android:id="@+id/lin_number_of_follower"

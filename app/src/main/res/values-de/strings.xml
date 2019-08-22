@@ -95,5 +95,17 @@
     <string name="recommendation">オススメ</string>
     <string name="chat">雑談</string>
     <string name="household_diagnosis">家計診断</string>
+    <string name="username">もちりーな</string>
+    <string name="amount">支出</string>
+    <string name="category">カテゴリー</string>
+    <string name="profile_text">最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。</string>
+    <string name="price">金額</string>
+    <string name="total_income">収入</string>
+    <string name="total_expence">支出</string>
+    <string name="net">合計</string>
+    <string name="profile">もちりーな</string>
+    <string name="household_ac_book_release">家計簿公開</string>
+    <string name="popup_notification">ポップアップ通知</string>
+
 
 </resources>

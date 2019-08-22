@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
                 android:layout_toRightOf="@+id/arrival_adptr_img"
-                android:text="もちりーな" />
+                android:text="@string/username" />
 
             <TextView
                 android:id="@+id/arrival_adptr_date"

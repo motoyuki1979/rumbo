@@ -92,7 +92,8 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
                 FragmentManager fragmentManager = activity.getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
-                bundle.putString("data", new Gson().toJson(getAllPost_dataList.get(i))); //key and value
+                //bundle.putString("data", new Gson().toJson(getAllPost_dataList.get(i))); //key and value
+                bundle.putString("post_id",getAllPost_dataList.get(i).getPostId()); //key and value
 
                 myFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.frameLayout, myFragment);
@@ -101,6 +102,8 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
 
             }
         });
+
+
 
         myView.arrival_adapter_big_heart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,5 +193,7 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
             ButterKnife.bind(this, itemView);
         }
     }
+
+
 
 }
