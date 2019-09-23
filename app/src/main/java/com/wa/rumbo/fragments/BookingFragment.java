@@ -34,6 +34,9 @@ import com.wa.rumbo.interfaces.Category_Interf;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.CategoryResponse;
 import com.wa.rumbo.model.Category_Data;
+import com.wa.rumbo.model.Status_Model;
+
+import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -88,7 +91,7 @@ public class BookingFragment extends Fragment implements ConstantValue {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_booking, container, false);
 
-       // MainActivity.booking_RL.setBackgroundResource(R.drawable.tab_select_bg);
+        // MainActivity.booking_RL.setBackgroundResource(R.drawable.tab_select_bg);
         ((MainActivity) getActivity()).getBottomSelectedTabs(2);
 
         commonData = new CommonData(getActivity());
@@ -155,10 +158,8 @@ public class BookingFragment extends Fragment implements ConstantValue {
                 tvExpence.setTextColor(getResources().getColor(R.color.white));
 
 
-
                 tvIncome.setBackgroundResource(R.color.colorPrimaryDark);
                 tvIncome.setTextColor(getResources().getColor(R.color.tab_text_color));
-
 
 
             }
@@ -184,89 +185,75 @@ public class BookingFragment extends Fragment implements ConstantValue {
             @Override
             public void onClick(View v) {
 
-                if (edt_expense_content.getText().toString().equals(""))
-                {
-                    Toast.makeText(getActivity(),"Please enter the title",Toast.LENGTH_LONG).show();
-                }
-                else  if (edt_expenditure.getText().toString().equals(""))
-                {
-                    Toast.makeText(getActivity(),"Please enter the amount",Toast.LENGTH_LONG).show();
-                }
-                else if (edt_comment.getText().toString().equals(""))
-                {
-                    Toast.makeText(getActivity(),"Please enter your tweet",Toast.LENGTH_SHORT).show();
-                }
-
-                else {
+                if (edt_expense_content.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Please enter the title", Toast.LENGTH_LONG).show();
+                } else if (edt_expenditure.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Please enter the amount", Toast.LENGTH_LONG).show();
+                } else if (edt_comment.getText().toString().equals("")) {
+                    Toast.makeText(getActivity(), "Please enter your tweet", Toast.LENGTH_SHORT).show();
+                } else {
 
 
-                String date = tv_datePicker.getText().toString();
-                String expense_content = edt_expense_content.getText().toString();
-                String comment = edt_comment.getText().toString();
-                String expenditure = edt_expenditure.getText().toString();
+                    String date = tv_datePicker.getText().toString();
+                    String expense_content = edt_expense_content.getText().toString();
+                    String comment = edt_comment.getText().toString();
+                    String expenditure = edt_expenditure.getText().toString();
 
-
-                GetPost getPost = new GetPost();
-                getPost.setCategory_id(category_id);
-                getPost.setCategory_name(category_name);
-                getPost.setDate(date);
-                getPost.setTitle(expense_content);
-                getPost.setTodays_tweets(comment);
-                getPost.setExpenditure(expenditure);
-
-                if (category_id == null) {
-                    Toast.makeText(getActivity(), "Please Select a Category", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-
-                Call call = register_interfac.addPost(commonData.getString(USER_ID), commonData.getString(TOKEN), getPost);
-
-                call.enqueue(new Callback() {
 
                     GetPost getPost = new GetPost();
+                    getPost.setCategory_id(category_id);
+                    getPost.setCategory_name(category_name);
+                    getPost.setDate(date);
+                    getPost.setTitle(expense_content);
+                    getPost.setTodays_tweets(comment);
+                    getPost.setExpenditure(expenditure);
 
-                    @Override
-                    public void onResponse(Call call, Response response) {
-
-                        Log.e("RESPONSE_POST >>>>", response.raw() + "");
-
-                        if (response.isSuccessful() && response.body() != null) {
-
-                            Log.e("Success_post", new Gson().toJson(response.body()));
-
-                            String resp = new Gson().toJson(response.body());
-
-                            //convert to model
-                            getPost = new Gson().fromJson(resp, GetPost.class);
+                    if (category_id == null) {
+                        Toast.makeText(getActivity(), "Please Select a Category", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
 
+                    Call call = register_interfac.addPost(commonData.getString(USER_ID), commonData.getString(TOKEN), getPost);
 
+                    call.enqueue(new Callback() {
 
-                            //  getPost.setCategory_id();
+                        GetPost getPost = new GetPost();
 
+                        @Override
+                        public void onResponse(Call call, Response response) {
+
+                            Log.e("RESPONSE_POST >>>>", response.raw() + "");
+
+                            if (response.isSuccessful() && response.body() != null) {
+                                Log.e("Success_post", new Gson().toJson(response.body()));
+                                String resp = new Gson().toJson(response.body());
+                                //convert to model
+                                Status_Model status_model = new Gson().fromJson(resp, Status_Model.class);
+                                if (status_model.getSuccess().equals("true")) {
+                                    Toast.makeText(getActivity(), status_model.getMessage(), Toast.LENGTH_SHORT).show();
+                                    ((MainActivity) getActivity()).setTimeline_RL();
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call call, Throwable t) {
+
+                            Log.e("fail_to_post", "post");
 
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call call, Throwable t) {
-
-                        Log.e("fail_to_post", "post");
-
-                    }
-                });
-
-            }}
+                }
+            }
         });
 
         GridLayoutManager layoutManager = new GridLayoutManager(getActivity(), 3);
         rv_kakebo.setLayoutManager(layoutManager);
 
         return view;
-}
-
-
+    }
 
 
     public void getCategoryList() {
@@ -311,8 +298,7 @@ public class BookingFragment extends Fragment implements ConstantValue {
         });
     }
 
-    public  void getCurrentDate()
-    {
+    public void getCurrentDate() {
         Date c = Calendar.getInstance().getTime();
         System.out.println("Current time => " + c);
 

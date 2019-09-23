@@ -273,7 +273,7 @@ public class MainActivity extends Activity {
         mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
-    @OnClick(R.id.home_booking_LL)
+    @OnClick(R.id.btn_booking)
     public void setBooking_RL() {
         Fragment fragment = new BookingFragment();
         FragmentManager fm = getFragmentManager();

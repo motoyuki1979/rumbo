@@ -42,7 +42,6 @@ public class SplashActivity extends AppCompatActivity implements ConstantValue {
     // String ts = Context.TELEPHONY_SERVICE;
     TelephonyManager telephonyManager;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
