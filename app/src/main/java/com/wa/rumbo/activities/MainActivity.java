@@ -35,7 +35,6 @@ public class MainActivity extends Activity {
     Register_Model register_model;
     Context context;
 
-
     @BindView(R.id.notifications)
     TextView notificationTab;
     @BindView(R.id.new_arrival)
@@ -82,7 +81,7 @@ public class MainActivity extends Activity {
         homeTabsLL = (LinearLayout) findViewById(R.id.home_tabs);
         ButterKnife.bind(this);
 
-        Fragment fragment = new NewArrivalFragment();
+        Fragment fragment = new CommunityFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment);

@@ -151,7 +151,6 @@
                 android:textColor="@color/tab_text_color"
                 android:textSize="10dp" />
 
-
         </RelativeLayout>
 
         <RelativeLayout
@@ -200,7 +199,6 @@
             android:background="@color/home_bg"
             android:padding="0sp">
 
-
         </FrameLayout>
 
         <android.support.design.widget.FloatingActionButton
@@ -213,7 +211,6 @@
             android:layout_margin="10dp" />
 
     </RelativeLayout>
-
 
     <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
         android:id="@+id/adView"

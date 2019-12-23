@@ -16,5 +16,7 @@ public interface ConstantValue {
     public String POST_ID = "post_id";
 
     //public String BASE_URL = "http://112.196.16.90:8080/Rumbo/";
-    public String BASE_URL = "http://112.196.16.90:8080/rumbo-1.0.0-BUILD-SNAPSHOT/";
+    //public String BASE_URL = "http://112.196.16.90:8080/rumbo-1.0.0-BUILD-SNAPSHOT/";
+    public String BASE_URL = "http://172.104.123.43:8080/rumbo-1.0.0-BUILD-SNAPSHOT/";
+    //public String BASE_URL = "http://currentaffairs.gktoday.in/wp-json/wp/v2/";
 }

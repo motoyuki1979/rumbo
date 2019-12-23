@@ -13,6 +13,7 @@ import com.wa.rumbo.model.User_Post_Model;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -26,6 +27,9 @@ public interface Register_Interfac {
     @POST("category_list")
     Call<CategoryResponse>category_list(
             @Header("user_id") String user_id, @Header("authenticate") String authenticate);
+
+    @GET("posts?_embed&filter[taxonomy]=category&filter[term]=sports&page=1")
+    Call<CategoryResponse>posts();
 
     @POST("add_post")
     Call<CategoryResponse>addPost(

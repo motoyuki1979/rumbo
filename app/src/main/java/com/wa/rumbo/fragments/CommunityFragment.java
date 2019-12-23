@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
@@ -38,6 +39,7 @@ import com.wa.rumbo.model.CategoryResponse;
 import com.wa.rumbo.model.Category_Data;
 import com.wa.rumbo.model.Community_Model;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,10 +122,7 @@ public class CommunityFragment extends Fragment {
 
         getCategoryListAPI();
 
-
-
-
-////////////////////////////////////
+        ////////////////////////////////////
 
         tv_bulletin_board.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,8 +146,6 @@ public class CommunityFragment extends Fragment {
                 window.setAttributes(wlp);
                 dlg.setCancelable(false);
                 dlg.show();
-                ;
-
 
                 ImageView img_down_dialog = dlg.findViewById(R.id.img_down_dialog);
                 final TextView tv_bullet_board = dlg.findViewById(R.id.tv_bullet_board);
@@ -391,8 +388,8 @@ public class CommunityFragment extends Fragment {
                     String resp = new Gson().toJson(response.body());
 
                     CategoryResponse categoryResponse = new Gson().fromJson(resp, CategoryResponse.class);
-                    /*Type listType = new TypeToken<List<Category_Data>>() {
-                    }.getType();*/
+                    Type listType = new TypeToken<List<Category_Data>>() {
+                    }.getType();
 
                     categoryList = categoryResponse.getObject(); //new Gson().fromJson(categoryResponse.toString(), listType);
 
@@ -413,7 +410,29 @@ public class CommunityFragment extends Fragment {
 
             }
         });
+
+        Log.e("API", "========== ========");
     }
+
+       /* Call call = register_interfac.posts();
+
+        call.enqueue(new Callback() {
+
+            @Override
+            public void onResponse(Call call, Response response) {
+
+                Log.e("data","========== "+response);
+               Log.e("data","========== "+response.body());
+            }
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+               // progressDialog.dismiss();
+                Log.e("onFailure >>>>", "" + t.getMessage());
+
+            }
+        });
+    }*/
 
 
 }

@@ -22,6 +22,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
     @Override
+    public void onNewToken(String s) {
+        Log.e("InstanceIDService", "Refreshed token: " + s);
+        super.onNewToken(s);
+    }
+
+    @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // ...
 
