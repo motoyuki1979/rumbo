@@ -5,12 +5,10 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,24 +18,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
-import com.wa.rumbo.adapters.CategoriesAdapter;
 import com.wa.rumbo.adapters.Community_Adapter;
+import com.wa.rumbo.adapters.GetComunityCommentsAdapter;
+import com.wa.rumbo.callbacks.AddComunityCommentCallback;
+import com.wa.rumbo.callbacks.GetComunityCommentsCallback;
 import com.wa.rumbo.common.CommonData;
-import com.wa.rumbo.interfaces.Category_Interf;
-import com.wa.rumbo.interfaces.FragmentReplac;
+import com.wa.rumbo.common.ConstantValue;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Register_Interfac;
-import com.wa.rumbo.model.CategoryResponse;
 import com.wa.rumbo.model.Category_Data;
+import com.wa.rumbo.model.CommentPostModel;
 import com.wa.rumbo.model.Community_Model;
+import com.wa.rumbo.model.GetComunityComents;
+import com.wa.rumbo.model.Status_Model;
+import com.wa.rumbo.utils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -56,7 +63,8 @@ import static com.wa.rumbo.common.ConstantValue.USER_ID;
 
 public class CommunityFragment extends Fragment {
 
-    List<Community_Model> list_community;
+    // List<Community_Model> list_community;
+    List<GetComunityComents.Object> list_community;
 
     Community_Adapter community_adapter;
     Community_Model community_model;
@@ -71,13 +79,25 @@ public class CommunityFragment extends Fragment {
     TextView tvRecommend;
     @BindView(R.id.tv_chat)
     TextView tvChat;
+    @BindView(R.id.tvSend)
+    TextView tvSend;
+    @BindView(R.id.edt_comment_write)
+    TextView etComment;
     @BindView(R.id.tv_ac_review)
     TextView tvAcReview;
     List<Category_Data> categoryList;
     Register_Interfac register_interfac;
     Retrofit retrofit;
     CommonData commonData;
-    CategoriesAdapter adapter;
+    // CategoriesAdapter adapter;
+    GetComunityCommentsAdapter adapter;
+    Dialog mDialog;
+    GetComunityComents getComunityComents;
+
+    @BindView(R.id.keyboard_LL)
+  public  RelativeLayout rlKeyboard;
+    Boolean isComment = false;
+    Animation clickAnimation;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -87,10 +107,28 @@ public class CommunityFragment extends Fragment {
         MainActivity.homeTabsLL.setVisibility(View.GONE);
         ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).getBottomSelectedTabs(1);
-        list_community = new ArrayList<>();
+        clickAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.grow);
+        if (getArguments() != null && getArguments().getString("isFromBottomTab") != null && getArguments().getString("isFromBottomTab").equalsIgnoreCase("true")) {
+            isComment = true;
+        } else {
+            isComment = false;
+        }
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL,false);
+        if (isComment) {
+            rlKeyboard.setVisibility(View.VISIBLE);
+        } else {
+            rlKeyboard.setVisibility(View.GONE);
+        }
+        UsefullData.setLocale(getActivity());
+        mDialog = UsefullData.getProgressDialog(getActivity());
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+        layoutManager.setStackFromEnd(true);
+
         rv_community.setLayoutManager(layoutManager);
+
+        ((MainActivity) getActivity()).btnBooking.setVisibility(View.GONE);
+        list_community = new ArrayList<>();
 
         //   MainActivity.community_RL.setBackgroundResource(R.drawable.tab_select_bg);
 
@@ -120,8 +158,22 @@ public class CommunityFragment extends Fragment {
         register_interfac = retrofit.create(Register_Interfac.class);
         commonData = new CommonData(getActivity());
 
-        getCategoryListAPI();
+        if (commonData.getString(ConstantValue.USER_ID) != null) {
+            Log.e("userr CommunityFragment", commonData.getString(ConstantValue.USER_ID));
+        }
+        // getCategoryListAPI();
 
+        new Api(getActivity()).getComunityComment(new GetComunityCommentsCallback() {
+            @Override
+            public void onResponse(GetComunityComents model) {
+                list_community.clear();
+                list_community = model.getObject(); //new Gson().fromJson(categoryResponse.toString(), listType);
+
+                adapter = new GetComunityCommentsAdapter(getActivity(),getActivity(), list_community);
+
+                rv_community.setAdapter(adapter);
+            }
+        });
         ////////////////////////////////////
 
         tv_bulletin_board.setOnClickListener(new View.OnClickListener() {
@@ -129,7 +181,7 @@ public class CommunityFragment extends Fragment {
             public void onClick(View v) {
                 Context context;
                 Activity activity;
-
+                v.startAnimation(clickAnimation);
                 //two parameters for full width dialog box and single for marginable automatically
                 final Dialog dlg = new Dialog(getActivity(), android.R.style.Theme_Translucent_NoTitleBar);
 
@@ -156,6 +208,7 @@ public class CommunityFragment extends Fragment {
                 img_down_dialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        v.startAnimation(clickAnimation);
                         dlg.dismiss();
                     }
                 });
@@ -165,6 +218,7 @@ public class CommunityFragment extends Fragment {
                     @Override
                     public void onClick(View v) {
                         //timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
+                        v.startAnimation(clickAnimation);
                         tv_bullet_board.setTextColor(getResources().getColor(R.color.white));
                         tv_bullet_board.setBackground(getResources().getDrawable(R.drawable.tab_select_bg));
 
@@ -188,6 +242,7 @@ public class CommunityFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onClick(View v) {
+                        v.startAnimation(clickAnimation);
                         tv_bullet_board.setTextColor(getResources().getColor(R.color.black));
                         tv_bullet_board.setBackground(getResources().getDrawable(R.drawable.heart_white_bg));
 
@@ -211,6 +266,7 @@ public class CommunityFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
                     @Override
                     public void onClick(View v) {
+                        v.startAnimation(clickAnimation);
                         tv_bullet_board.setTextColor(getResources().getColor(R.color.black));
                         tv_bullet_board.setBackground(getResources().getDrawable(R.drawable.heart_white_bg));
 
@@ -298,6 +354,39 @@ public class CommunityFragment extends Fragment {
         });
 
 
+        tvSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (commonData.getString(USER_ID) != null && !commonData.getString(USER_ID).equals("")) {
+                    if (etComment.getText().toString().isEmpty()) {
+                        Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.please_write_a_comment), Toast.LENGTH_SHORT).show();
+                    } else {
+                        new Api(getActivity()).addCommentInCategory(getActivity(), etComment.getText().toString(), new AddComunityCommentCallback() {
+                            @Override
+                            public void onResponse(CommentPostModel model) {
+                                etComment.setText("");
+                                new Api(getActivity()).getComunityComment(new GetComunityCommentsCallback() {
+                                    @Override
+                                    public void onResponse(GetComunityComents model) {
+                                        list_community.clear();
+                                        for (int i = 0; i < model.getObject().size(); i++) {
+                                            list_community.add(model.getObject().get(i));
+                                        }
+
+                                        adapter = new GetComunityCommentsAdapter(getActivity(), getActivity(), list_community);
+                                        rv_community.setAdapter(adapter);
+                                    }
+                                });
+                            }
+                        });
+
+
+                    }
+                }else {
+                    utils.showRegisterDialog(getActivity());
+                }
+            }
+        });
         return view;
     }
 
@@ -313,7 +402,7 @@ public class CommunityFragment extends Fragment {
         tvAcReview.setTextColor(getResources().getColor(R.color.tab_text_color));
         tvAcReview.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
 
-        Fragment fragment = new CommunityFragment();
+        Fragment fragment = new MineComunityFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
@@ -357,7 +446,7 @@ public class CommunityFragment extends Fragment {
         tvChat.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
 
 
-        Fragment fragment = new CommunityFragment();
+        Fragment fragment = new FollowComunityFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
@@ -369,10 +458,13 @@ public class CommunityFragment extends Fragment {
 
     public void getCategoryListAPI() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+       /* final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show();
+        progressDialog.show();*/
+        mDialog.show();
+
+        Log.e("userId : ", commonData.getString(USER_ID) + " token: " + commonData.getString(TOKEN));
 
         Call call = register_interfac.category_list(commonData.getString(USER_ID), commonData.getString(TOKEN));
 
@@ -381,39 +473,37 @@ public class CommunityFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) {
 
-                progressDialog.dismiss();
-                Log.e("new arrival resp == ", response.raw() + "");
+                mDialog.dismiss();
+                Log.e("new Comunity comments resp == ", response.raw() + "");
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("Success_post", new Gson().toJson(response.body()));
+
                     String resp = new Gson().toJson(response.body());
 
-                    CategoryResponse categoryResponse = new Gson().fromJson(resp, CategoryResponse.class);
-                    Type listType = new TypeToken<List<Category_Data>>() {
+
+                    GetComunityComents categoryResponse = new Gson().fromJson(resp, GetComunityComents.class);
+                    Type listType = new TypeToken<List<GetComunityComents>>() {
                     }.getType();
 
-                    categoryList = categoryResponse.getObject(); //new Gson().fromJson(categoryResponse.toString(), listType);
+                    list_community.clear();
+                    list_community = categoryResponse.getObject(); //new Gson().fromJson(categoryResponse.toString(), listType);
 
-                    adapter = new CategoriesAdapter(getActivity(), categoryList, new Category_Interf() {
-                        @Override
-                        public void cat_data(String catgry_id, String catgry_name) {
-
-                        }
-                    });
+                    adapter = new GetComunityCommentsAdapter(getActivity(),getActivity(), list_community);
                     rv_community.setAdapter(adapter);
                 }
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                progressDialog.dismiss();
+                mDialog.dismiss();
                 Log.e("onFailure >>>>", "" + t.getMessage());
 
             }
         });
 
         Log.e("API", "========== ========");
-    }
 
+    }
        /* Call call = register_interfac.posts();
 
         call.enqueue(new Callback() {
@@ -436,3 +526,4 @@ public class CommunityFragment extends Fragment {
 
 
 }
+

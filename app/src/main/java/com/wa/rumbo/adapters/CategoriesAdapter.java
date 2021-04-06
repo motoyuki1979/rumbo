@@ -34,7 +34,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(context).inflate(R.layout.adapter_categories, viewGroup, false);
+       // View view = LayoutInflater.from(context).inflate(R.layout.adapter_categories, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.new_arrival_adapter, viewGroup, false);
         return new CategoriesAdapter.MyViewHolder(view);
     }
 
@@ -42,10 +43,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         holder.tv_category_name.setText(categoryList.get(position).getCategoryName());
-        if (!categoryList.get(position).getCategory_image().isEmpty()) {
+       /* if (!categoryList.get(position).getCategory_image().isEmpty()) {
             Picasso.with(context).load(categoryList.get(position).getCategory_image()).into(holder.iv_category_image);
         }
-
+*/
         holder.tv_comments_count.setText(categoryList.get(position).getTotal_comments());
 
         if (categoryList.get(position).getLast_comment() == null) {
@@ -64,16 +65,16 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_category_name)
+        @BindView(R.id.arrival_adptr_name)
         TextView tv_category_name;
-        @BindView(R.id.iv_category_image)
-        ImageView iv_category_image;
-        @BindView(R.id.tv_datetime)
+       /* @BindView(R.id.iv_category_image)
+        ImageView iv_category_image;*/
+        @BindView(R.id.arrival_adptr_date)
         TextView tv_datetime;
         //lin_category
-        @BindView(R.id.tv_last_comment)
+        @BindView(R.id.arrival_adptr_comment_txt)
         TextView tv_last_comment;
-        @BindView(R.id.tv_comments_count)
+        @BindView(R.id.arrival_adapter_comment_val)
         TextView tv_comments_count;
 
         public MyViewHolder(View itemView) {

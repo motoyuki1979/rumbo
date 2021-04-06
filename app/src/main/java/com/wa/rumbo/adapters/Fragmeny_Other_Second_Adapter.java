@@ -21,7 +21,7 @@ public  class Fragmeny_Other_Second_Adapter extends RecyclerView.Adapter<Fragmen
     @Override
     public MyViewHolder onCreateViewHolder( ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.rv_other2_adapter, viewGroup, false);
-        return new Fragmeny_Other_Second_Adapter.MyViewHolder(view);
+        return new MyViewHolder(view);
     }
 
     @Override

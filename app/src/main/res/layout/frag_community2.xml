@@ -1,73 +1,145 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
-        android:id="@+id/home_tabs"
+        android:id="@+id/llScreen"
         android:layout_width="match_parent"
-        android:layout_height="60sp"
-        android:orientation="horizontal"
-        android:paddingTop="0sp"
-        android:paddingBottom="0sp"
-        android:paddingLeft="10sp"
-        android:paddingRight="10sp"
-        android:gravity="center_vertical"
-        android:background="@color/colorPrimaryDark">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/keyboard_LL"
+        android:background="@color/home_bg"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/home_tabs"
+            android:layout_width="match_parent"
+            android:layout_height="60sp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="10sp"
+            android:paddingTop="0sp"
+            android:paddingRight="10sp"
+            android:paddingBottom="0sp">
+
+            <TextView
+                android:id="@+id/tv_recommend"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:padding="8sp"
+                android:text="@string/mine"
+                android:textAlignment="center"
+                android:textColor="@color/tab_selected" />
+
+            <TextView
+                android:id="@+id/tv_chat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:background="@drawable/tab_select_bg"
+                android:padding="8sp"
+                android:text="@string/all"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:id="@+id/tv_ac_review"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".33"
+                android:padding="8sp"
+                android:text="@string/follow"
+                android:textAlignment="center"
+                android:textColor="@color/tab_selected" />
+
+        </LinearLayout>
+
 
         <TextView
-            android:id="@+id/tv_recommend"
-            android:layout_width="0dp"
-            android:layout_weight=".33"
+            android:id="@+id/tv_bulletin_board"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/recommendation"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="5sp"
+            android:background="@drawable/heart_white_bg"
             android:padding="8sp"
+            android:paddingLeft="5sp"
+            android:paddingRight="5sp"
+            android:text="@string/bulletin_board_list"
             android:textAlignment="center"
-            android:textColor="@color/tab_selected"/>
+            android:textColor="@color/black"
+            android:visibility="gone" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_community"
+            android:layout_width="match_parent"
+            app:stackFromEnd="true"
+            android:layout_marginBottom="10dp"
+            android:layout_height="match_parent" />
         <TextView
-            android:id="@+id/tv_chat"
-            android:layout_width="0dp"
-            android:layout_weight=".33"
-            android:layout_height="wrap_content"
-            android:text="@string/chat"
-            android:padding="8sp"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:background="@drawable/tab_select_bg"/>
-
-        <TextView
-            android:id="@+id/tv_ac_review"
-            android:layout_width="0dp"
-            android:layout_weight=".33"
-            android:layout_height="wrap_content"
-            android:text="@string/household_diagnosis"
-            android:padding="8sp"
-            android:textAlignment="center"
-            android:textColor="@color/tab_selected"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_data_found"
+            android:textSize="14dp"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:id="@+id/tvNoDataFound"/>
 
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/tv_bulletin_board"
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"
-        android:text="@string/bulletin_board_list"
-        android:padding="8sp"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:background="@drawable/heart_white_bg"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="5sp"
-        android:paddingRight="5sp"
-        android:paddingLeft="5sp"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_community"
+    <RelativeLayout
+        android:id="@+id/keyboard_LL"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4sp"
+        android:background="@drawable/sky_light_bg"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:visibility="gone">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:layout_marginLeft="16sp"
+            android:layout_marginTop="10sp"
+            android:layout_marginRight="8sp"
+            android:layout_marginBottom="8sp"
+            android:src="@mipmap/smiley"
+            android:visibility="gone" />
+
+        <EditText
+            android:id="@+id/edt_comment_write"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="5sp"
+            android:layout_marginRight="20px"
+            android:layout_toLeftOf="@+id/tvSend"
+            android:background="@drawable/heart_white_bg"
+            android:hint="@string/post_comment"
+            android:paddingLeft="20sp"
+            android:paddingTop="4sp"
+            android:paddingBottom="4sp"
+            android:singleLine="true"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/tvSend"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/blue_bg"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
+</RelativeLayout>

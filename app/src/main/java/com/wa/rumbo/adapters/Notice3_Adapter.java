@@ -34,14 +34,11 @@ import butterknife.ButterKnife;
 public class Notice3_Adapter extends RecyclerView.Adapter<Notice3_Adapter.MyViewHolder> {
 
    // List<String> list_notice= new ArrayList<>();
-
     Context context;
     List<Notice3_model> list_notice;
     String date,time, title;
     CommonData commonData;
-
     List<NotificationRespList> getAllNotificationData;
-
 
     public Notice3_Adapter(Context context,   List<NotificationRespList> getAllNotificationData) {
         this.context = context;
@@ -59,9 +56,6 @@ public class Notice3_Adapter extends RecyclerView.Adapter<Notice3_Adapter.MyView
     public void onBindViewHolder(MyViewHolder myViewHolder, final int position) {
 
         //Notice3_model notice3_model= new Notice3_model(title, date,time);
-
-
-
        // myViewHolder.tv_time.setText(getAllNotificationData.get(position).getDatetime());
 
 

@@ -1,5 +1,6 @@
 package com.wa.rumbo.fragments;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -18,6 +19,7 @@ import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.NewArrivalAdapter;
 import com.wa.rumbo.common.CommonData;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.GetAllPost_Data;
 import com.wa.rumbo.model.User_Post_Model;
@@ -58,6 +60,7 @@ public class Other_User_Profile_Fragment extends Fragment {
     NewArrivalAdapter arrivalAdapter;
     @BindView(R.id.img_back)
     ImageView imgBack;
+    Dialog mDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,18 +68,17 @@ public class Other_User_Profile_Fragment extends Fragment {
         ButterKnife.bind(this, view);
         ((MainActivity) getActivity()).getBottomSelectedTabs(0);
         commonData = new CommonData(getActivity());
-
+        UsefullData.setLocale(getActivity());
+        mDialog = UsefullData.getProgressDialog(getActivity());
         Bundle extras = getArguments();
 
         if (extras != null) {
             from_user_id = extras.getString("from_user_id");
         }
 
-
         rvPostList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getUserPostList();
-
 
         /*
         arrivalAdapter = new NewArrivalAdapter(getActivity(), getAllPost_data);
@@ -93,15 +95,14 @@ public class Other_User_Profile_Fragment extends Fragment {
     }
 
     public void getUserPostList() {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+      /*  final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false); // set cancelable to false
-        progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show();
+        progressDialog.setMessage("Please Wait"); // set message*/
+        mDialog.show();
 
         Call call = register_interfac.getUserPostList(commonData.getString(USER_ID), commonData.getString(TOKEN), from_user_id);
 
         call.enqueue(new Callback() {
-
 
             @Override
             public void onResponse(Call call, Response response) {
@@ -109,7 +110,7 @@ public class Other_User_Profile_Fragment extends Fragment {
                 Log.e("other_user_prof == ", response.raw() + "");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    progressDialog.dismiss();
+                    mDialog.dismiss();
 
                     Log.e("other_user_prof_ok", new Gson().toJson(response.body()));
                     String resp = new Gson().toJson(response.body());
@@ -118,20 +119,16 @@ public class Other_User_Profile_Fragment extends Fragment {
 
                     getAllPost_data = user_post_model.getGetAllPostDataList();
 
-
-                    arrivalAdapter = new NewArrivalAdapter(getActivity(), getAllPost_data);
+                    arrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(), getAllPost_data);
                     rvPostList.setAdapter(arrivalAdapter);
 
                 }
-
-
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-
+                mDialog.dismiss();
             }
         });
     }
-
 }

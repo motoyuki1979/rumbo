@@ -9,7 +9,6 @@
         android:id="@+id/home_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:background="@color/colorPrimaryDark"
         android:gravity="center_vertical"
         android:orientation="horizontal"
@@ -23,8 +22,8 @@
             android:layout_width="wrap_content"
             android:layout_height="25sp"
             android:layout_gravity="center"
-            android:src="@mipmap/back"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:src="@mipmap/back" />
 
         <TextView
             android:id="@+id/followings"
@@ -33,7 +32,7 @@
             android:layout_gravity="center"
             android:layout_weight=".33"
             android:padding="8sp"
-            android:text="@string/tv_title_chatwrite"
+            android:text="@string/users_comment"
             android:textAlignment="center"
             android:textColor="@color/tab_selected" />
 
@@ -66,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
                 android:layout_toRightOf="@+id/img_clicked_post_user"
-                android:text="@string/tv_name_chatwrite" />
+                android:text="@string/tv_name_chatwrite"
+                android:textColor="@color/tab_text_color" />
 
             <TextView
                 android:id="@+id/tv_clicked_post_date"
@@ -83,7 +83,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="12sp"
                 android:layout_marginRight="20sp"
-                android:text="@string/expenditure" />
+                android:text="@string/expenditure"
+                android:textColor="@color/tab_text_color" />
 
             <TextView
                 android:id="@+id/tv_expenditure"
@@ -93,7 +94,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20sp"
                 android:text="1,000円"
-                android:textColor="@color/price_txt_color" />
+                android:textColor="@color/tab_text_color" />
 
             <ImageView
                 android:layout_width="30sp"
@@ -130,7 +131,7 @@
                 android:layout_marginLeft="20sp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
-                android:background="@mipmap/heart" />
+                android:background="@mipmap/heart_blue" />
 
             <TextView
                 android:id="@+id/tv_clicked_total_like"
@@ -194,21 +195,21 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/keyboard_LL"
-        android:layout_below="@+id/calendar_card_view">
+        android:layout_below="@+id/calendar_card_view"
+        android:layout_marginTop="5dp">
 
     </android.support.v7.widget.RecyclerView>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/keyboard_LL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginLeft="5sp"
-        android:layout_marginRight="5sp"
         android:layout_marginBottom="4sp"
-        android:background="@drawable/heart_yellow_bg"
+        android:background="@drawable/sky_light_bg"
         android:gravity="bottom"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="10dp">
 
         <ImageView
             android:layout_width="30sp"
@@ -217,23 +218,38 @@
             android:layout_marginTop="10sp"
             android:layout_marginRight="8sp"
             android:layout_marginBottom="8sp"
-            android:src="@mipmap/smiley" />
+            android:src="@mipmap/smiley"
+            android:visibility="gone" />
 
         <EditText
             android:id="@+id/edt_comment_write"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="5sp"
             android:layout_marginRight="20px"
+            android:layout_toLeftOf="@+id/tvSend"
             android:background="@drawable/heart_white_bg"
-            android:hint="コメントを入力してください"
+            android:hint="@string/post_comment"
             android:paddingLeft="20sp"
             android:paddingTop="4sp"
             android:paddingBottom="4sp"
+            android:textSize="15dp"
             android:singleLine="true" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/tvSend"
+            android:layout_width="70dp"
+            android:layout_height="35dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp"
+            android:background="@drawable/blue_bg"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textColor="@color/white"
+            android:textSize="15dp" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

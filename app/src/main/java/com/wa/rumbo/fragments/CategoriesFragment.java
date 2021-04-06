@@ -1,7 +1,9 @@
 package com.wa.rumbo.fragments;
 
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,6 +18,7 @@ import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.adapters.CategoriesAdapter;
 import com.wa.rumbo.adapters.NewArrivalAdapter;
 import com.wa.rumbo.common.CommonData;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Category_Interf;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.CategoryResponse;
@@ -49,19 +52,20 @@ public class CategoriesFragment extends Fragment {
     Register_Interfac register_interfac;
     Retrofit retrofit;
     CommonData commonData;
-
+    Dialog mDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
 
         retrofit = RetrofitInstance.getClient();
         register_interfac = retrofit.create(Register_Interfac.class);
         commonData = new CommonData(getActivity());
-
+        UsefullData.setLocale(getActivity());
+        mDialog = UsefullData.getProgressDialog(getActivity());
         getCategoryListAPI();
 
         return view;
@@ -69,10 +73,11 @@ public class CategoriesFragment extends Fragment {
 
     public void getCategoryListAPI() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+       /* final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show();
+        progressDialog.show();*/
+        mDialog.show();
 
         Call call = register_interfac.category_list(commonData.getString(USER_ID), commonData.getString(TOKEN));
 
@@ -81,7 +86,7 @@ public class CategoriesFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) {
 
-                progressDialog.dismiss();
+                mDialog.dismiss();
                 Log.e("new arrival resp == ", response.raw() + "");
                 if (response.isSuccessful() && response.body() != null) {
                     Log.e("Success_post", new Gson().toJson(response.body()));
@@ -95,7 +100,7 @@ public class CategoriesFragment extends Fragment {
 
                     adapter = new CategoriesAdapter(getActivity(), categoryList, new Category_Interf() {
                         @Override
-                        public void cat_data(String catgry_id, String catgry_name) {
+                        public void cat_data(String catgry_id, String catgry_name, Uri uri) {
 
                         }
                     });
@@ -105,7 +110,7 @@ public class CategoriesFragment extends Fragment {
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                progressDialog.dismiss();
+                mDialog.dismiss();
                 Log.e("onFailure >>>>", "" + t.getMessage());
 
             }

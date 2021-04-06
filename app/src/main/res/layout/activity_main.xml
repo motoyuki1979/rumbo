@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".activities.MainActivity">
 
     <LinearLayout
@@ -23,7 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_weight=".33"
             android:padding="8sp"
-            android:text="@string/notice"
+            android:text="@string/mine"
             android:textAlignment="center"
             android:textColor="@color/tab_selected" />
 
@@ -34,7 +35,7 @@
             android:layout_weight=".33"
             android:background="@drawable/tab_select_bg"
             android:padding="8sp"
-            android:text="@string/new_arrival"
+            android:text="@string/all"
             android:textAlignment="center"
             android:textColor="@color/white" />
 
@@ -56,6 +57,7 @@
         android:layout_height="60sp"
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
+        android:background="@color/white"
         android:weightSum="1">
 
         <RelativeLayout
@@ -63,7 +65,8 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight=".5"
-            android:background="@color/home_bg">
+            android:visibility="gone"
+            android:background="@color/white">
 
             <ImageView
                 android:id="@+id/timeline_iv"
@@ -72,7 +75,7 @@
                 android:layout_above="@+id/timeline_txt"
                 android:layout_centerHorizontal="true"
                 android:padding="4sp"
-                android:src="@mipmap/star_grey" />
+                android:src="@mipmap/star_color" />
 
             <TextView
                 android:id="@+id/timeline_txt"
@@ -83,7 +86,7 @@
                 android:padding="4sp"
                 android:text="@string/timeline"
                 android:textAlignment="center"
-                android:textColor="@color/white"
+                android:textColor="@color/tab_text_color"
                 android:textSize="10dp" />
 
         </RelativeLayout>
@@ -92,7 +95,7 @@
             android:id="@+id/home_community_LL"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".25"
+            android:layout_weight=".5"
             android:background="@color/colorPrimaryDark"
             android:visibility="gone">
 
@@ -125,9 +128,9 @@
             android:id="@+id/home_booking_LL"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight=".33"
-            android:background="@color/colorPrimaryDark"
-            android:visibility="gone">
+            android:layout_weight=".5"
+            android:background="@color/white"
+            android:visibility="visible">
 
             <ImageView
                 android:id="@+id/booking_iv"
@@ -148,7 +151,7 @@
                 android:padding="4sp"
                 android:text="@string/kakebo"
                 android:textAlignment="center"
-                android:textColor="@color/tab_text_color"
+                android:textColor="@color/colorGrey"
                 android:textSize="10dp" />
 
         </RelativeLayout>
@@ -179,7 +182,7 @@
                 android:padding="4sp"
                 android:text="@string/my_page"
                 android:textAlignment="center"
-                android:textColor="@color/tab_text_color"
+                android:textColor="@color/colorGrey"
                 android:textSize="10dp" />
 
         </RelativeLayout>
@@ -207,8 +210,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:tint="@color/white"
+            app:backgroundTint="@color/tab_text_color"
             android:src="@mipmap/quill"
-            android:layout_margin="10dp" />
+              android:layout_margin="10dp" />
 
     </RelativeLayout>
 

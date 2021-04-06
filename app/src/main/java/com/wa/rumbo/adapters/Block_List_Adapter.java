@@ -18,13 +18,13 @@ public class Block_List_Adapter extends RecyclerView.Adapter<Block_List_Adapter.
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder( ViewGroup viewGroup, int i) {
+    public MyViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.rv_blocked, viewGroup, false);
         return new Block_List_Adapter.MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder( MyViewHolder myViewHolder, int i) {
+    public void onBindViewHolder(MyViewHolder myViewHolder, int i) {
 
     }
 
@@ -34,7 +34,7 @@ public class Block_List_Adapter extends RecyclerView.Adapter<Block_List_Adapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public MyViewHolder( View itemView) {
+        public MyViewHolder(View itemView) {
             super(itemView);
         }
     }

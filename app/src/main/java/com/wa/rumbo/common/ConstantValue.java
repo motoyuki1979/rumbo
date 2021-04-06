@@ -1,5 +1,11 @@
 package com.wa.rumbo.common;
 
+import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.util.DisplayMetrics;
+
+import java.util.Locale;
+
 public interface ConstantValue {
 
     public String USER_ID = "user_id";
@@ -17,6 +23,13 @@ public interface ConstantValue {
 
     //public String BASE_URL = "http://112.196.16.90:8080/Rumbo/";
     //public String BASE_URL = "http://112.196.16.90:8080/rumbo-1.0.0-BUILD-SNAPSHOT/";
-    public String BASE_URL = "http://172.104.123.43:8080/rumbo-1.0.0-BUILD-SNAPSHOT/";
+
+    //Kulwinder
+   // public String BASE_URL = "http://172.104.123.43:8080/rumbo-1.0.0-BUILD-SNAPSHOT/";
+    public String BASE_URL = "http://172.104.115.140:8080/Rumbo/";
+
     //public String BASE_URL = "http://currentaffairs.gktoday.in/wp-json/wp/v2/";
+
+
+
 }

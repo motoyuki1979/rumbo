@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#FFF8DD</color>
+    <color name="colorPrimaryDark">#ffffff</color>
     <color name="colorAccent">#FF4081</color>
     <color name="white"> #fff </color>
     <color name="black"> #000 </color>
+    <color name="lightBlue"> #DDEEFF </color>
 
-    <color name="tab_selected"> #E89D6C </color>
-    <color name="tab_unselected"> #FFF8DD </color>
-    <color name="home_bg"> #FFC0CA </color>
+    <color name="tab_selected"> #4499FF </color>
+    <color name="tab_unselected"> #ffffff </color>
+    <color name="home_bg"> #DAEBFC </color>
     <color name="normal_txt_color"> #000000 </color>
-    <color name="tab_text_color"> #EA9000 </color>
+    <color name="tab_text_color"> #4499FF </color>
     <color name="price_txt_color"> #FF6427 </color>
     <color name="view_color"> #D2D2D2 </color>
 
@@ -35,5 +36,10 @@
     <color name="caldroid_555">#555</color>
     <color name="caldroid_light_red">#ff7f7f</color>
     <color name="off_month_bg_color">#f5f5f5</color>
+
+    <color name="colorGrey">#A2A2A2</color>
+    <color name="colorSkyLight">#AADDFF</color>
+    <color name="colorTransparent">#00FBFCFC</color>
+    <color name="colorLightYellow">#FFF7E6</color>
 
 </resources>

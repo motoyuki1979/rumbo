@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.wa.rumbo.R;
+import com.wa.rumbo.common.UsefullData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,30 +22,21 @@ public class Savings_and_Expenses_Fragment extends Fragment {
     TextView tv_send;
 
     @Override
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_savings_and_expenses, container, false);
-
-
         ButterKnife.bind(this, view);
-
+        UsefullData.setLocale(getActivity());
 
     tv_send.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-
         }
     });
 
-
         return view;
 
-
+        }
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-
-
-
-}

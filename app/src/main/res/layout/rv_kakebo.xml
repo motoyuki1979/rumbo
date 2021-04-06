@@ -25,7 +25,7 @@
             android:background="@drawable/border_black"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="10dp">
 
             <ImageView
                 android:id="@+id/rv_img_kakebo"

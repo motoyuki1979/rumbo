@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.wa.rumbo.R;
-
+import com.wa.rumbo.common.UsefullData;
 
 
 public class Resume_Key_Fragment extends Fragment {
@@ -22,10 +22,12 @@ public class Resume_Key_Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
       View view= inflater.inflate(R.layout.fragment_resume_key, container, false);
-
-
+        UsefullData.setLocale(getActivity());
 
       return  view;
     }
 
 }
+
+
+

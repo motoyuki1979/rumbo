@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/home_bg">
+    android:layout_height="wrap_content"
+    android:background="@color/home_bg"
+    android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendar_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,135 +22,121 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/arrival_adptr_img"
-                android:layout_width="70sp"
-                android:layout_height="70sp"
+                android:layout_width="80sp"
+                android:layout_height="80sp"
+                android:layout_centerVertical="true"
                 android:layout_margin="5sp"
-                android:src="@mipmap/image_dummy"/>
-
-
-
-
-                <TextView
-                    android:id="@+id/notifications"
-                    android:layout_width="wrap_content"
-
-                    android:layout_height="wrap_content"
-                    android:text="@string/notice"
-                    android:padding="8sp"
-                    android:textAlignment="center"
-                    android:textColor="@color/tab_selected"
-                    android:layout_centerHorizontal="true"
-                    />
-
-                <TextView
-                    android:id="@+id/new_arrival"
-                    android:layout_width="wrap_content"
-                    android:layout_toRightOf="@+id/notifications"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_arrival"
-                    android:padding="8sp"
-                    android:textAlignment="center"
-                    android:textColor="@color/white"
-                    android:background="@drawable/tab_select_bg"/>
+                android:src="@mipmap/image_dummy" />
 
 
             <TextView
+                android:id="@+id/notifications"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/arrival_adptr_img"
+                android:gravity="center_horizontal"
+                android:padding="8sp"
+                android:text="@string/notice"
+                android:textAlignment="center"
+                android:textColor="@color/tab_selected" />
+
+            <TextView
+                android:id="@+id/new_arrival"
+                android:layout_width="140dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@+id/notifications"
+                android:background="@drawable/tab_select_bg"
+                android:gravity="center"
+                android:text="@string/follow"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+
+            <TextView
+                android:id="@+id/tvInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/new_arrival"
-                android:text="最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。"
-                android:layout_toRightOf="@+id/arrival_adptr_img"/>
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/arrival_adptr_img"
+                android:text="最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。" />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-        <!--    <TextView
-                android:id="@+id/arrival_adptr_comment_txt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/arrival_adptr_img"
-                android:layout_marginTop="4sp"
-                android:layout_marginBottom="4sp"
-                android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
-                android:text="昼ごはんに焼肉！"/>-->
+            <!--    <TextView
+                    android:id="@+id/arrival_adptr_comment_txt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/arrival_adptr_img"
+                    android:layout_marginTop="4sp"
+                    android:layout_marginBottom="4sp"
+                    android:layout_marginLeft="20sp"
+                    android:layout_marginRight="20sp"
+                    android:text="昼ごはんに焼肉！"/>-->
 
             <View
                 android:id="@+id/arrival_adapter_view"
                 android:layout_width="match_parent"
                 android:layout_height="1sp"
+                android:layout_below="@+id/arrival_adapter_big_heart"
                 android:layout_marginTop="-36dp"
-                android:background="@color/view_color"
-                android:layout_below="@+id/arrival_adapter_big_heart"/>
+                android:background="@color/view_color" />
 
             <ImageButton
                 android:id="@+id/arrival_adapter_like"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_below="@+id/arrival_adapter_view"
-                android:background="@mipmap/heart"
+                android:layout_marginLeft="20sp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
-                android:layout_marginLeft="20sp"/>
+                android:background="@mipmap/heart" />
 
             <TextView
                 android:id="@+id/arrival_adapter_like_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/arrival_adapter_view"
-                android:layout_toRightOf="@+id/arrival_adapter_like"
-                android:text="3"
+                android:layout_marginLeft="6sp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
-                android:layout_marginLeft="6sp"/>
+                android:layout_toRightOf="@+id/arrival_adapter_like"
+                android:text="3" />
 
             <ImageButton
                 android:id="@+id/arrival_adapter_comment"
                 android:layout_width="20sp"
                 android:layout_height="20sp"
                 android:layout_below="@+id/arrival_adapter_view"
-                android:layout_toRightOf="@+id/arrival_adapter_like_val"
-                android:background="@mipmap/comment"
+                android:layout_marginLeft="20sp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
-                android:layout_marginLeft="20sp"/>
+                android:layout_toRightOf="@+id/arrival_adapter_like_val"
+                android:background="@mipmap/comment" />
 
             <TextView
                 android:id="@+id/arrival_adapter_comment_val"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/arrival_adapter_view"
-                android:layout_toRightOf="@+id/arrival_adapter_comment"
-                android:text="2"
+                android:layout_marginLeft="6sp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
-                android:layout_marginLeft="6sp"/>
+                android:layout_toRightOf="@+id/arrival_adapter_comment"
+                android:text="2" />
 
             <ImageButton
                 android:id="@+id/arrival_adapter_more"
                 android:layout_width="40sp"
                 android:layout_height="20sp"
+                android:layout_below="@+id/arrival_adapter_view"
                 android:layout_marginTop="6sp"
                 android:layout_marginRight="5sp"
-                android:background="@mipmap/more_option"
-                android:layout_below="@+id/arrival_adapter_view"
-                android:layout_toLeftOf="@+id/arrival_adapter_big_heart"/>
-
-
-
+                android:layout_toLeftOf="@+id/arrival_adapter_big_heart"
+                android:background="@mipmap/more_option" />
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
-
-
 </LinearLayout>

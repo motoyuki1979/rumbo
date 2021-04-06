@@ -11,6 +11,7 @@ import android.widget.ImageView;
 
 import com.wa.rumbo.R;
 import com.wa.rumbo.adapters.Work_Saving_Money_Adapter;
+import com.wa.rumbo.common.UsefullData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,13 +30,13 @@ public class Work_Saving_Money_Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.work_with_saving_money_fragment, container, false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
 
+        View view = inflater.inflate(R.layout.work_with_saving_money_fragment, container, false);
 
         ButterKnife.bind(this, view);
 
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        UsefullData.setLocale(getActivity());
         rv_work_saving_money.setLayoutManager(layoutManager);
 
         work_saving_money_adapter = new Work_Saving_Money_Adapter(getActivity());
@@ -51,6 +52,5 @@ public class Work_Saving_Money_Fragment extends Fragment {
 
         return view;
     }
-
 
 }

@@ -44,4 +44,6 @@ public class GetAllPost implements Serializable
         this.object = object;
     }
 
+
+
 }

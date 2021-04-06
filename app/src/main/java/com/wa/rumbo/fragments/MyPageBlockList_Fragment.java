@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.wa.rumbo.R;
 import com.wa.rumbo.adapters.Block_List_Adapter;
+import com.wa.rumbo.common.UsefullData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +39,7 @@ public class MyPageBlockList_Fragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_my_page_block_list, container, false);
 
         ButterKnife.bind(this, view);
+        UsefullData.setLocale(getActivity());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_blocked_list.setLayoutManager(layoutManager);

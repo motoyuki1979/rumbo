@@ -1,5 +1,6 @@
 package com.wa.rumbo.fragments;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.wa.rumbo.R;
@@ -20,6 +22,7 @@ import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.Notice3_Adapter;
 import com.wa.rumbo.common.CommonData;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.Notice3_model;
 import com.wa.rumbo.model.NotificationRespList;
@@ -42,8 +45,10 @@ public class Fragment_3Notice extends Fragment {
 
     @BindView(R.id.rv_3notice)
     RecyclerView rv_3notice;
+    @BindView(R.id.tvNoDataFound)
+    TextView tvNoDataFound;
 
-    String date,time, title;
+    String date, time, title;
     Notice3_model notice3_model;
     Notice3_Adapter notice3_adapter;
     List<Notice3_model> list_note = new ArrayList<>();
@@ -54,22 +59,22 @@ public class Fragment_3Notice extends Fragment {
     NotificationResponse notificationResponse;
     List<NotificationRespList> getNotificationData = new ArrayList<>();
 
-
+Dialog mDialog;
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public View onCreateView( LayoutInflater inflater,  ViewGroup container,  Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_3notice, container, false);
         ButterKnife.bind(this, view);
+        UsefullData.setLocale(getActivity());
 
         MainActivity.homeTabsLL.setVisibility(View.VISIBLE);
-        ((MainActivity)getActivity()).getSelectedTab(0);
+        ((MainActivity) getActivity()).getSelectedTab(0);
         ((MainActivity) getActivity()).getBottomSelectedTabs(0);
 
         commonData = new CommonData(getActivity());
 
-
-
+mDialog = UsefullData.getProgressDialog(getActivity());
         rv_3notice.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getNotificationApi();
@@ -84,54 +89,59 @@ public class Fragment_3Notice extends Fragment {
         return view;
     }
 
-    public void getNotificationApi()
-    {
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+    public void getNotificationApi() {
+        /*final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false); // set cancelable to false
-        progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show();
+        progressDialog.setMessage("Please Wait"); // set message*/
+        mDialog.show();
 
-        Log.e("notification_resp",commonData.getString(USER_ID));
-        Log.e("notification_resp",commonData.getString(TOKEN));
+        Log.e("notification_resp", commonData.getString(USER_ID));
+        Log.e("notification_resp", commonData.getString(TOKEN));
 
 
         Call call = register_interfac.getNotifications(commonData.getString(USER_ID), commonData.getString(TOKEN));
 
-        call.enqueue(new Callback(){
+        call.enqueue(new Callback() {
 
             @Override
             public void onResponse(Call call, Response response) {
                 Log.e("notification_resp", response.raw() + "");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    progressDialog.dismiss();
+                    mDialog.dismiss();
 
                     Log.e("notification_resp_succ", new Gson().toJson(response.body()));
                     String resp = new Gson().toJson(response.body());
 
-                    Log.e("notification_resp1",resp);
+                    Log.e("notification_resp1", resp);
 
                     //getAllPosts = new Gson().fromJson(resp, GetAllPost.class);
-                    notificationResponse=new Gson().fromJson(resp,NotificationResponse.class);
+                    notificationResponse = new Gson().fromJson(resp, NotificationResponse.class);
 
-                    getNotificationData= notificationResponse.getNotificationRespLists();
+                    getNotificationData = notificationResponse.getNotificationRespLists();
                     // getAllPost_data = getAllPosts.getObject();
 
-                    notice3_adapter = new Notice3_Adapter(getActivity(),getNotificationData);
-                    rv_3notice.setAdapter(notice3_adapter);
+                    if (getNotificationData.size()>0) {
+                        rv_3notice.setVisibility(View.VISIBLE);
+                        tvNoDataFound.setVisibility(View.GONE);
 
-            }
+                        notice3_adapter = new Notice3_Adapter(getActivity(), getNotificationData);
+                        rv_3notice.setAdapter(notice3_adapter);
+                    }else {
+                        tvNoDataFound.setVisibility(View.VISIBLE);
+                        rv_3notice.setVisibility(View.GONE);
+                    }
+                }
             }
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                progressDialog.dismiss();
+                mDialog.dismiss();
                 Log.e("onFailure >>>>", "" + t.getMessage());
 
             }
         });
     }
-
 
 
 }

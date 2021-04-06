@@ -31,7 +31,7 @@ public class User_Post_Model {
 
     public void setSuccess(String success) {
         this.success = success;
-    }
+}
 
     public String getMessage() {
         return message;

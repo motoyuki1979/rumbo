@@ -1,10 +1,11 @@
 package com.wa.rumbo.model;
 
 import java.io.Serializable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public  class GetAllPost_Data implements  Serializable {
+public class GetAllPost_Data implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -40,6 +41,10 @@ public  class GetAllPost_Data implements  Serializable {
     @Expose
     private String categoryName;
 
+    @SerializedName("category_image")
+    @Expose
+    private String categoryImage;
+
     @SerializedName("is_like")
     @Expose
     private Boolean is_like;
@@ -52,6 +57,13 @@ public  class GetAllPost_Data implements  Serializable {
     @Expose
     private String comments_count;
 
+    public String getCategoryImage() {
+        return categoryImage;
+    }
+
+    public void setCategoryImage(String categoryImage) {
+        this.categoryImage = categoryImage;
+    }
 
     public String getId() {
         return id;

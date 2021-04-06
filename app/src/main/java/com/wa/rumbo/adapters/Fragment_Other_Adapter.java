@@ -7,15 +7,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.wa.rumbo.R;
+import com.wa.rumbo.model.GetCalenderBookingModel;
+
+import java.util.ArrayList;
 
 public class Fragment_Other_Adapter extends RecyclerView.Adapter<Fragment_Other_Adapter.MyViewHolder> {
 
     Context context;
-
-    public Fragment_Other_Adapter(Context context) {
+    ArrayList<GetCalenderBookingModel.Object> mFilterList;
+    public Fragment_Other_Adapter(Context context,ArrayList<GetCalenderBookingModel.Object> mFilterList) {
         this.context = context;
+        this.mFilterList = mFilterList;
     }
 
     @Override
@@ -24,23 +27,26 @@ public class Fragment_Other_Adapter extends RecyclerView.Adapter<Fragment_Other_
         return new Fragment_Other_Adapter.MyViewHolder(view);
     }
 
-    @Override
     public void onBindViewHolder( MyViewHolder myViewHolder, int position) {
+        myViewHolder.tvCategory.setText(mFilterList.get(position).getCategoryTitle());
+        myViewHolder.tvPrice.setText(mFilterList.get(position).getAmount());
 
     }
 
     @Override
     public int getItemCount() {
-        return 7;
+        return mFilterList.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tv_other_adapter;
+        TextView tvCategory;
+        TextView tvPrice;
         public MyViewHolder( View itemView) {
             super(itemView);
 
-            tv_other_adapter= itemView.findViewById(R.id.tv_other_adapter);
+            tvCategory= itemView.findViewById(R.id.tvCategory);
+            tvPrice= itemView.findViewById(R.id.tvPrice);
         }
     }
 }

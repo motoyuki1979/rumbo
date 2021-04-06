@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.wa.rumbo.R;
 import com.wa.rumbo.adapters.NewArrivalAdapter;
+import com.wa.rumbo.common.UsefullData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -51,12 +52,14 @@ public class MYPost_Fragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        UsefullData.setLocale(getActivity());
+
         newArrivalFragment = new NewArrivalFragment();
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_mypost.setLayoutManager(layoutManager);
 
         if (newArrivalFragment.getAllPost_data != null) {
-            newArrivalAdapter = new NewArrivalAdapter(getActivity(), newArrivalFragment.getAllPost_data);
+            newArrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(), newArrivalFragment.getAllPost_data);
             rv_mypost.setAdapter(newArrivalAdapter);
         }
 

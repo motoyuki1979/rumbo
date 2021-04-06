@@ -27,6 +27,8 @@ import com.wa.rumbo.custom_calendar.helper.TimeUtil;
 import com.wa.rumbo.custom_calendar.listener.CalenderDayClickListener;
 import com.wa.rumbo.custom_calendar.model.DayContainerModel;
 import com.wa.rumbo.custom_calendar.model.Event;
+import com.wa.rumbo.model.GetCalenderBookingModel;
+import com.wa.rumbo.model.GetUserProfileModel;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -117,9 +119,11 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
     private static final int DEFAULT_TEXT_COLOR = Color.parseColor("#808080");
     private static int EventColor = Color.parseColor("#e01818");
 
+    GetOnNext onNext;
 
-    public CalenderEvent(Context context) {
+    public CalenderEvent(Context context/*, GetOnNext onNext*/) {
         super(context);
+        //this.onNext = onNext;
     }
 
     public CalenderEvent(Context context, @Nullable AttributeSet attrs) {
@@ -221,7 +225,6 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
         textViewMonthName.setText(MONTH_NAMES[selectedMonth] + "," + selectedYear);
 
         int daysInCurrentMonth = mCalendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-
 
         int index = 0;
 
@@ -347,6 +350,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
                     mSelectedLinearLayout.setBackgroundResource(R.drawable.calendar_bg);
                     mSelectedTexView.setTextColor(mPreviousColor);
                 }
+
                 /*if (mSelectedLinearLayout != null) {
                     mSelectedLinearLayout.setBackgroundResource(R.drawable.border_black);
                     mSelectedTexView.setTextColor(mPreviousColor);
@@ -357,6 +361,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
                 if (nextMonthLinearLayout != null) {
                     nextMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
                 }*/
+
                 mPreviousColor = mCurrentMonthDayColor;
                 mSelectedTexView = days[index];
                 daysContainer[index].setBackgroundResource(R.drawable.drawable_rectangular);
@@ -508,6 +513,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
             mCalendar.set(year + 1, 0, 1);
         }
 
+       // onNext.onNext(mCalendar.get(month));
         initCalender(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH));
     }
 
@@ -521,6 +527,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
             mCalendar.set(year - 1, 11, 1);
         }
 
+//        onNext.onPrevious(mCalendar.get(month));
         initCalender(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH));
     }
 
@@ -656,8 +663,10 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
 
     public void addEvent(Event event) {
         if (event == null) return;
+
         String date = TimeUtil.getDate(event.getTime());
 
+       // String textKey = date + TEXT_EVENT;
         String textKey = date + TEXT_EVENT;
         String colorKey = date + COLOR_EVENT;
 
@@ -690,5 +699,9 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
         this.mCalenderDayClickListener = listener;
     }
 
+    public interface GetOnNext {
 
+        void onNext(int month);
+        void onPrevious(int month);
+    }
 }

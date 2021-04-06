@@ -25,16 +25,16 @@
             android:layout_marginLeft="31.5px"
             android:layout_marginRight="80.5px"
             android:src="@mipmap/back"
-            android:visibility="invisible" />
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/followings"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="56dp"
             android:layout_gravity="center"
             android:layout_weight=".33"
             android:padding="8sp"
-            android:text="@string/profile"
+            android:text="Username"
             android:textAlignment="center"
             android:textColor="@color/tab_selected" />
 
@@ -45,96 +45,125 @@
         android:id="@+id/calendar_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:elevation="14sp"
         card_view:cardCornerRadius="0dp">
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/rel_arrival_adapter"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/arrival_adptr_img"
-                android:layout_width="70sp"
+                android:layout_width="90sp"
                 android:layout_height="90sp"
                 android:layout_centerVertical="true"
+                android:layout_gravity="center_vertical"
                 android:layout_margin="5sp"
                 android:src="@mipmap/image_dummy" />
 
-
-            <TextView
-                android:id="@+id/tv_prof_settings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="5dp"
-                android:background="@drawable/border_black_bg"
-                android:paddingLeft="20sp"
-                android:paddingTop="5dp"
-                android:paddingRight="20sp"
-                android:paddingBottom="5dp"
-                android:text="@string/profile_n_settings"
-                android:textAlignment="center"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/tv_others"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_prof_settings"
-                android:layout_margin="10dp"
-                android:layout_toRightOf="@id/arrival_adptr_img"
-                android:text="@string/profile_text" />
-
             <LinearLayout
-                android:id="@+id/lin_number_of_follower"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_others"
-                android:gravity="center_horizontal"
-                android:orientation="horizontal"
-                android:paddingBottom="5dp">
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="15"
+                    android:id="@+id/tv_prof_settings"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:textSize="17dp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="20dp"
+                    android:background="@drawable/rect_grey"
+                    android:text="@string/profile_n_settings"
+                    android:textAlignment="center"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/design_default_color_primary" />
+                    android:textColor="@color/tab_text_color" />
 
                 <TextView
+                    android:id="@+id/tv_others"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="73px"
+                    android:layout_below="@+id/tv_prof_settings"
+                    android:layout_margin="10dp"
+                    android:layout_toRightOf="@id/arrival_adptr_img"
+                    android:text="@string/profile_text" />
 
-                    android:text="フォロー" />
-
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/lin_number_of_follower"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="6"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:textColor="@color/design_default_color_primary" />
+                    android:gravity="center_horizontal"
+                    android:layout_marginHorizontal="30dp"
+                    android:orientation="horizontal"
+                    android:layout_weight="1"
+                    android:paddingBottom="5dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="フォロワー" />
+                    <LinearLayout
+                        android:id="@+id/llFollow"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="0.5">
+                        <TextView
+                            android:id="@+id/tvFollowCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="17dp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/tab_text_color" />
 
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="73px"
+                            android:layout_marginLeft="2dp"
+                            android:textSize="17dp"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:text="@string/follow"
+                            android:textColor="@color/tab_text_color" />
+
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/llFollower"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:layout_weight="0.5">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:id="@+id/tvFollowerCount"
+                        android:textSize="17dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/tab_text_color" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/follower"
+                        android:layout_marginLeft="2dp"
+                        android:textSize="17dp"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:textColor="@color/tab_text_color" />
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
-
-
-        </RelativeLayout>
-
+        </LinearLayout>
             <LinearLayout
                 android:id="@+id/home_tabs1"
                 android:layout_width="match_parent"
@@ -143,65 +172,324 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:paddingLeft="10sp"
+                android:layout_marginHorizontal="40dp"
+                android:layout_marginTop="10dp"
                 android:paddingTop="0sp"
+                android:layout_marginBottom="10dp"
+                android:weightSum="1"
                 android:paddingRight="10sp"
                 android:paddingBottom="5sp">
-
-                <TextView
-                    android:id="@+id/tv_calendar"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight=".33"
-                    android:padding="8sp"
-                    android:text="@string/calendar"
-                    android:textAlignment="center"
-                    android:textColor="@color/tab_selected" />
 
                 <TextView
                     android:id="@+id/tv_household"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".33"
+                    android:layout_weight=".5"
                     android:background="@drawable/tab_select_bg"
                     android:padding="8sp"
                     android:text="@string/househpld_book"
                     android:textAlignment="center"
                     android:textColor="@color/white" />
 
+
                 <TextView
+                    android:id="@+id/tv_calendar"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".5"
+                    android:padding="8sp"
+                    android:text="@string/calendar"
+                    android:textAlignment="center"
+                    android:textColor="@color/tab_selected" />
+
+                   <TextView
                     android:id="@+id/tv_mypost"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight=".33"
                     android:padding="8sp"
+                    android:visibility="gone"
                     android:text="@string/my_post"
                     android:textAlignment="center"
                     android:textColor="@color/tab_selected" />
 
             </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
+
+    <!-- <View
+         android:layout_width="match_parent"
+         android:layout_height="1dp"
+         android:background="@color/black" />-->
+
+    <ScrollView
+        android:id="@+id/scrollable"
+        android:layout_width="match_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        xmlns:tools="http://schemas.android.com/tools">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10sp"
+                android:layout_marginLeft="5dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="5dp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/ivPreviousMonth"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="3dp"
+                    android:src="@mipmap/back"
+                    android:tint="@color/colorGrey"/>
+
+                <LinearLayout
+                    android:layout_width="270dp"
+                    android:layout_height="35dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/light_yellow_bg_new"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:paddingLeft="6dp">
+
+                    <TextView
+                        android:id="@+id/tvCurrentDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textStyle="bold"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                        android:text="2018分11設"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:text="(11分1B-11A30B)"
+                        android:gravity="center_vertical"
+                        android:layout_gravity="center"/>
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/ivNextMonth"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:padding="3dp"
+                    android:src="@mipmap/back"
+                    android:rotation="180"
+                    android:tint="@color/colorGrey"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1">
+
+                <TextView
+                    android:id="@+id/tv_rc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:layout_weight="0.5"
+                    android:foregroundGravity="center_horizontal"
+                    android:gravity="center_horizontal"
+                    android:text="@string/category"
+                    android:textColor="@color/tab_text_color" />
+
+                <TextView
+                    android:id="@+id/tv_rc2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10sp"
+                    android:text="@string/amount"
+                    android:layout_weight="0.5"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/tab_text_color" />
+            </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv2_itemname_other"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_rc2"
+                android:visibility="gone"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_gravity="center"
+                android:text="@string/no_data_found_for_this_month"
+                android:id="@+id/tvNoData"
+                android:gravity="center"/>
+
+            <RelativeLayout
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15sp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="1.5"
+                    android:layout_gravity="bottom">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/total_income"
+                            android:layout_gravity="center_horizontal"
+                            android:gravity="center_horizontal"
+                            android:textColor="@color/tab_text_color"
+                            android:layout_marginLeft="10sp"/>
+                        <TextView
+                            android:id="@+id/tvIncome"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_weight="1"
+                            android:textColor="@color/tab_text_color"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/tab_text_color"
+                            android:text="@string/expenditure"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/tvExpense"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_weight="1"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/tab_text_color"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/tab_text_color"
+                            android:text="@string/net"
+                            android:layout_weight="1"/>
+                        <TextView
+                            android:id="@+id/tvTotalAmount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:layout_weight="1"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textColor="@color/tab_text_color"/>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </RelativeLayout>
 
 
         </LinearLayout>
 
-    </android.support.v7.widget.CardView>
-
-
-
-
-   <!-- <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/black" />-->
-
+    </ScrollView>
     <FrameLayout
         android:id="@+id/frameLayout_other"
         android:layout_width="match_parent"
+        android:visibility="gone"
         android:layout_height="match_parent">
 
     </FrameLayout>
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:visibility="gone"
+    android:layout_gravity="center_vertical"
+    android:gravity="center_vertical"
+    android:id="@+id/llNoUserLogin">
 
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="@string/register_and_try_community_hosekeep_booking"
+        android:textColor="@color/tab_text_color"
+        android:textSize="17dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="40dp"/>
+
+    <TextView
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:textSize="16dp"
+        android:textColor="@color/white"
+        android:text="@string/register"
+        android:background="@drawable/blue_bg"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:id="@+id/tvRegister"/>
+ <TextView
+        android:layout_width="250dp"
+        android:layout_height="40dp"
+        android:textSize="16dp"
+        android:textColor="@color/tab_text_color"
+        android:text="@string/login"
+        android:background="@drawable/login_button_bg"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:id="@+id/tvLogin"/>
+
+</LinearLayout>
 </LinearLayout>
 
 

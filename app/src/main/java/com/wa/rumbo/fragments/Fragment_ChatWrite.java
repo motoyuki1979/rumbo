@@ -1,7 +1,12 @@
 package com.wa.rumbo.fragments;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -12,6 +17,9 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +33,7 @@ import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.Chat_Write_Adapter;
 import com.wa.rumbo.common.CommonData;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.CommentDetail;
 import com.wa.rumbo.model.Comment_Request_Model;
@@ -32,6 +41,7 @@ import com.wa.rumbo.model.GetAllPost_Data;
 import com.wa.rumbo.model.GetCommentPost;
 import com.wa.rumbo.model.PostDetailModel;
 import com.wa.rumbo.model.Status_Model;
+import com.wa.rumbo.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,13 +49,18 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.wa.rumbo.R.string.not_now;
+import static com.wa.rumbo.R.string.please_register_or_login_first;
+import static com.wa.rumbo.R.string.register;
 import static com.wa.rumbo.common.ConstantValue.TOKEN;
 import static com.wa.rumbo.common.ConstantValue.USER_ID;
+import static com.wa.rumbo.common.ConstantValue.USER_NAME;
 
 public class Fragment_ChatWrite extends Fragment {
 
@@ -65,10 +80,12 @@ public class Fragment_ChatWrite extends Fragment {
     TextView tv_user_name;
 
     @BindView(R.id.tv_comments_count)
-    TextView tv_comments_count;
+    public TextView tv_comments_count;
+    @BindView(R.id.tvSend)
+    TextView tvSend;
 
     @BindView(R.id.img_clicked_post_user)
-    ImageView img_clicked_post_user;
+    CircleImageView img_clicked_post_user;
 
     @BindView(R.id.rv_chat_write)
     RecyclerView rv_chat_write;
@@ -76,7 +93,7 @@ public class Fragment_ChatWrite extends Fragment {
     GetCommentPost getCommentPost;
     PostDetailModel postDetailModel;
     GetAllPost_Data commentDetailModel;
-    String post_id;
+    String post_id, title, description, image, date, price, likeCount, commentCount, user_id;
     Chat_Write_Adapter chat_write_adapter;
     List<CommentDetail> commentDetailList = new ArrayList<>();
 
@@ -86,24 +103,42 @@ public class Fragment_ChatWrite extends Fragment {
     ImageView imgBack;
     @BindView(R.id.home_tabs)
     LinearLayout homeTabs;
+    Dialog mDialog;
+    Animation clickAnimation;
+    GetAllPost_Data getAllPost_data;
+    Boolean is_like = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.chat_write_layout, container, false);
 
-
-
         ButterKnife.bind(this, view);
-        ((MainActivity) getActivity()).getBottomSelectedTabs(0);
-
+        UsefullData.setLocale(getActivity());
+        mDialog = UsefullData.getProgressDialog(getActivity());
+        clickAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.grow);
+        ((MainActivity) getActivity()).getBottomSelectedTabs(2);
+        ((MainActivity) getActivity()).btnBooking.setVisibility(View.GONE);
         commonData = new CommonData(getActivity());
         MainActivity.homeTabsLL.setVisibility(View.GONE);
         Bundle extras = getArguments();
 
+
         if (extras != null) {
             post_id = extras.getString("post_id");
+            title = extras.getString("title");
+            description = extras.getString("description");
+            date = extras.getString("date");
+            price = extras.getString("price");
+            image = extras.getString("image");
+            likeCount = extras.getString("like_count");
+            commentCount = extras.getString("comment_count");
+            is_like = extras.getBoolean("is_like");
+            user_id = extras.getString("user_id");
         }
+
+
+        setPostData();
 
        /* Fragment myFragment = new Fragment_ChatWrite();
         FragmentManager fragmentManager = getActivity().getFragmentManager();
@@ -116,6 +151,15 @@ public class Fragment_ChatWrite extends Fragment {
         rv_chat_write.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         getPostComment();
+
+
+        img_clicked_post_user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jumpToOtherPragment(user_id);
+            }
+        });
+
 
         edt_comment_write.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -136,33 +180,65 @@ public class Fragment_ChatWrite extends Fragment {
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                v.startAnimation(clickAnimation);
                 getActivity().onBackPressed();
 
 
+            }
+        });
+        tvSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.startAnimation(clickAnimation);
+                if (commonData.getString(USER_ID) != null && !commonData.getString(USER_ID).equals("")) {
+                    if (edt_comment_write.getText().toString().isEmpty()) {
+                        Toast.makeText(getActivity(), "Please write a comment", Toast.LENGTH_SHORT).show();
+                    } else {
+                        comment_post();
+                    }
+                } else {
+                    utils.showRegisterDialog(getActivity());
+                }
             }
         });
 
         return view;
     }
 
-    public void setPostData() {
+    void jumpToOtherPragment(String user_id) {
+        Fragment myFragment = new OtherUserFragment();
+        FragmentManager fragmentManager = getActivity().getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id); //key and value
 
-        try {
-            if (commentDetailModel.getUserImage() != null)
-                Picasso.with(getActivity()).load(commentDetailModel.getUserImage()).into(img_clicked_post_user);
-        } catch (Exception e) {
-            e.printStackTrace();
+        myFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.frameLayout, myFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+    private void decodeBase64AndSetImage(String completeImageData, CircleImageView imageView) {
+
+        if (completeImageData != null) {
+            Uri imageUri = Uri.parse(completeImageData);
+            imageView.setImageURI(imageUri);
         }
 
-        tv_user_name.setText(commentDetailModel.getTitle());
-        tv_comment.setText(commentDetailModel.getTodaysTweets());
-        tv_expenditure.setText(commentDetailModel.getExpenditure());
-        tv_clicked_post_date.setText(commentDetailModel.getDate());
-        tv_clicked_total_like.setText(commentDetailModel.getLikes_count());
-        tv_comments_count.setText(commentDetailModel.getComments_count());
+    }
 
-        if (commentDetailModel.getIs_like()) {
+
+    public void setPostData() {
+
+        decodeBase64AndSetImage(image, img_clicked_post_user);
+
+        tv_user_name.setText(title);
+        tv_comment.setText(description);
+        tv_expenditure.setText(price);
+        tv_clicked_post_date.setText(date);
+        tv_clicked_total_like.setText(likeCount);
+        tv_comments_count.setText(commentCount);
+
+        if (is_like) {
             iv_post_like.setImageResource(R.mipmap.heart);
         } else {
             iv_post_like.setImageResource(R.mipmap.heart_unselect);
@@ -171,25 +247,28 @@ public class Fragment_ChatWrite extends Fragment {
 
     public void comment_post() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        /*final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
         progressDialog.show();
-
+*/
+        mDialog.show();
         Comment_Request_Model comment_request_model = new Comment_Request_Model();
         comment_request_model.setComment(edt_comment_write.getText().toString().trim());
-        comment_request_model.setPost_id(commentDetailModel.getPostId());
+        comment_request_model.setPost_id(post_id);
 
         Call call = register_interfac.post_coment(commonData.getString(USER_ID), commonData.getString(TOKEN), comment_request_model);
+
+        Log.e("add comment api => ", call.request().toString());
 
         call.enqueue(new Callback() {
             @Override
             public void onResponse(Call call, Response response) {
 
-                Log.e("SeND_POST COMMENT >>>>", response.raw() + "");
+                Log.e("SEND_POST COMMENT >>>>", response.raw() + "");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    progressDialog.dismiss();
+                    mDialog.dismiss();
 
                     Log.e("comment ", new Gson().toJson(response.body()));
                     String resp = new Gson().toJson(response.body());
@@ -207,7 +286,7 @@ public class Fragment_ChatWrite extends Fragment {
 
             @Override
             public void onFailure(Call call, Throwable t) {
-                progressDialog.dismiss();
+                mDialog.dismiss();
                 Log.e("onFailure_getting >>>>", "" + t.getMessage());
             }
         });
@@ -218,10 +297,11 @@ public class Fragment_ChatWrite extends Fragment {
 
     public void getPostComment() {
 
-        final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+        /*final ProgressDialog progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCancelable(false); // set cancelable to false
         progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show();
+        progressDialog.show();*/
+        mDialog.show();
 
         Call call = register_interfac.getPostDetails(commonData.getString(USER_ID), commonData.getString(TOKEN), post_id);
         //Call call = register_interfac.getpost_coment(commonData.getString(USER_ID), commonData.getString(TOKEN), commentDetailModel.getPostId());
@@ -232,7 +312,7 @@ public class Fragment_ChatWrite extends Fragment {
                 Log.e("GET_POST COMMENT >>>>", response.raw() + "");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    progressDialog.dismiss();
+                    mDialog.dismiss();
 
                     Log.e("USER'S_COMMENT", new Gson().toJson(response.body()));
 
@@ -244,10 +324,9 @@ public class Fragment_ChatWrite extends Fragment {
 
                     commentDetailList = postDetailModel.getPost_comments();
                     commentDetailModel = postDetailModel.getPost();
+                    //setPostData();
 
-                    setPostData();
-
-                    chat_write_adapter = new Chat_Write_Adapter(getActivity(), commentDetailList);
+                    chat_write_adapter = new Chat_Write_Adapter(getActivity(), getActivity(), commentDetailList, tv_comments_count, tv_comments_count.getText().toString());
                     rv_chat_write.setAdapter(chat_write_adapter);
                     if (commentDetailList.size() > 0)
                         rv_chat_write.scrollToPosition(commentDetailList.size() - 1);
@@ -258,7 +337,7 @@ public class Fragment_ChatWrite extends Fragment {
 
             @Override
             public void onFailure(Call call, Throwable t) {
-
+                mDialog.dismiss();
 
             }
         });
@@ -306,10 +385,6 @@ public class Fragment_ChatWrite extends Fragment {
 
 
     }
-
-
-
-
 
 
 }

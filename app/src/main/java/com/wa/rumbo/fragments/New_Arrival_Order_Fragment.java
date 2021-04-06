@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.wa.rumbo.R;
 import com.wa.rumbo.adapters.NewArrivalAdapter;
+import com.wa.rumbo.common.UsefullData;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -34,11 +35,12 @@ public class New_Arrival_Order_Fragment extends Fragment {
 
         ButterKnife.bind(this, view);
 
+        UsefullData.setLocale(getActivity());
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_new_arrival.setLayoutManager(layoutManager);
 
-        newArrivalAdapter = new NewArrivalAdapter(getActivity(),newArrivalFragment.getAllPost_data);
+        newArrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(),newArrivalFragment.getAllPost_data);
         rv_new_arrival.setAdapter(newArrivalAdapter);
 
         return  view;

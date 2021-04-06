@@ -13,11 +13,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:padding="4dp"
         android:src="@mipmap/downarrow"
         android:layout_margin="5dp"/>
     <TextView
         android:id="@+id/tv_bullet_board"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/bulletin_board_list"
         android:layout_gravity="center"
@@ -32,13 +33,11 @@
 
     <TextView
         android:id="@+id/tv_new_arrival_order"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:text="@string/new_arrival_order"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-
-
+        android:layout_marginTop="15dp"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"
         android:paddingTop="5dp"
@@ -47,10 +46,10 @@
 
     <TextView
         android:id="@+id/tv_popularity_order"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:text="@string/popularity_order"
         android:paddingRight="10dp"
         android:paddingLeft="10dp"

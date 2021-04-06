@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/white">
 
     <android.support.v7.widget.RecyclerView
@@ -11,5 +12,14 @@
 
 
     </android.support.v7.widget.RecyclerView>
-
+<TextView
+    android:id="@+id/tvNoDataFound"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone"
+    android:textColor="@color/black"
+    android:textSize="15dp"
+    android:text="@string/no_data_found"
+    android:layout_gravity="center"
+    android:gravity="center"/>
 </LinearLayout>

@@ -17,6 +17,8 @@ public class Community_Model {
         this.com_image = com_image;
     }
 
+
+
     public String getCom_title() {
         return com_title;
     }
@@ -32,7 +34,6 @@ public class Community_Model {
     public void setCom_comment(String com_comment) {
         this.com_comment = com_comment;
     }
-
     public String getCom_comnumber() {
         return com_comnumber;
     }

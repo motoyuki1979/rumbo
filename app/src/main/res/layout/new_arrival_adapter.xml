@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/tools">
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/calendar_card_view"
@@ -21,14 +22,16 @@
                 android:layout_width="70sp"
                 android:layout_height="70sp"
                 android:layout_margin="5sp"
-                android:src="@mipmap/image_dummy" />
+                android:src="@drawable/image_dummy" />
 
             <TextView
                 android:id="@+id/arrival_adptr_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12sp"
+                android:textColor="@color/tab_text_color"
                 android:layout_toRightOf="@+id/arrival_adptr_img"
+                android:layout_toLeftOf="@+id/ivDining"
                 android:text="@string/username" />
 
             <TextView
@@ -46,6 +49,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20sp"
                 android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/tab_text_color"
                 android:text="@string/expenditure" />
 
             <TextView
@@ -58,12 +63,13 @@
                 android:layout_marginRight="20sp"
                 android:gravity="center"
                 android:text="1,000円"
-                android:textColor="@color/price_txt_color"
+                android:textColor="@color/tab_text_color"
                 android:textStyle="bold" />
 
             <ImageView
-                android:layout_width="30sp"
-                android:layout_height="30sp"
+                android:id="@+id/ivDining"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_marginTop="12sp"
                 android:layout_toLeftOf="@+id/arrival_adptr_price_val"
                 android:layout_toRightOf="@+id/arrival_adptr_date"
@@ -96,7 +102,7 @@
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
-                android:background="@mipmap/heart" />
+                android:background="@mipmap/heart_blue" />
 
             <TextView
                 android:id="@+id/arrival_adapter_like_val"
@@ -106,6 +112,7 @@
                 android:layout_marginLeft="6sp"
                 android:layout_marginTop="6sp"
                 android:layout_marginBottom="4sp"
+                android:textColor="@color/colorGrey"
                 android:layout_toRightOf="@+id/arrival_adapter_like"
                 android:text="3" />
 
@@ -127,6 +134,7 @@
                 android:layout_below="@+id/arrival_adapter_view"
                 android:layout_marginLeft="6sp"
                 android:layout_marginTop="6sp"
+                android:textColor="@color/colorGrey"
                 android:layout_marginBottom="4sp"
                 android:layout_toRightOf="@+id/arrival_adapter_comment"
                 android:text="2" />
@@ -143,8 +151,8 @@
 
             <ImageView
                 android:id="@+id/arrival_adapter_big_heart"
-                android:layout_width="65sp"
-                android:layout_height="65sp"
+                android:layout_width="50sp"
+                android:layout_height="50sp"
                 android:layout_below="@+id/arrival_adptr_comment_txt"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20sp"

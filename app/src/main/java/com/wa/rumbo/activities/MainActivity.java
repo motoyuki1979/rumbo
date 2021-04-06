@@ -5,25 +5,35 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.wa.rumbo.R;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.fragments.BookingFragment;
 import com.wa.rumbo.fragments.CommunityFragment;
 import com.wa.rumbo.fragments.FollowingFragment;
 import com.wa.rumbo.fragments.Fragment_3Notice;
 import com.wa.rumbo.fragments.Fragment_other;
+import com.wa.rumbo.fragments.MyPostsFragment;
 import com.wa.rumbo.fragments.NewArrivalFragment;
 import com.wa.rumbo.model.Register_Model;
+
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +45,8 @@ public class MainActivity extends Activity {
     Register_Model register_model;
     Context context;
 
+    @BindView(R.id.btn_booking)
+    public FloatingActionButton btnBooking;
     @BindView(R.id.notifications)
     TextView notificationTab;
     @BindView(R.id.new_arrival)
@@ -70,7 +82,7 @@ public class MainActivity extends Activity {
 
     @BindView(R.id.adView)
     AdView mAdView;
-
+    Animation clickAnimation;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -81,7 +93,9 @@ public class MainActivity extends Activity {
         homeTabsLL = (LinearLayout) findViewById(R.id.home_tabs);
         ButterKnife.bind(this);
 
-        Fragment fragment = new CommunityFragment();
+        UsefullData.setLocale(MainActivity.this);
+        clickAnimation = AnimationUtils.loadAnimation(this, R.anim.grow);
+        Fragment fragment = new NewArrivalFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment);
@@ -111,25 +125,26 @@ public class MainActivity extends Activity {
 
             @Override
             public void onAdOpened() {
+
                 // Code to be executed when an ad opens an overlay that
                 // covers the screen.
             }
-
             @Override
             public void onAdLeftApplication() {
+
                 // Code to be executed when the user has left the app.
             }
 
             @Override
             public void onAdClosed() {
+
                 // Code to be executed when the user is about to return
                 // to the app after tapping on an ad.
             }
         });
 
-        //register_user();
-
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -149,6 +164,7 @@ public class MainActivity extends Activity {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @OnClick(R.id.notifications)
     public void setNotificationTab() {
+
         notificationTab.setTextColor(getResources().getColor(R.color.white));
         notificationTab.setBackground(getResources().getDrawable(R.drawable.tab_select_bg));
         newArrivalTab.setTextColor(getResources().getColor(R.color.tab_text_color));
@@ -156,23 +172,24 @@ public class MainActivity extends Activity {
         followTab.setTextColor(getResources().getColor(R.color.tab_text_color));
         followTab.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
 
-        Fragment fragment = new Fragment_3Notice();
+        Fragment fragment = new MyPostsFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         ft.commit();
-
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @OnClick(R.id.new_arrival)
     public void setNewArrivalTab() {
+
         Fragment fragment = new NewArrivalFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         ft.commit();
+
 
 
         newArrivalTab.setTextColor(getResources().getColor(R.color.white));
@@ -188,6 +205,7 @@ public class MainActivity extends Activity {
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @OnClick(R.id.followings)
     public void setFollowTab() {
+
         Fragment fragment = new FollowingFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -204,10 +222,9 @@ public class MainActivity extends Activity {
         newArrivalTab.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+
     @OnClick(R.id.home_timeline_LL)
     public void setTimeline_RL() {
-
 
         newArrivalTab.setTextColor(getResources().getColor(R.color.white));
         newArrivalTab.setBackground(getResources().getDrawable(R.drawable.tab_select_bg));
@@ -218,62 +235,91 @@ public class MainActivity extends Activity {
         followTab.setTextColor(getResources().getColor(R.color.tab_text_color));
         followTab.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
 
-
         Fragment fragment = new NewArrivalFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         //clearStack();
         ft.commit();
-       // fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        // fm.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
-        timeline_TV.setTextColor(getResources().getColor(R.color.white));
-        timeline_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
+        timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
-        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
-        community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+        community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
-        booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        booking_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
-        my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
     @OnClick(R.id.home_community_LL)
     public void setCommunity_RL() {
+
         Fragment fragment = new CommunityFragment();//new CommunityFragment();
         // Fragment fragment = new Calendar_Fragment();
+        Bundle args = new Bundle();
+        args.putString("isFromBottomTab", "true");
+        fragment.setArguments(args);
+
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         ft.commit();
         //  fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-
-        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
-        timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+        timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
-        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_grey));
-        community_TV.setTextColor(getResources().getColor(R.color.white));
-        community_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
+        community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
+        booking_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+        booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
+        my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+        mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+    }
+
+    @OnClick(R.id.home_booking_LL)
+    public void setBooking_RL() {
+        Fragment fragment = new NewArrivalFragment();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
+        //clearStack();
+        ft.commit();
+
+        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+        timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+        timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+        community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+        community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill_selected));
         booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
         booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
-        my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
     @OnClick(R.id.btn_booking)
-    public void setBooking_RL() {
+    public void setBooking_BTN() {
         Fragment fragment = new BookingFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -281,49 +327,48 @@ public class MainActivity extends Activity {
         //clearStack();
         ft.commit();
 
-        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
-        timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+        timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
-        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
-        community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+        community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill_selected));
-        booking_TV.setTextColor(getResources().getColor(R.color.white));
-        booking_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+        booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
-        my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
     @OnClick(R.id.home_mypage_LL)
     public void setMypage_RL() {
-
         Fragment fragment = new Fragment_other();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
-       // clearStack();
+        // clearStack();
         ft.commit();
 
-        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
-        timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+        timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
 
-        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
-        community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+        community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
-        booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        booking_TV.setTextColor(getResources().getColor(R.color.colorGrey));
         booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user_selected));
-        my_page_TV.setTextColor(getResources().getColor(R.color.white));
-        mypage_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+        my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+        mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
     }
 
 
@@ -341,12 +386,11 @@ public class MainActivity extends Activity {
 
     }
 
-
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     public void getSelectedTab(int type) {
 
-
         if (type == 0) {
+
             notificationTab.setTextColor(getResources().getColor(R.color.white));
             notificationTab.setBackground(getResources().getDrawable(R.drawable.tab_select_bg));
             newArrivalTab.setTextColor(getResources().getColor(R.color.tab_text_color));
@@ -354,8 +398,8 @@ public class MainActivity extends Activity {
             followTab.setTextColor(getResources().getColor(R.color.tab_text_color));
             followTab.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
 
-
         } else if (type == 1) {
+
             newArrivalTab.setTextColor(getResources().getColor(R.color.white));
             newArrivalTab.setBackground(getResources().getDrawable(R.drawable.tab_select_bg));
 
@@ -364,6 +408,7 @@ public class MainActivity extends Activity {
 
             followTab.setTextColor(getResources().getColor(R.color.tab_text_color));
             followTab.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
+
         } else if (type == 2) {
             followTab.setTextColor(getResources().getColor(R.color.white));
             followTab.setBackground(getResources().getDrawable(R.drawable.tab_select_bg));
@@ -375,7 +420,6 @@ public class MainActivity extends Activity {
             newArrivalTab.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
         }
 
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -383,87 +427,86 @@ public class MainActivity extends Activity {
 
         if (type == 0) {
 
-            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
-            timeline_TV.setTextColor(getResources().getColor(R.color.white));
-            timeline_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
+            timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
-            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
-            community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+            community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
-            booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            booking_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
-            my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         } else if (type == 1) {
-            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
-            timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+
+            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+            timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
-            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_grey));
-            community_TV.setTextColor(getResources().getColor(R.color.white));
-            community_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
+            community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
-            booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            booking_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
-            my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         } else if (type == 2) {
-            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
-            timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+
+            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+            timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
-            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
-            community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+            community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
             community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
             booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill_selected));
-            booking_TV.setTextColor(getResources().getColor(R.color.white));
-            booking_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
-
-            my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
-            my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
-            mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-
-        } else if (type == 3) {
-            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_color));
-            timeline_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
-            timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-
-
-            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_repaly));
-            community_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
-            community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
-
-            booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
             booking_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
             booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
+            my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user));
+            my_page_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+            mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+        } else if (type == 3) {
+
+            timeline_IV.setImageDrawable(getResources().getDrawable(R.mipmap.star_grey));
+            timeline_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+            timeline_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+            community_IV.setImageDrawable(getResources().getDrawable(R.mipmap.comment_unselected));
+            community_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+            community_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
+            booking_IV.setImageDrawable(getResources().getDrawable(R.mipmap.quill));
+            booking_TV.setTextColor(getResources().getColor(R.color.colorGrey));
+            booking_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
+
             my_page_IV.setImageDrawable(getResources().getDrawable(R.mipmap.user_selected));
-            my_page_TV.setTextColor(getResources().getColor(R.color.white));
-            mypage_RL.setBackgroundColor(getResources().getColor(R.color.home_bg));
+            my_page_TV.setTextColor(getResources().getColor(R.color.tab_text_color));
+            mypage_RL.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
 
         }
-
     }
 
     public void clearStack() {
-        //Here we are clearing back stack fragment entries
+
         int backStackEntry = getFragmentManager().getBackStackEntryCount();
         if (backStackEntry > 0) {
             for (int i = 0; i < backStackEntry; i++) {
                 getFragmentManager().popBackStackImmediate();
             }
         }
-
-
     }
 }
