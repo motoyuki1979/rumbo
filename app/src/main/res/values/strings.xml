@@ -97,7 +97,7 @@
     <string name="chat">Chat</string>
     <string name="household_diagnosis">House hold account review</string>
     <string name="username">Username</string>
-    <string name="profile_text">I recently had a child. I live with my wife and children. Thank you. I like entanglement so please talk to me.</string>
+    <string name="profile_text">No profile indormation is added yet.</string>
     <string name="total_income">Income</string>
     <string name="total_expence">Expence</string>
     <string name="net">Total</string>
@@ -144,6 +144,7 @@
     <string name="hello_world">Hello World!</string>
     <string name="no_profile_yet">No profile yet</string>
     <string name="thousand_yen">1000 円</string>
+    <string name="yen">円</string>
     <string name="no_data_found">No data found!</string>
     <string name="register_and_try_community_hosekeep_booking">Register and try community housekeep booking</string>
     <string name="enter_your_nick_name">Enter your nick name</string>

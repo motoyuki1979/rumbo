@@ -36,6 +36,7 @@
             android:layout_gravity="center"
             android:layout_weight=".33"
             android:padding="8sp"
+            android:gravity="center"
             android:text="Username"
             android:layout_centerVertical="true"
             android:layout_centerInParent="true"

@@ -140,13 +140,14 @@ public class SplashActivity extends AppCompatActivity implements ConstantValue {
                 }
         }
     }
-                    private void waitThread() {
+
+    private void waitThread() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
 
                 if (commonData.isExist(USER_ID)) {
-                    Intent i = new Intent( SplashActivity.this, MainActivity.class);
+                    Intent i = new Intent(SplashActivity.this, MainActivity.class);
                     i.addFlags(Intent.FLAG_ACTIVITY_LAUNCH_ADJACENT |
                             Intent.FLAG_ACTIVITY_MULTIPLE_TASK |
                             Intent.FLAG_ACTIVITY_NEW_TASK);

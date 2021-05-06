@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.wa.rumbo.R;
@@ -67,7 +68,8 @@ public class NewArrivalFragment extends Fragment {
 
         //  ((MainActivity) getActivity()).getBottomSelectedTabs(0);
 
-//getBottomSelectedTabs(int type)
+        //getBottomSelectedTabs(int type)
+
         commonData = new CommonData(getActivity());
         mDialog = UsefullData.getProgressDialog(getActivity());
 
@@ -88,11 +90,6 @@ public class NewArrivalFragment extends Fragment {
 
     public void getAllPostsAPI() {
 
-        /*final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setCancelable(false); // set cancelable to false
-        progressDialog.setMessage("Please Wait"); // set message
-        progressDialog.show();*/
-
         mDialog.show();
 
         Log.e("url123", register_interfac.toString());
@@ -105,12 +102,13 @@ public class NewArrivalFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) {
 
-                Log.e("new arrival resp == ", response.raw() + "");
+                Log.e("new arrival resp ==> ", response.raw() + "");
 
                 if (response.isSuccessful() && response.body() != null) {
                     mDialog.dismiss();
 
                     Log.e("Success_post", new Gson().toJson(response.body()));
+
                     String resp = new Gson().toJson(response.body());
 
                     getAllPosts = new Gson().fromJson(resp, GetAllPost.class);
@@ -125,13 +123,11 @@ public class NewArrivalFragment extends Fragment {
             @Override
             public void onFailure(Call call, Throwable t) {
                 mDialog.dismiss();
-                Log.e("onFailure >>>>", "" + t.getMessage());
+                Log.e("onFailure >>>> ", "" + t.getMessage());
 
             }
         });
     }
-
-
 }
 
 

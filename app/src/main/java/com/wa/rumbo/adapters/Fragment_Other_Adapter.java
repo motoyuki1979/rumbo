@@ -1,13 +1,16 @@
 package com.wa.rumbo.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.wa.rumbo.R;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.model.GetCalenderBookingModel;
 
 import java.util.ArrayList;
@@ -15,9 +18,11 @@ import java.util.ArrayList;
 public class Fragment_Other_Adapter extends RecyclerView.Adapter<Fragment_Other_Adapter.MyViewHolder> {
 
     Context context;
+    Activity mActivity;
     ArrayList<GetCalenderBookingModel.Object> mFilterList;
-    public Fragment_Other_Adapter(Context context,ArrayList<GetCalenderBookingModel.Object> mFilterList) {
+    public Fragment_Other_Adapter(Context context,Activity mActivity, ArrayList<GetCalenderBookingModel.Object> mFilterList) {
         this.context = context;
+        this.mActivity = mActivity;
         this.mFilterList = mFilterList;
     }
 
@@ -29,7 +34,7 @@ public class Fragment_Other_Adapter extends RecyclerView.Adapter<Fragment_Other_
 
     public void onBindViewHolder( MyViewHolder myViewHolder, int position) {
         myViewHolder.tvCategory.setText(mFilterList.get(position).getCategoryTitle());
-        myViewHolder.tvPrice.setText(mFilterList.get(position).getAmount());
+        myViewHolder.tvPrice.setText(UsefullData.getCommaPrice(mActivity ,mFilterList.get(position).getAmount()));
 
     }
 

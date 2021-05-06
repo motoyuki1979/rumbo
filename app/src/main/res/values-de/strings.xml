@@ -98,11 +98,12 @@
     <string name="username">もちりーな</string>
     <string name="amount">支出</string>
     <string name="category">カテゴリー</string>
-    <string name="profile_text">最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。</string>
+    <string name="profile_text">プロファイルの表示はまだ追加されていません。</string>
     <string name="price">価格</string>
     <string name="total_income">收入</string>
     <string name="total_expence">费用</string>
     <string name="net">总</string>
+    <string name="yen">円</string>
     <string name="profile">プロフィール</string>
     <string name="household_ac_book_release">家計簿公開</string>
     <string name="popup_notification">ポップアップ通知</string>

@@ -39,6 +39,7 @@ import com.wa.rumbo.model.CommentDetail;
 import com.wa.rumbo.model.Comment_Request_Model;
 import com.wa.rumbo.model.GetAllPost_Data;
 import com.wa.rumbo.model.GetCommentPost;
+import com.wa.rumbo.model.GetUserProfileModel;
 import com.wa.rumbo.model.PostDetailModel;
 import com.wa.rumbo.model.Status_Model;
 import com.wa.rumbo.utils;
@@ -156,7 +157,15 @@ public class Fragment_ChatWrite extends Fragment {
         img_clicked_post_user.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                jumpToOtherPragment(user_id);
+                if (commonData.getString(USER_ID).equalsIgnoreCase(user_id)) {
+                    Fragment myFragment = new Fragment_other();
+                    FragmentManager fragmentManager = getActivity().getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, myFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                } else { jumpToOtherPragment(user_id);}
             }
         });
 
@@ -229,11 +238,11 @@ public class Fragment_ChatWrite extends Fragment {
 
     public void setPostData() {
 
-        decodeBase64AndSetImage(image, img_clicked_post_user);
+        UsefullData.decodeBase64AndSetCircleImage(getActivity(),image, img_clicked_post_user);
 
         tv_user_name.setText(title);
         tv_comment.setText(description);
-        tv_expenditure.setText(price);
+        tv_expenditure.setText(UsefullData.getCommaPrice(getActivity(), price));
         tv_clicked_post_date.setText(date);
         tv_clicked_total_like.setText(likeCount);
         tv_comments_count.setText(commentCount);

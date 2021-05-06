@@ -26,10 +26,14 @@ import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.common.CommonData;
 import com.wa.rumbo.common.UsefullData;
+import com.wa.rumbo.fragments.Fragment_3Notice_ViewBinding;
 import com.wa.rumbo.fragments.Fragment_ChatWrite;
+import com.wa.rumbo.fragments.Fragment_other;
+import com.wa.rumbo.fragments.OtherUserFragment;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.GetAllPost_Data;
 import com.wa.rumbo.model.Status_Model;
+import com.wa.rumbo.model.User;
 import com.wa.rumbo.utils;
 
 import java.util.List;
@@ -49,7 +53,7 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
 
     Context context;
     CommonData commonData;
-Activity mActivity;
+    Activity mActivity;
     List<GetAllPost_Data> getAllPost_dataList;
 
     Retrofit retrofit = RetrofitInstance.getClient();
@@ -81,8 +85,11 @@ Activity mActivity;
             Picasso.with(context).load(getAllPost_dataList.get(i).getUserImage()).placeholder(R.drawable.image_dummy).into(myView.arrival_adptr_img);
         }
         myView.arrival_adptr_name.setText(!getAllPost_dataList.get(i).getTitle().equals("") ? getAllPost_dataList.get(i).getTitle() : "Username");
+
+
+        myView.arrival_adptr_price_val.setText(UsefullData.getCommaPrice(mActivity ,getAllPost_dataList.get(i).getExpenditure()));
+
         myView.arrival_adptr_date.setText(!getAllPost_dataList.get(i).getDate().equals("") ? getAllPost_dataList.get(i).getDate() : "6-1-2016");
-        myView.arrival_adptr_price_val.setText(!getAllPost_dataList.get(i).getExpenditure().equals("") ? getAllPost_dataList.get(i).getExpenditure() : "434");
         myView.arrival_adptr_comment_txt.setText(getAllPost_dataList.get(i).getTodaysTweets());
         myView.arrival_adapter_like_val.setText(getAllPost_dataList.get(i).getLikes_count());
         myView.arrival_adapter_comment_val.setText(getAllPost_dataList.get(i).getComments_count());
@@ -94,7 +101,7 @@ Activity mActivity;
             myView.arrival_adapter_big_heart.setImageResource(R.mipmap.heart_unselect);
         }
 
-        if (getAllPost_dataList.get(i).getCategoryImage() != null && !getAllPost_dataList.get(i).getCategoryImage().equalsIgnoreCase("")){
+        if (getAllPost_dataList.get(i).getCategoryImage() != null && !getAllPost_dataList.get(i).getCategoryImage().equalsIgnoreCase("")) {
             UsefullData.decodeBase64AndSetImage(getAllPost_dataList.get(i).getCategoryImage(), myView.ivDining);
         }
 
@@ -107,7 +114,7 @@ Activity mActivity;
                 FragmentManager fragmentManager = activity.getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
-               // bundle.putString("data", new Gson().toJson(getAllPost_dataList.get(i))); //key and value
+                // bundle.putString("data", new Gson().toJson(getAllPost_dataList.get(i))); //key and value
                 bundle.putString("post_id", getAllPost_dataList.get(i).getPostId()); //key and value
                 bundle.putString("title", getAllPost_dataList.get(i).getTitle()); //key and value
                 bundle.putString("description", getAllPost_dataList.get(i).getTodaysTweets()); //key and value
@@ -126,7 +133,24 @@ Activity mActivity;
 
             }
         });
+        myView.arrival_adptr_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                if (commonData.getString(USER_ID).equalsIgnoreCase(getAllPost_dataList.get(i).getUserId())) {
+                    Fragment myFragment = new Fragment_other();
+                    FragmentManager fragmentManager = mActivity.getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, myFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                } else {
+                    jumpToOtherPragment(getAllPost_dataList.get(i).getUserId());
+                }
+
+            }
+        });
 
         myView.arrival_adapter_big_heart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +190,7 @@ Activity mActivity;
                             mDialog.dismiss();
                         }
                     });
-                }else {
+                } else {
                     utils.showRegisterDialog(mActivity);
                 }
 
@@ -180,6 +204,19 @@ Activity mActivity;
         return getAllPost_dataList.size();
     }
 
+    void jumpToOtherPragment(String user_id) {
+        Fragment myFragment = new OtherUserFragment();
+        FragmentManager fragmentManager = mActivity.getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        Bundle bundle = new Bundle();
+        bundle.putString("user_id", user_id); //key and value
+
+        myFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.frameLayout, myFragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+    }
+
     public class MyView extends RecyclerView.ViewHolder {
 
         //liked_big_heart
@@ -190,7 +227,7 @@ Activity mActivity;
         @BindView(R.id.arrival_adapter_big_heart)
         ImageView arrival_adapter_big_heart;
 
-       @BindView(R.id.ivDining)
+        @BindView(R.id.ivDining)
         ImageView ivDining;
 
         @BindView(R.id.arrival_adptr_img)

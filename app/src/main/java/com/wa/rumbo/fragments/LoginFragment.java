@@ -141,7 +141,7 @@ public class LoginFragment extends Fragment {
 
                     commonData.save("id_device", register_model_request.getDevice_id());
 
-                    Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Login Successfully", Toast.LENGTH_SHORT).show();
                     Log.e("Success", new Gson().toJson(response.body()));
                     //convert & save to string
                     String resp = new Gson().toJson(response.body());
@@ -157,7 +157,7 @@ public class LoginFragment extends Fragment {
                     Log.e("userr ", commonData.getString(ConstantValue.USER_ID));
 
 
-                    ((MainActivity) getActivity()).getFragmentManager().beginTransaction().replace(R.id.frameLayout, new CommunityFragment()).commit();
+                    ((MainActivity) getActivity()).getFragmentManager().beginTransaction().replace(R.id.frameLayout, new NewArrivalFragment()).commit();
 
                 }
 

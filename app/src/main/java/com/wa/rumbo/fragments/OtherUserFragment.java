@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
+import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.GetComunityCommentsAdapter;
 import com.wa.rumbo.adapters.OtherProfilePostAdapter;
 import com.wa.rumbo.callbacks.DefaultCallback;
@@ -70,6 +71,8 @@ public class OtherUserFragment extends Fragment {
         View view = inflater.inflate(R.layout.other_user_fragment, container, false);
 
         ButterKnife.bind(this, view);
+        MainActivity.homeTabsLL.setVisibility(View.GONE);
+
         UsefullData.setLocale(getActivity());
         Bundle extras = getArguments();
         commonData = new CommonData(getActivity());
@@ -102,7 +105,6 @@ public class OtherUserFragment extends Fragment {
                 }
 
 
-
             }
 
             @Override
@@ -114,13 +116,21 @@ public class OtherUserFragment extends Fragment {
             }
         });
 
-        new Api(getActivity()).getUserProfile(user_id,false, new GetUserProfileCallback() {
+        new Api(getActivity()).getUserProfile(user_id, false, new GetUserProfileCallback() {
             @Override
             public void onResponse(GetUserProfileModel model) {
-                tvUsername.setText(model.getUserDetails().get(0).getUserName());
-                tvInfo.setText(model.getUserDetails().get(0).getIntroduction());
-                if (model.getUserDetails().get(0).getImage() != null)
-                    decodeBase64AndSetImage(model.getUserDetails().get(0).getImage(), ivProfile);
+                if (!model.getUserDetails().get(0).getUserName().equalsIgnoreCase("")) {
+                    tvUsername.setText(model.getUserDetails().get(0).getUserName());
+                } else {
+                    tvUsername.setText(getActivity().getResources().getString(R.string.username));
+                }
+             if (!model.getUserDetails().get(0).getIntroduction().equalsIgnoreCase("")) {
+                 tvInfo.setText(model.getUserDetails().get(0).getIntroduction());
+                } else {
+                 tvInfo.setText(getActivity().getResources().getString(R.string.profile_text));
+                }
+
+                UsefullData.decodeBase64AndSetCircleImage(getActivity() ,model.getUserDetails().get(0).getImage(), ivProfile);
 
 
                 new Api(getActivity()).getUserPostApi(user_id, new GetUserPostCallback() {
@@ -155,7 +165,6 @@ public class OtherUserFragment extends Fragment {
                 });
 
 
-
             }
         });
 
@@ -172,7 +181,7 @@ public class OtherUserFragment extends Fragment {
         tvFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(tvFollow.getText().toString().equalsIgnoreCase(getActivity().getResources().getString(R.string.following))){
+                if (tvFollow.getText().toString().equalsIgnoreCase(getActivity().getResources().getString(R.string.following))) {
                     new Api(getActivity()).deleteFollowUserApi(commonData.getString(USER_ID), user_id, new DefaultCallback() {
                         @Override
                         public void onResponse(Status_Model model) {
@@ -181,7 +190,7 @@ public class OtherUserFragment extends Fragment {
                             tvFollow.setBackground(getActivity().getResources().getDrawable(R.drawable.tab_select_bg));
                         }
                     });
-                }else {
+                } else {
                     new Api(getActivity()).followUserApi(commonData.getString(USER_ID), user_id, new DefaultCallback() {
                         @Override
                         public void onResponse(Status_Model model) {
@@ -197,12 +206,4 @@ public class OtherUserFragment extends Fragment {
         return view;
     }
 
-    private void decodeBase64AndSetImage(String completeImageData, CircleImageView imageView) {
-
-        if (completeImageData != null) {
-            Uri imageUri = Uri.parse(completeImageData);
-            imageView.setImageURI(imageUri);
-        }
-
-    }
 }

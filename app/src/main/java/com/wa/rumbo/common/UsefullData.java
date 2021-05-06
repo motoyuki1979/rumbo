@@ -12,12 +12,14 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
 import com.wa.rumbo.R;
 
 import java.text.SimpleDateFormat;
@@ -118,6 +120,49 @@ public class UsefullData {
         }
     }
 
+    public static  String getCommaPrice(Activity mActivity, String price){
+        String dislayedPrice = "";
+
+        if (price.length() < 2) {
+            dislayedPrice = price;
+        } else if (price.length() == 3) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 1) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+            }
+        } else if (price.length() == 4) {
+            for (int j = 0; j < price.length(); j++) {
+
+                if (j == 1) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        } else if (price.length() == 5) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 2) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        }else if (price.length() == 5) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 1 || j == 3) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        }
+
+        Log.e("formatted date === >> ", dislayedPrice + "    ==+");
+        return  dislayedPrice + mActivity.getResources().getString(R.string.yen)  ;
+    }
+
     public static Dialog getProgressDialog(Context mActivity) {
         Dialog mDialog = new Dialog(mActivity);
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -144,11 +189,15 @@ public class UsefullData {
         return true;
     }
 
-    public static void decodeBase64AndSetCircleImage(String completeImageData, CircleImageView imageView) {
+    public static void decodeBase64AndSetCircleImage(Activity mActivity, String completeImageData, CircleImageView imageView) {
 
         if (completeImageData != null) {
             Uri imageUri = Uri.parse(completeImageData);
-            imageView.setImageURI(imageUri);
+            //imageView.setImageURI(imageUri);
+            Picasso.with(mActivity).load(completeImageData).placeholder(R.drawable.image_dummy).into(imageView);
+
+        }else{
+            imageView.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.image_dummy));
         }
 
     }

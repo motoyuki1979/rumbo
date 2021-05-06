@@ -181,18 +181,18 @@ public class Profile_and_Settings_Frag extends Fragment {
             @Override
             public void onClick(View v) {
                 v.startAnimation(clickAnimation);
-                if (etName.getText().toString().isEmpty()) {
+               /* if (etName.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.enter_your_nick_name), Toast.LENGTH_SHORT).show();
                 } else if (etIntroduction.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.enter_your_introduction), Toast.LENGTH_SHORT).show();
-                } else {
+                } else {*/
 
 
                     if (userProfileImage.equals("")) {
                         userProfileImage = userData.getImage();
                     }
                     new Api(getActivity()).updateUserProfile(etName.getText().toString(), userData.getEmail(), userData.getPassword(), etIntroduction.getText().toString(), userProfileImage);
-                }
+               // }
             }
         });
         tvChangeImage.setOnClickListener(new View.OnClickListener() {

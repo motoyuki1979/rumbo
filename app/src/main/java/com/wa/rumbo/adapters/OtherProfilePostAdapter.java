@@ -76,7 +76,7 @@ public class OtherProfilePostAdapter extends RecyclerView.Adapter<OtherProfilePo
     public void onBindViewHolder(@NonNull OtherProfilePostAdapter.ViewHolder viewHolder, int i) {
 
         if (mList.get(i).getUserImage() != null) {
-            decodeBase64AndSetImage(mList.get(i).getUserImage(), viewHolder.commentor_img);
+            UsefullData.decodeBase64AndSetCircleImage(mActivity,mList.get(i).getUserImage(), viewHolder.commentor_img);
         }
         if (!mList.get(i).getUserName().equalsIgnoreCase("")) {
             viewHolder.commentor_name.setText(mList.get(i).getUserName());

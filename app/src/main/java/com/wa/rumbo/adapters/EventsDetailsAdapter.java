@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wa.rumbo.R;
+import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.model.GetCalenderBookingModel;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class EventsDetailsAdapter extends RecyclerView.Adapter<EventsDetailsAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        viewHolder.tvItemAmount.setText(mList.get(i).getAmount());
+        viewHolder.tvItemAmount.setText(UsefullData.getCommaPrice(mActivity, mList.get(i).getAmount()));
         viewHolder.tvItemName.setText(mList.get(i).getCategoryTitle() + " . " + mList.get(i).getTitle());
         decodeBase64AndSetImage(mList.get(i).getCategoryImage(), viewHolder.ivEvent);
     }

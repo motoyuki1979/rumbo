@@ -65,7 +65,7 @@ public class CalendarFragment extends Fragment {
         ButterKnife.bind(this, view);
 
 
- calenderEvent = view.findViewById(R.id.calender_event);
+        calenderEvent = view.findViewById(R.id.calender_event);
 
 
         final Calendar calendar = Calendar.getInstance();
@@ -90,79 +90,97 @@ public class CalendarFragment extends Fragment {
                     } catch (Exception e) {
 
                     }
+                    monthlyList.clear();
 
                     for (int k = 0; k < model.getObject().size(); k++) {
                         if (model.getObject().get(k).getDate().equalsIgnoreCase(model.getObject().get(i).getDate())) {
                             monthlyList.add(model.getObject().get(k));
 
-                            displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
+                            if (model.getObject().get(k).getPost_category().equalsIgnoreCase("expence")) {
+                                displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
+                            } else {
+                                displayingAmount = displayingAmount - Integer.valueOf(model.getObject().get(k).getAmount());
+                            }
+
+                           // displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
                         }
                     }
-                    Event event = new Event(milliseconds, displayingAmount + "");
+                    if(String.valueOf(displayingAmount).contains("-")){
+                        displayingAmount = Integer.valueOf(String.valueOf(displayingAmount).replace("-",""));
+                    }
+                    Event event = new Event(milliseconds, UsefullData.getCommaPrice(getActivity(), displayingAmount + ""));
                     //  Event event = new Event(milliseconds, model.getObject().get(i).getAmount());
                     calenderEvent.addEvent(event);
                     displayingAmount = 0;
 
                 }
 
-                    if (monthlyList.size() > 0) {
-                        for (int j = 0; j < monthlyList.size(); j++) {
+                if (mList.size() > 0) {
+                    for (int j = 0; j < mList.size(); j++) {
 
-                            if (monthlyList.get(j).getPost_category().equalsIgnoreCase("expence")) {
-                                totalExpence = totalExpence + Integer.valueOf(monthlyList.get(j).getAmount());
-                            } else {
-                                totalIncome = totalIncome + Integer.valueOf(monthlyList.get(j).getAmount());
-                            }
-                            totalAmount = totalAmount + Integer.valueOf(monthlyList.get(j).getAmount());
+                        if (mList.get(j).getPost_category().equalsIgnoreCase("expence")) {
+                            totalExpence = totalExpence + Integer.valueOf(mList.get(j).getAmount());
+                        } else {
+                            totalIncome = totalIncome + Integer.valueOf(mList.get(j).getAmount());
                         }
+                        // totalAmount = totalAmount + Integer.valueOf(mList.get(j).getAmount());
+                    }
+                    totalAmount = totalIncome - totalExpence;
                 }
 
-                tvExpense.setText(totalExpence + "");
-                tvIncome.setText(totalIncome + "");
-                tvTotalAmount.setText(totalAmount + "");
+                tvExpense.setText(UsefullData.getCommaPrice(getActivity(),totalExpence + ""));
+                tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
+
+                if (String.valueOf(totalAmount).contains("-")) {
+                    totalAmount = Integer.valueOf(String.valueOf(totalAmount).replace("-", ""));
+                    tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.red_color));
+                } else {
+                    tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));
+                }
+                tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(),totalAmount + ""));
 
 
             }
 
-        @Override
-        public void onFailure () {
-            Log.e("Calender Booking api's respose =>  ", "Failure");
-        }
-    });
+            @Override
+            public void onFailure() {
+                Log.e("Calender Booking api's respose =>  ", "Failure");
+            }
+        });
 
         calenderEvent.initCalderItemClickCallback(new
 
-    CalenderDayClickListener() {
-        @Override
-        public void onGetDay (DayContainerModel dayContainerModel){
-            Log.e("123456", dayContainerModel.getDate());
+                                                          CalenderDayClickListener() {
+                                                              @Override
+                                                              public void onGetDay(DayContainerModel dayContainerModel) {
+                                                                  Log.e("123456", dayContainerModel.getDate());
 
-            //3 April 2021
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-            String date = formatter.format(Date.parse(dayContainerModel.getDate()));
-            mFilterList.clear();
+                                                                  //3 April 2021
+                                                                  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                                                                  String date = formatter.format(Date.parse(dayContainerModel.getDate()));
+                                                                  mFilterList.clear();
 
-            for (int i = 0; i < mList.size(); i++) {
-                if (mList.get(i).getDate().equalsIgnoreCase(date)) {
-                    mFilterList.add(mList.get(i));
-                }
-            }
+                                                                  for (int i = 0; i < mList.size(); i++) {
+                                                                      if (mList.get(i).getDate().equalsIgnoreCase(date)) {
+                                                                          mFilterList.add(mList.get(i));
+                                                                      }
+                                                                  }
 
-            Log.e("123456 new List", mFilterList.size() + "");
-            Log.e("123456 new ", date);
+                                                                  Log.e("123456 new List", mFilterList.size() + "");
+                                                                  Log.e("123456 new ", date);
 
-            EventsDetailsFragment fragment = new EventsDetailsFragment();
-            Bundle args = new Bundle();
+                                                                  EventsDetailsFragment fragment = new EventsDetailsFragment();
+                                                                  Bundle args = new Bundle();
 
-            args.putString("title", date);
-            args.putSerializable("data_list", mFilterList);
-            fragment.setArguments(args);
+                                                                  args.putString("title", date);
+                                                                  args.putSerializable("data_list", mFilterList);
+                                                                  fragment.setArguments(args);
 
-            getFragmentManager().beginTransaction().add(R.id.frameLayout, fragment).addToBackStack(null).commit();
+                                                                  getFragmentManager().beginTransaction().add(R.id.frameLayout, fragment).addToBackStack(null).commit();
 
-        }
-    });
+                                                              }
+                                                          });
 
         return view;
-}
+    }
 }

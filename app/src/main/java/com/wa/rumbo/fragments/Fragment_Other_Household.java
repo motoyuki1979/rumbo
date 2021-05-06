@@ -176,7 +176,7 @@ public class Fragment_Other_Household extends Fragment {
                 if (mFilterList.size() > 0) {
                     tvNoData.setVisibility(View.GONE);
                     rv1_itemname_other.setVisibility(View.VISIBLE);
-                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(), mFilterList);
+                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(),getActivity(), mFilterList);
                     rv1_itemname_other.setAdapter(fragment_other_adapter);
                     for (int j = 0; j < mFilterList.size(); j++) {
 
@@ -185,17 +185,25 @@ public class Fragment_Other_Household extends Fragment {
                         } else {
                             totalIncome = totalIncome + Integer.valueOf(mFilterList.get(j).getAmount());
                         }
-                        totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
+                       // totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
                     }
+                    totalAmount = totalIncome - totalExpence;
 
 
                 } else {
                     tvNoData.setVisibility(View.VISIBLE);
                     rv1_itemname_other.setVisibility(View.GONE);
                 }
-                tvExpense.setText(totalExpence + "");
-                tvIncome.setText(totalIncome + "");
-                tvTotalAmount.setText(totalAmount + "");
+                tvExpense.setText(UsefullData.getCommaPrice(getActivity(), totalExpence + ""));
+                tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
+
+                if(String.valueOf(totalAmount).contains("-")){
+                    totalAmount = Integer.valueOf(String.valueOf(totalAmount).replace("-","") );
+                    tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.red_color));
+                }else{
+                    tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));
+                }
+                tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(), totalAmount + ""));
             }
 
             @Override

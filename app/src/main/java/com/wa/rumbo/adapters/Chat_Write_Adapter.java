@@ -29,6 +29,7 @@ import com.wa.rumbo.callbacks.DeletePostCommentCallback;
 import com.wa.rumbo.common.CommonData;
 import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.fragments.Fragment_ChatWrite;
+import com.wa.rumbo.fragments.Fragment_other;
 import com.wa.rumbo.fragments.OtherUserFragment;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.CommentDetail;
@@ -84,7 +85,13 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
 
     @Override
     public void onBindViewHolder(final MyViewHolder myViewHolder, final int position) {
-        myViewHolder.commentor_name.setText(getCommentDetail.get(position).getUserName());
+        if(!getCommentDetail.get(position).getUserName().equalsIgnoreCase("")){
+            myViewHolder.commentor_name.setText(getCommentDetail.get(position).getUserName());
+
+        }else{
+            myViewHolder.commentor_name.setText(mActivity.getResources().getString(R.string.username));
+
+        }
         myViewHolder.commenting_date.setText(UsefullData.getDateTimeFromMills(getCommentDetail.get(position).getDate()));
         myViewHolder.total_comment_like.setText(getCommentDetail.get(position).getLikes());
         myViewHolder.user_comment.setText(getCommentDetail.get(position).getComment());
@@ -161,8 +168,17 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
             @Override
             public void onClick(View v) {
                 v.startAnimation(mClickEffect);
-                jumpToOtherPragment(getCommentDetail.get(position).getUserId());
-                // showBlockUserDialog(mActivity, getCommentDetail.get(position).getUserId());
+                if (commonData.getString(USER_ID).equalsIgnoreCase(getCommentDetail.get(position).getUserId())) {
+                    Fragment myFragment = new Fragment_other();
+                    FragmentManager fragmentManager = mActivity.getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, myFragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+
+                } else {
+                    jumpToOtherPragment(getCommentDetail.get(position).getUserId());
+                }     // showBlockUserDialog(mActivity, getCommentDetail.get(position).getUserId());
             }
         });
 

@@ -134,10 +134,8 @@ public interface Register_Interfac {
             @Header("authenticate") String authenticate, @Header("user_id") String user_id, @Query("follower_id") String follower_id);
 
     @POST("delete_follow")
-    Call<Status_Model> deleteFollow(
-            @Header("authenticate") String authenticate, @Header("user_id") String user_id, @Query("follower_id") String follower_id);
+    Call<Status_Model> deleteFollow(@Header("authenticate") String authenticate, @Header("user_id") String user_id, @Query("follower_id") String follower_id);
 
     @POST("get_calender_bookings")
-    Call<GetCalenderBookingModel> getCalenderBooking(
-            @Header("user_id") String user_id, @Header("authenticate") String authenticate);
+    Call<GetCalenderBookingModel> getCalenderBooking(@Header("user_id") String user_id, @Header("authenticate") String authenticate);
 }

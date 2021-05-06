@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
 
-    <com.wa.rumbo.custom_calendar.CalenderEvent
+    +++++<com.wa.rumbo.custom_calendar.CalenderEvent
         android:id="@+id/calender_event"
         android:layout_width="match_parent"
         app:selector_color="@color/tab_unselected"
