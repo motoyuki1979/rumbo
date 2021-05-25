@@ -135,7 +135,12 @@ Dialog mDialog;
                         Arrival_recyclerView.setVisibility(View.VISIBLE);
                         tvNoDataFound.setVisibility(View.GONE);
 
-                        arrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), getFollowsPost_data);
+                        arrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), getFollowsPost_data, new NewArrivalAdapter.OnBlockListner() {
+                            @Override
+                            public void onUserBlocked() {
+
+                            }
+                        });
                         Arrival_recyclerView.setAdapter(arrivalAdapter);
                     }else {
                         Arrival_recyclerView.setVisibility(View.GONE);

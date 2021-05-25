@@ -127,7 +127,12 @@ public class MyPostsFragment extends Fragment {
                     if (getMyPost_data.size() >0){
                         tvNoDataFound.setVisibility(View.GONE);
                         Arrival_recyclerView.setVisibility(View.VISIBLE);
-                        arrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(), getMyPost_data);
+                        arrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), getMyPost_data, new NewArrivalAdapter.OnBlockListner() {
+                            @Override
+                            public void onUserBlocked() {
+
+                            }
+                        });
                         Arrival_recyclerView.setAdapter(arrivalAdapter);
                     }else {
                         tvNoDataFound.setVisibility(View.VISIBLE);

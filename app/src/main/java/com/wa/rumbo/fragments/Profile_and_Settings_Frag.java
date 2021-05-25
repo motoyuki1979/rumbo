@@ -70,7 +70,6 @@ import static com.wa.rumbo.common.ConstantValue.USER_ID;
 
 public class Profile_and_Settings_Frag extends Fragment {
 
-
     @BindView(R.id.tv_resume_key)
     TextView tv_resume_key;
 
@@ -82,17 +81,23 @@ public class Profile_and_Settings_Frag extends Fragment {
 
     @BindView(R.id.tvEditEmail)
     TextView tvEditEmail;
+
     @BindView(R.id.tvChangeImage)
     TextView tvChangeImage;
+
     @BindView(R.id.tv_preservation)
     TextView tvSave;
     @BindView(R.id.edt_nick_name)
     EditText etName;
+
     @BindView(R.id.edt_self_intro_comment)
     EditText etIntroduction;
+
     @BindView(R.id.civ_user_profile_pic)
     CircleImageView ivProfile;
+
     String userProfileImage = "";
+
     @BindView(R.id.img_back)
     ImageView ivBack;
     private int PERMISSION_REQUEST_CODE = 101;
@@ -150,10 +155,8 @@ public class Profile_and_Settings_Frag extends Fragment {
                 v.startAnimation(clickAnimation);
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frameLayout, new Register_EmailAddress_Fragment(), "NewFragmentTag");
-
                 ft.addToBackStack(null);
                 ft.commit();
-
             }
         });
 
@@ -163,10 +166,8 @@ public class Profile_and_Settings_Frag extends Fragment {
                 v.startAnimation(clickAnimation);
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.frameLayout, new MyPageBlockList_Fragment(), "NewFragmentTag");
-
                 ft.addToBackStack(null);
                 ft.commit();
-
             }
         });
 
@@ -188,7 +189,7 @@ public class Profile_and_Settings_Frag extends Fragment {
                 } else {*/
 
 
-                    if (userProfileImage.equals("")) {
+                    if (!userProfileImage.isEmpty() && userProfileImage.equals("")) {
                         userProfileImage = userData.getImage();
                     }
                     new Api(getActivity()).updateUserProfile(etName.getText().toString(), userData.getEmail(), userData.getPassword(), etIntroduction.getText().toString(), userProfileImage);
@@ -213,7 +214,7 @@ public class Profile_and_Settings_Frag extends Fragment {
                 etName.setText(model.getUserDetails().get(0).getUserName());
                 etIntroduction.setText(model.getUserDetails().get(0).getIntroduction());
 
-                decodeBase64AndSetImage(model.getUserDetails().get(0).getImage(), ivProfile);
+                UsefullData.decodeBase64AndSetCircleImage(getActivity(), model.getUserDetails().get(0).getImage(), ivProfile);
 
                 userData = new GetUserProfileModel.UserDetails();
                 userData.setUserId(model.getUserDetails().get(0).getUserId());
@@ -320,11 +321,8 @@ public class Profile_and_Settings_Frag extends Fragment {
                                 return;
                             }
                         }
-
                     }
                 }
-
-
                 break;
         }
     }
@@ -417,5 +415,4 @@ public class Profile_and_Settings_Frag extends Fragment {
             }
         });
     }*/
-
 }

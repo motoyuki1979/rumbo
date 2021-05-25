@@ -145,6 +145,7 @@
     <string name="no_profile_yet">No profile yet</string>
     <string name="thousand_yen">1000 円</string>
     <string name="yen">円</string>
+    <string name="are_you_sure_to_delete_post">Are you sure to delete post</string>
     <string name="no_data_found">No data found!</string>
     <string name="register_and_try_community_hosekeep_booking">Register and try community housekeep booking</string>
     <string name="enter_your_nick_name">Enter your nick name</string>
@@ -159,6 +160,7 @@
     <string name="comment_like_successfully">Comment like successfully</string>
     <string name="comment_unlike_successfully">Comment unlike Successfully</string>
     <string name="comment_delete_successfully">Comment delete successfully</string>
+    <string name="post_delete_successfully">Post delete successfully</string>
     <string name="user_blocked_successfully">User blocked successfully</string>
     <string name="following">Following</string>
     <string name="user_added_successfully">User added successfully</string>

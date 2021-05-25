@@ -59,7 +59,12 @@ public class MYPost_Fragment extends Fragment {
         rv_mypost.setLayoutManager(layoutManager);
 
         if (newArrivalFragment.getAllPost_data != null) {
-            newArrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(), newArrivalFragment.getAllPost_data);
+            newArrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), newArrivalFragment.getAllPost_data, new NewArrivalAdapter.OnBlockListner() {
+                @Override
+                public void onUserBlocked() {
+
+                }
+            });
             rv_mypost.setAdapter(newArrivalAdapter);
         }
 

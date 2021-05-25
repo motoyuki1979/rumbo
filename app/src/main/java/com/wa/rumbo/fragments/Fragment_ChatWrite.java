@@ -28,16 +28,20 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.Chat_Write_Adapter;
+import com.wa.rumbo.callbacks.DeletePostCommentCallback;
+import com.wa.rumbo.callbacks.GetBlockedUserCallback;
 import com.wa.rumbo.common.CommonData;
 import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.CommentDetail;
 import com.wa.rumbo.model.Comment_Request_Model;
 import com.wa.rumbo.model.GetAllPost_Data;
+import com.wa.rumbo.model.GetBlockedListModel;
 import com.wa.rumbo.model.GetCommentPost;
 import com.wa.rumbo.model.GetUserProfileModel;
 import com.wa.rumbo.model.PostDetailModel;
@@ -56,6 +60,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.wa.rumbo.R.string.block_user;
 import static com.wa.rumbo.R.string.not_now;
 import static com.wa.rumbo.R.string.please_register_or_login_first;
 import static com.wa.rumbo.R.string.register;
@@ -94,7 +99,7 @@ public class Fragment_ChatWrite extends Fragment {
     GetCommentPost getCommentPost;
     PostDetailModel postDetailModel;
     GetAllPost_Data commentDetailModel;
-    String post_id, title, description, image, date, price, likeCount, commentCount, user_id;
+    String id, post_id, title, description,random_id, image, date, price, likeCount, commentCount, user_id;
     Chat_Write_Adapter chat_write_adapter;
     List<CommentDetail> commentDetailList = new ArrayList<>();
 
@@ -102,12 +107,15 @@ public class Fragment_ChatWrite extends Fragment {
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
     @BindView(R.id.img_back)
     ImageView imgBack;
+    @BindView(R.id.arrival_adapter_more)
+    ImageView ivMore;
     @BindView(R.id.home_tabs)
     LinearLayout homeTabs;
     Dialog mDialog;
     Animation clickAnimation;
     GetAllPost_Data getAllPost_data;
     Boolean is_like = false;
+    ArrayList<String> blockedUserList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -126,6 +134,7 @@ public class Fragment_ChatWrite extends Fragment {
 
 
         if (extras != null) {
+            id = extras.getString("id");
             post_id = extras.getString("post_id");
             title = extras.getString("title");
             description = extras.getString("description");
@@ -136,6 +145,7 @@ public class Fragment_ChatWrite extends Fragment {
             commentCount = extras.getString("comment_count");
             is_like = extras.getBoolean("is_like");
             user_id = extras.getString("user_id");
+            random_id = extras.getString("random_id");
         }
 
 
@@ -150,6 +160,7 @@ public class Fragment_ChatWrite extends Fragment {
 
 
         rv_chat_write.setLayoutManager(new LinearLayoutManager(getActivity()));
+        getBlockList();
 
         getPostComment();
 
@@ -211,7 +222,122 @@ public class Fragment_ChatWrite extends Fragment {
             }
         });
 
+        ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (user_id.equalsIgnoreCase(commonData.getString(USER_ID))) {
+                    showCustomDialog(getActivity(), 0,id, random_id);
+                } else {
+                    showBlockUserDialog(getActivity(), user_id);
+                }
+            }
+        });
+
         return view;
+    }
+
+    public void getBlockList() {
+        blockedUserList.clear();
+        new Api(getActivity()).geBlockedUserApi(getActivity(), new GetBlockedUserCallback() {
+            @Override
+            public void onSuccess(GetBlockedListModel model) {
+                for (int i = 0; i < model.getObject().size(); i++) {
+                    blockedUserList.add(model.getObject().get(i).getBlockedUserId());
+                }
+                getPostComment();
+
+            }
+
+            @Override
+            public void onFailure() {
+                getPostComment();
+
+            }
+        });
+    }
+
+    private void showCustomDialog(final Activity mActivity, final int position, final String id, final String randomId) {
+        final Dialog dialog = new Dialog(mActivity);
+        dialog.setContentView(R.layout.dialog_comment_delete);
+        dialog.getWindow().setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.dialog_bg));
+
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+        TextView tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvMessage.setText(mActivity.getResources().getString(R.string.are_you_sure_to_delete_post));
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
+
+        // if button is clicked, close the custom dialog
+        tvYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new Api(mActivity).deletePostApi(mActivity, id,randomId, new DeletePostCommentCallback() {
+                    @Override
+                    public void onResponse(Status_Model model) {
+                        dialog.dismiss();
+                        ((MainActivity)mActivity).onBackPressed();
+                        Toast.makeText(mActivity, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            }
+        });
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void showBlockUserDialog(final Activity mActivity, final String blockedUserId) {
+        final Dialog dialog = new Dialog(mActivity);
+        dialog.setContentView(R.layout.dialog_comment_delete);
+        dialog.getWindow().setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.dialog_bg));
+
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.tvMessage);
+        TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
+
+        tvMessage.setText(mActivity.getResources().getString(block_user));
+
+        // if button is clicked, close the custom dialog
+        tvYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Api(mActivity).blockUserApi(mActivity, blockedUserId);
+                dialog.dismiss();
+            }
+        });
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 
     void jumpToOtherPragment(String user_id) {
@@ -331,11 +457,21 @@ public class Fragment_ChatWrite extends Fragment {
                     //getCommentPost = new Gson().fromJson(resp, GetCommentPost.class);
                     postDetailModel = new Gson().fromJson(resp, PostDetailModel.class);
 
-                    commentDetailList = postDetailModel.getPost_comments();
+                  //  commentDetailList = postDetailModel.getPost_comments();
                     commentDetailModel = postDetailModel.getPost();
                     //setPostData();
 
-                    chat_write_adapter = new Chat_Write_Adapter(getActivity(), getActivity(), commentDetailList, tv_comments_count, tv_comments_count.getText().toString());
+                    for (int i = 0; i < postDetailModel.getPost_comments().size(); i++) {
+                        if (!blockedUserList.contains(postDetailModel.getPost_comments().get(i).getUserId())) {
+                            commentDetailList.add(postDetailModel.getPost_comments().get(i));
+                        }
+                    }
+                    chat_write_adapter = new Chat_Write_Adapter(getActivity(), getActivity(), commentDetailList, tv_comments_count, tv_comments_count.getText().toString(), new Chat_Write_Adapter.OnBlockListner() {
+                        @Override
+                        public void onUserBlocked() {
+                            getBlockList();
+                        }
+                    });
                     rv_chat_write.setAdapter(chat_write_adapter);
                     if (commentDetailList.size() > 0)
                         rv_chat_write.scrollToPosition(commentDetailList.size() - 1);

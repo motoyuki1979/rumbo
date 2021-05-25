@@ -32,6 +32,7 @@ import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.Register_Model;
 import com.wa.rumbo.model.Register_Model_Request;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -65,6 +66,8 @@ public class SplashActivity extends AppCompatActivity implements ConstantValue {
 //        deviceId();
 //        getDeviceId(context);
         //  languageSet();
+
+
 
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(SplashActivity.this,
                 new OnSuccessListener<InstanceIdResult>() {

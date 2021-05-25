@@ -10,6 +10,9 @@ public class GetAllPost_Data implements Serializable {
     @SerializedName("id")
     @Expose
     private String id;
+    @SerializedName("random_id")
+    @Expose
+    private String randomId;
     @SerializedName("user_id")
     @Expose
     private String userId;
@@ -56,6 +59,14 @@ public class GetAllPost_Data implements Serializable {
     @SerializedName("comments_count")
     @Expose
     private String comments_count;
+
+    public String getRandomId() {
+        return randomId;
+    }
+
+    public void setRandomId(String randomId) {
+        this.randomId = randomId;
+    }
 
     public String getCategoryImage() {
         return categoryImage;

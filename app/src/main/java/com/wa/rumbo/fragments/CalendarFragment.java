@@ -52,9 +52,9 @@ public class CalendarFragment extends Fragment {
     TextView tvIncome;
     @BindView(R.id.tvTotalAmount)
     TextView tvTotalAmount;
-    int totalAmount = 0;
-    int totalIncome = 0;
-    int totalExpence = 0;
+    Long totalAmount = 0L;
+    Long totalIncome = 0L;
+    Long totalExpence = 0L;
     CalenderEvent calenderEvent;
 
     @Override
@@ -74,7 +74,7 @@ public class CalendarFragment extends Fragment {
             @Override
             public void onRespose(GetCalenderBookingModel model) {
                 getCalenderBookingModel = new GetCalenderBookingModel.Object();
-                int displayingAmount = 0;
+                Long displayingAmount = 0L;
 
                 for (int i = 0; i < model.getObject().size(); i++) {
 
@@ -97,21 +97,21 @@ public class CalendarFragment extends Fragment {
                             monthlyList.add(model.getObject().get(k));
 
                             if (model.getObject().get(k).getPost_category().equalsIgnoreCase("expence")) {
-                                displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
+                                displayingAmount = displayingAmount + Long.valueOf(model.getObject().get(k).getAmount());
                             } else {
-                                displayingAmount = displayingAmount - Integer.valueOf(model.getObject().get(k).getAmount());
+                                displayingAmount = displayingAmount - Long.valueOf(model.getObject().get(k).getAmount());
                             }
 
                            // displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
                         }
                     }
                     if(String.valueOf(displayingAmount).contains("-")){
-                        displayingAmount = Integer.valueOf(String.valueOf(displayingAmount).replace("-",""));
+                        displayingAmount = Long.valueOf(String.valueOf(displayingAmount).replace("-",""));
                     }
                     Event event = new Event(milliseconds, UsefullData.getCommaPrice(getActivity(), displayingAmount + ""));
                     //  Event event = new Event(milliseconds, model.getObject().get(i).getAmount());
                     calenderEvent.addEvent(event);
-                    displayingAmount = 0;
+                    displayingAmount = 0L;
 
                 }
 
@@ -119,9 +119,9 @@ public class CalendarFragment extends Fragment {
                     for (int j = 0; j < mList.size(); j++) {
 
                         if (mList.get(j).getPost_category().equalsIgnoreCase("expence")) {
-                            totalExpence = totalExpence + Integer.valueOf(mList.get(j).getAmount());
+                            totalExpence = totalExpence + Long.valueOf(mList.get(j).getAmount());
                         } else {
-                            totalIncome = totalIncome + Integer.valueOf(mList.get(j).getAmount());
+                            totalIncome = totalIncome + Long.valueOf(mList.get(j).getAmount());
                         }
                         // totalAmount = totalAmount + Integer.valueOf(mList.get(j).getAmount());
                     }
@@ -132,7 +132,7 @@ public class CalendarFragment extends Fragment {
                 tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
 
                 if (String.valueOf(totalAmount).contains("-")) {
-                    totalAmount = Integer.valueOf(String.valueOf(totalAmount).replace("-", ""));
+                    totalAmount = Long.valueOf(String.valueOf(totalAmount).replace("-", ""));
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.red_color));
                 } else {
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
@@ -115,7 +116,8 @@ public class RegisterFragment extends Fragment {
         }else if (etPassword.getText().toString().length() < 6 || etPassword.getText().toString().length()>15) {
             Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.password_must_be_under_6_15_digits), Toast.LENGTH_SHORT).show();
         }  else {
-            register_user(etEmail.getText().toString(), etPassword.getText().toString());
+           // register_user(etEmail.getText().toString(), etPassword.getText().toString());
+            new Api(getActivity()).registerApi(etEmail.getText().toString(), etPassword.getText().toString());
         }
     }
 
@@ -134,28 +136,32 @@ public class RegisterFragment extends Fragment {
                 Log.e("RESPONSE >>>>", response.raw() + "");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    register_model_request.setDevice_token(ConstantValue.DEVICE_TOKEN);
-                    register_model_request.setDevice_id(deviceID);
+                    if (response.message().equals("User already exists")){
+                        Toast.makeText(getActivity(),"User already exists", Toast.LENGTH_SHORT).show();
+                    }else{
+                        register_model_request.setDevice_token(ConstantValue.DEVICE_TOKEN);
+                        register_model_request.setDevice_id(deviceID);
 
-                    commonData.save("id_device", register_model_request.getDevice_id());
+                        commonData.save("id_device", register_model_request.getDevice_id());
 
-                    Toast.makeText(getActivity(), "Register successfully", Toast.LENGTH_SHORT).show();
-                    Log.e("Success", new Gson().toJson(response.body()));
-                    //convert & save to string
-                    String resp = new Gson().toJson(response.body());
-                    //convert to model
-                    register_model = new Gson().fromJson(resp, Register_Model.class);
+                        Toast.makeText(getActivity(), "Register successfully", Toast.LENGTH_SHORT).show();
+                        Log.e("Success", new Gson().toJson(response.body()));
+                        //convert & save to string
+                        String resp = new Gson().toJson(response.body());
+                        //convert to model
+                        register_model = new Gson().fromJson(resp, Register_Model.class);
 
-                    commonData.save(ConstantValue.USER_ID, register_model.getObject().getUserId());
-                    commonData.save(ConstantValue.USER_NAME, register_model.getObject().getUserName());
-                    commonData.save(ConstantValue.ADDRESS, register_model.getObject().getAddress());
-                    commonData.save(ConstantValue.TOKEN, register_model.getObject().getToken());
+                        commonData.save(ConstantValue.USER_ID, register_model.getObject().getUserId());
+                        commonData.save(ConstantValue.USER_NAME, register_model.getObject().getUserName());
+                        commonData.save(ConstantValue.ADDRESS, register_model.getObject().getAddress());
+                        commonData.save(ConstantValue.TOKEN, register_model.getObject().getToken());
 
-                    Log.e("userr", register_model.getObject().getUserId());
-                    Log.e("userr", commonData.getString(ConstantValue.USER_ID));
+                        Log.e("userr", register_model.getObject().getUserId());
+                        Log.e("userr", commonData.getString(ConstantValue.USER_ID));
 
-                    ((MainActivity) getActivity()).getFragmentManager().beginTransaction().replace(R.id.frameLayout, new NewArrivalFragment()).commit();
+                        ((MainActivity) getActivity()).getFragmentManager().beginTransaction().replace(R.id.frameLayout, new NewArrivalFragment()).commit();
 
+                    }
                 }
                 Log.e("success", "register");
 

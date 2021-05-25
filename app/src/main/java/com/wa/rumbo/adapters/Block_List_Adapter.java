@@ -32,10 +32,10 @@ public class Block_List_Adapter extends RecyclerView.Adapter<Block_List_Adapter.
     public int getItemCount() {
         return 7;
     }
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public MyViewHolder(View itemView) {
+  public MyViewHolder(View itemView) {
             super(itemView);
+
         }
     }
 }

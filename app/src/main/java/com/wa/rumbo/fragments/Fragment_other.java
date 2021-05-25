@@ -80,6 +80,7 @@ public class Fragment_other extends Fragment {
     GetCalenderBookingModel.Object getCalenderBookingModel;
     ArrayList<GetCalenderBookingModel.Object> mList = new ArrayList<>();
     ArrayList<GetCalenderBookingModel.Object> mFilterList = new ArrayList<>();
+    ArrayList<GetCalenderBookingModel.Object> mFinalFilterList = new ArrayList<>();
 
     @BindView(R.id.tv_prof_settings)
     TextView tv_prof_settings;
@@ -210,7 +211,7 @@ public class Fragment_other extends Fragment {
                     followings.setText(!(model.getUserDetails().get(0).getUserName().equalsIgnoreCase("")) ? model.getUserDetails().get(0).getUserName() : getActivity().getResources().getString(R.string.username));
                     tv_others.setText(!(model.getUserDetails().get(0).getIntroduction().equalsIgnoreCase("")) ? model.getUserDetails().get(0).getIntroduction() : getActivity().getResources().getString(R.string.no_profile_yet));
 
-                    decodeBase64AndSetImage(model.getUserDetails().get(0).getImage(), ivProfile);
+                    UsefullData.decodeBase64AndSetCircleImage(getActivity(), model.getUserDetails().get(0).getImage(), ivProfile);
                 }
             });
 
@@ -429,14 +430,6 @@ public class Fragment_other extends Fragment {
         }*/
     }
 
-    private void decodeBase64AndSetImage(String completeImageData, CircleImageView imageView) {
-
-        if (completeImageData != null) {
-            Uri imageUri = Uri.parse(completeImageData);
-            imageView.setImageURI(imageUri);
-        }
-
-    }
 
     private void settingDate(final TextView tvCurrentDate, ImageView ivPreviousMonth, ImageView ivNextMonth) {
         final Calendar c = Calendar.getInstance();
@@ -499,22 +492,42 @@ public class Fragment_other extends Fragment {
                 Log.e("Filter list size => ", mFilterList.size() + "");
 
 
-                int totalAmount = 0;
-                int totalIncome = 0;
-                int totalExpence = 0;
+                long totalAmount = 0;
+                long totalIncome = 0;
+                long totalExpence = 0;
 
 
                 if (mFilterList.size() > 0) {
                     tvNoData.setVisibility(View.GONE);
                     rv2_itemname_other.setVisibility(View.VISIBLE);
-                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(), getActivity(), mFilterList);
+                    mFinalFilterList.clear();
+
+                    for (int m = 0; m < mFilterList.size(); m++) {
+                        String categoryName = mFilterList.get(m).getCategoryImage();
+                        String newAmount = mFilterList.get(m).getAmount();
+
+                        if (mFinalFilterList.contains(categoryName)) {
+                            for (int n = 0; n < mFinalFilterList.size(); n++) {
+                                if (mFinalFilterList.get(n).getCategoryImage().equalsIgnoreCase(categoryName)) {
+                                    mFinalFilterList.get(n).setAmount(String.valueOf(Long.valueOf(mFinalFilterList.get(n).getAmount() + Long.valueOf(newAmount))));
+                                }
+
+                            }
+                        } else {
+                            mFinalFilterList.add(mFilterList.get(m));
+                        }
+                    }
+Log.e("filter list size", mFilterList.size()+"");
+Log.e("final list size", mFinalFilterList.size()+"");
+
+                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(), getActivity(), mFinalFilterList);
                     rv2_itemname_other.setAdapter(fragment_other_adapter);
                     for (int j = 0; j < mFilterList.size(); j++) {
 
                         if (mFilterList.get(j).getPost_category().equalsIgnoreCase("expence")) {
-                            totalExpence = totalExpence + Integer.valueOf(mFilterList.get(j).getAmount());
+                            totalExpence = totalExpence + Long.valueOf(mFilterList.get(j).getAmount());
                         } else {
-                            totalIncome = totalIncome + Integer.valueOf(mFilterList.get(j).getAmount());
+                            totalIncome = totalIncome + Long.valueOf(mFilterList.get(j).getAmount());
                         }
                         //totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
                     }
@@ -524,17 +537,17 @@ public class Fragment_other extends Fragment {
                     tvNoData.setVisibility(View.VISIBLE);
                     rv2_itemname_other.setVisibility(View.GONE);
                 }
-                tvExpense.setText(UsefullData.getCommaPrice(getActivity(),totalExpence + ""));
-                tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
+                tvExpense.setText(UsefullData.getCommaPrice(getActivity(), totalExpence + ""));
+                tvIncome.setText(UsefullData.getCommaPrice(getActivity(), totalIncome + ""));
 
-                if(String.valueOf(totalAmount).contains("-")){
-                    totalAmount = Integer.valueOf(String.valueOf(totalAmount).replace("-","") );
+                if (String.valueOf(totalAmount).contains("-")) {
+                    totalAmount = Long.valueOf(String.valueOf(totalAmount).replace("-", ""));
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.red_color));
-                }else{
+                } else {
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));
                 }
 
-                tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(),totalAmount + ""));
+                tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(), totalAmount + ""));
             }
 
             @Override

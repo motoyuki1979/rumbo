@@ -40,7 +40,12 @@ public class New_Arrival_Order_Fragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         rv_new_arrival.setLayoutManager(layoutManager);
 
-        newArrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(),newArrivalFragment.getAllPost_data);
+        newArrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), newArrivalFragment.getAllPost_data, new NewArrivalAdapter.OnBlockListner() {
+            @Override
+            public void onUserBlocked() {
+
+            }
+        });
         rv_new_arrival.setAdapter(newArrivalAdapter);
 
         return  view;

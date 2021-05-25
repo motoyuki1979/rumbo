@@ -120,38 +120,63 @@ public class UsefullData {
         }
     }
 
-    public static  String getCommaPrice(Activity mActivity, String price){
+    public static String getCommaPrice(Activity mActivity, String price) {
         String dislayedPrice = "";
+//1,000,000,000
 
-        if (price.length() < 2) {
+        if (price.length() < 4) {
             dislayedPrice = price;
-        } else if (price.length() == 3) {
-            for (int j = 0; j < price.length(); j++) {
-                if (j == 1) {
-                    dislayedPrice = dislayedPrice + ",";
-                }
-                dislayedPrice = dislayedPrice + price.charAt(j);
-            }
         } else if (price.length() == 4) {
             for (int j = 0; j < price.length(); j++) {
-
                 if (j == 1) {
                     dislayedPrice = dislayedPrice + ",";
                 }
                 dislayedPrice = dislayedPrice + price.charAt(j);
-
             }
         } else if (price.length() == 5) {
             for (int j = 0; j < price.length(); j++) {
+
                 if (j == 2) {
                     dislayedPrice = dislayedPrice + ",";
                 }
                 dislayedPrice = dislayedPrice + price.charAt(j);
 
             }
-        }else if (price.length() == 5) {
+        } else if (price.length() == 6) {
             for (int j = 0; j < price.length(); j++) {
-                if (j == 1 || j == 3) {
+                if (j == 3) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        } else if (price.length() == 7) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 1 || j == 4) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        } else if (price.length() == 8) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 2 || j == 5) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        } else if (price.length() == 9) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 3 || j == 6) {
+                    dislayedPrice = dislayedPrice + ",";
+                }
+                dislayedPrice = dislayedPrice + price.charAt(j);
+
+            }
+        }else if (price.length() == 10) {
+            for (int j = 0; j < price.length(); j++) {
+                if (j == 1 ||j == 4 || j == 7) {
                     dislayedPrice = dislayedPrice + ",";
                 }
                 dislayedPrice = dislayedPrice + price.charAt(j);
@@ -160,7 +185,7 @@ public class UsefullData {
         }
 
         Log.e("formatted date === >> ", dislayedPrice + "    ==+");
-        return  dislayedPrice + mActivity.getResources().getString(R.string.yen)  ;
+        return dislayedPrice + mActivity.getResources().getString(R.string.yen);
     }
 
     public static Dialog getProgressDialog(Context mActivity) {
@@ -191,12 +216,12 @@ public class UsefullData {
 
     public static void decodeBase64AndSetCircleImage(Activity mActivity, String completeImageData, CircleImageView imageView) {
 
-        if (completeImageData != null) {
+        if (completeImageData != null && !completeImageData.isEmpty()) {
             Uri imageUri = Uri.parse(completeImageData);
             //imageView.setImageURI(imageUri);
             Picasso.with(mActivity).load(completeImageData).placeholder(R.drawable.image_dummy).into(imageView);
 
-        }else{
+        } else {
             imageView.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.image_dummy));
         }
 

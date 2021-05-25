@@ -38,10 +38,8 @@ public class Fragment_Other_Household extends Fragment {
     @BindView(R.id.rv2_itemname_other)
     RecyclerView rv1_itemname_other;
 
-
     /*@BindView(R.id.tv_saving_n_expenses)
     TextView tv_saving_n_expenses;*/
-
 
     //tv_saving_n_expenses
 
@@ -90,7 +88,6 @@ public class Fragment_Other_Household extends Fragment {
 
 
 /*
-
         tv_saving_n_expenses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,8 +99,6 @@ public class Fragment_Other_Household extends Fragment {
             }
         });
 */
-
-
         return view;
     }
 
@@ -168,9 +163,9 @@ public class Fragment_Other_Household extends Fragment {
                 Log.e("Filter list size => ", mFilterList.size() + "");
 
 
-                int totalAmount = 0;
-                int totalIncome = 0;
-                int totalExpence = 0;
+                Long totalAmount = 0L;
+                Long totalIncome = 0L;
+                Long totalExpence = 0L;
 
 
                 if (mFilterList.size() > 0) {
@@ -181,9 +176,9 @@ public class Fragment_Other_Household extends Fragment {
                     for (int j = 0; j < mFilterList.size(); j++) {
 
                         if (mFilterList.get(j).getPost_category().equalsIgnoreCase("expence")) {
-                            totalExpence = totalExpence + Integer.valueOf(mFilterList.get(j).getAmount());
+                            totalExpence = totalExpence + Long.valueOf(mFilterList.get(j).getAmount());
                         } else {
-                            totalIncome = totalIncome + Integer.valueOf(mFilterList.get(j).getAmount());
+                            totalIncome = totalIncome + Long.valueOf(mFilterList.get(j).getAmount());
                         }
                        // totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
                     }
@@ -198,7 +193,7 @@ public class Fragment_Other_Household extends Fragment {
                 tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
 
                 if(String.valueOf(totalAmount).contains("-")){
-                    totalAmount = Integer.valueOf(String.valueOf(totalAmount).replace("-","") );
+                    totalAmount = Long.valueOf(String.valueOf(totalAmount).replace("-","") );
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.red_color));
                 }else{
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));

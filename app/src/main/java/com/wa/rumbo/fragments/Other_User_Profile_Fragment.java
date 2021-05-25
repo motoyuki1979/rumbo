@@ -119,7 +119,12 @@ public class Other_User_Profile_Fragment extends Fragment {
 
                     getAllPost_data = user_post_model.getGetAllPostDataList();
 
-                    arrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(), getAllPost_data);
+                    arrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), getAllPost_data, new NewArrivalAdapter.OnBlockListner() {
+                        @Override
+                        public void onUserBlocked() {
+
+                        }
+                    });
                     rvPostList.setAdapter(arrivalAdapter);
 
                 }

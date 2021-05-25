@@ -7,6 +7,7 @@ import com.wa.rumbo.model.CommentPostModel;
 import com.wa.rumbo.model.Comment_Request_Model;
 import com.wa.rumbo.model.DeletePostCommentModel;
 import com.wa.rumbo.model.GetAllPost;
+import com.wa.rumbo.model.GetBlockedListModel;
 import com.wa.rumbo.model.GetCalenderBookingModel;
 import com.wa.rumbo.model.GetCommentPost;
 import com.wa.rumbo.model.GetComunityCommentModel;
@@ -14,6 +15,7 @@ import com.wa.rumbo.model.GetFollowersModel;
 import com.wa.rumbo.model.GetUserProfileModel;
 import com.wa.rumbo.model.NotificationResponse;
 import com.wa.rumbo.model.PostDetailModel;
+import com.wa.rumbo.model.RegisterModel;
 import com.wa.rumbo.model.Register_Model;
 import com.wa.rumbo.model.Status_Model;
 import com.wa.rumbo.model.UserPostModel;
@@ -29,7 +31,7 @@ import retrofit2.http.Query;
 public interface Register_Interfac {
 
     @POST("register")
-    Call<Register_Model> registeration(
+    Call<RegisterModel> registeration(
             @Query("device_id") String device_id, @Query("device_token") String device_token, @Query("email") String email, @Query("password") String password, @Query("following_count") String following_count, @Query("follower_count") String follower_count);
 
     @POST("login")
@@ -110,8 +112,10 @@ public interface Register_Interfac {
             @Header("user_id") String user_id, @Header("authenticate") String authenticate, @Query("comment_id") String comment_id);
 
     @POST("delete_post_comment")
-    Call<Status_Model> deletePostComment(
-            @Header("user_id") String user_id, @Header("authenticate") String authenticate, @Body DeletePostCommentModel deletePostCommentModel);
+    Call<Status_Model> deletePostComment(@Header("user_id") String user_id, @Header("authenticate") String authenticate, @Body DeletePostCommentModel deletePostCommentModel);
+
+    @POST("delete_post")
+    Call<Status_Model> deletePost(@Header("id") String id, @Header("authenticate") String authenticate, @Header("random_id") String random_id);
 
     @POST("block_user")
     Call<Status_Model> blockUser(
@@ -138,4 +142,8 @@ public interface Register_Interfac {
 
     @POST("get_calender_bookings")
     Call<GetCalenderBookingModel> getCalenderBooking(@Header("user_id") String user_id, @Header("authenticate") String authenticate);
+
+    @POST("get_blockList")
+    Call<GetBlockedListModel> getBlockedList(@Header("user_id") String user_id, @Header("authenticate") String authenticate);
+
 }

@@ -104,6 +104,7 @@
     <string name="total_expence">费用</string>
     <string name="net">总</string>
     <string name="yen">円</string>
+    <string name="are_you_sure_to_delete_post">投稿を削除してもよろしいですか</string>
     <string name="profile">プロフィール</string>
     <string name="household_ac_book_release">家計簿公開</string>
     <string name="popup_notification">ポップアップ通知</string>
@@ -159,6 +160,7 @@
     <string name="comment_like_successfully">成功したようなコメント</string>
     <string name="comment_unlike_successfully">成功とは異なりコメント</string>
     <string name="comment_delete_successfully">コメントが正常に削除されました</string>
+    <string name="post_delete_successfully">削除を正常に投稿</string>
     <string name="user_blocked_successfully">ユーザーが正常にブロックされました</string>
     <string name="following">以下</string>
     <string name="user_added_successfully">ユーザーが正常に追加されました</string>

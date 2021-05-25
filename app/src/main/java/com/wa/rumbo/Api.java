@@ -2,30 +2,38 @@ package com.wa.rumbo;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.os.Build;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.callbacks.AddComunityCommentCallback;
 import com.wa.rumbo.callbacks.DefaultCallback;
 import com.wa.rumbo.callbacks.DeletePostCommentCallback;
+import com.wa.rumbo.callbacks.GetBlockedUserCallback;
 import com.wa.rumbo.callbacks.GetCalenderBookingCalback;
 import com.wa.rumbo.callbacks.GetComunityCommentsCallback;
 import com.wa.rumbo.callbacks.GetFollowersCallback;
 import com.wa.rumbo.callbacks.GetUserPostCallback;
 import com.wa.rumbo.callbacks.GetUserProfileCallback;
 import com.wa.rumbo.common.CommonData;
+import com.wa.rumbo.common.ConstantValue;
 import com.wa.rumbo.common.UsefullData;
+import com.wa.rumbo.fragments.NewArrivalFragment;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.AddCategoryCommentModel;
 import com.wa.rumbo.model.CommentPostModel;
 import com.wa.rumbo.model.DeletePostCommentModel;
 import com.wa.rumbo.model.GetAllPost;
+import com.wa.rumbo.model.GetBlockedListModel;
 import com.wa.rumbo.model.GetCalenderBookingModel;
 import com.wa.rumbo.model.GetComunityComents;
 import com.wa.rumbo.model.GetFollowersModel;
 import com.wa.rumbo.model.GetUserProfileModel;
+import com.wa.rumbo.model.RegisterModel;
+import com.wa.rumbo.model.Register_Model;
 import com.wa.rumbo.model.Status_Model;
 import com.wa.rumbo.model.UserPostModel;
 
@@ -43,7 +51,7 @@ import static com.wa.rumbo.common.ConstantValue.USER_ID;
 public class Api {
     Activity mActivity;
     Retrofit retrofit = RetrofitInstance.getClient();
-
+String deviceID;
     Dialog mDialog;
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
     CommonData commonData;
@@ -54,6 +62,60 @@ public class Api {
 
         mDialog = UsefullData.getProgressDialog(mActivity);
         commonData = new CommonData(mActivity);
+        deviceID = Build.DEVICE + "-" + Build.ID;
+    }
+
+    public void registerApi(String email, String password) {
+
+
+        Call<RegisterModel> call = register_interfac.registeration(deviceID, commonData.getString(ConstantValue.FIREBASE_TOKEN), email, password,"0","0");
+            mDialog.show();
+
+        call.enqueue(new Callback<RegisterModel>() {
+            @Override
+            public void onResponse(Call<RegisterModel> call, Response<RegisterModel> response) {
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                if (response.isSuccessful() && response.body() != null) {
+
+                    if (response.body().getMessage().equals("User already exists")){
+                        Toast.makeText(mActivity,"User already exists", Toast.LENGTH_SHORT).show();
+                    }else{
+                      //  register_model_request.setDevice_token(ConstantValue.DEVICE_TOKEN);
+                      //  register_model_request.setDevice_id(deviceID);
+
+                        commonData.save("id_device", deviceID);
+
+                        Toast.makeText(mActivity, "Register successfully", Toast.LENGTH_SHORT).show();
+                        Log.e("Success", new Gson().toJson(response.body()));
+                        //convert & save to string
+                      //  String resp = new Gson().toJson(response.body());
+                        //convert to model
+                       // register_model = new Gson().fromJson(resp, Register_Model.class);
+
+                        commonData.save(ConstantValue.USER_ID, response.body().getObject().getUserId());
+                        commonData.save(ConstantValue.USER_NAME, response.body().getObject().getUserName());
+                        commonData.save(ConstantValue.ADDRESS, response.body().getObject().getAddress());
+                        commonData.save(ConstantValue.TOKEN, response.body().getObject().getToken());
+
+                        Log.e("userr", response.body().getObject().getUserId());
+                        Log.e("userr", commonData.getString(ConstantValue.USER_ID));
+
+                        ((MainActivity) mActivity).getFragmentManager().beginTransaction().replace(R.id.frameLayout, new NewArrivalFragment()).commit();
+
+                    }
+                }
+                Log.e("success", "register");
+            }
+
+            @Override
+            public void onFailure(Call<RegisterModel> call, Throwable t) {
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+            }
+        });
     }
 
     public void getUserProfile(String user_id, final Boolean showProgressbar, final GetUserProfileCallback callback) {
@@ -223,6 +285,39 @@ public class Api {
         });
     }
 
+    public void deletePostApi(final Activity mActivity, String id, String random_id,  final DeletePostCommentCallback callback) {
+        mDialog.show();
+
+        Call<Status_Model> call = register_interfac.deletePost(id, commonData.getString(TOKEN), random_id);
+        // mProgressDialog.show();
+        call.enqueue(new Callback<Status_Model>() {
+            @Override
+            public void onResponse(Call<Status_Model> call, Response<Status_Model> response) {
+                mDialog.dismiss();
+                if (response.isSuccessful() && response.body() != null) {
+                    mDialog.dismiss();
+
+                    Log.e(" delete post ", new Gson().toJson(response.body()));
+                    String resp = new Gson().toJson(response.body());
+                    //convert to model
+                    callback.onResponse(response.body());
+                    Status_Model status_model = new Gson().fromJson(resp, Status_Model.class);
+
+                    if (status_model.getSuccess().equals("true")) {
+
+                        Toast.makeText(mActivity, mActivity.getResources().getString(R.string.post_delete_successfully), Toast.LENGTH_SHORT).show();
+                        //   getPostComment(); //refresh all comment list
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Status_Model> call, Throwable t) {
+                mDialog.dismiss();
+            }
+        });
+    }
+
     public void deletePostCommentApi(final Activity mActivity, String post_id, String comment_id, String comment, final DeletePostCommentCallback callback) {
         mDialog.show();
 
@@ -293,7 +388,39 @@ public class Api {
         });
     }
 
-    public void getFollowersApi(final Activity mActivity, Boolean isLoader, final GetFollowersCallback callback) {
+    public void geBlockedUserApi(final Activity mActivity, final GetBlockedUserCallback callback) {
+
+            mDialog.show();
+
+        Call<GetBlockedListModel> call = register_interfac.getBlockedList(commonData.getString(USER_ID), commonData.getString(TOKEN));
+        // mProgressDialog.show();
+        call.enqueue(new Callback<GetBlockedListModel>() {
+            @Override
+            public void onResponse(Call<GetBlockedListModel> call, Response<GetBlockedListModel> response) {
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                if (response.isSuccessful() && response.body() != null) {
+
+                    Log.e(" black userList ", new Gson().toJson(response.body()));
+                    String resp = new Gson().toJson(response.body());
+                    callback.onSuccess(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<GetBlockedListModel> call, Throwable t) {
+                if (mDialog.isShowing()) {
+                    mDialog.dismiss();
+                }
+                Log.e(" black userList ", "Failure");
+
+                callback.onFailure();
+            }
+        });
+    }
+
+ public void getFollowersApi(final Activity mActivity, Boolean isLoader, final GetFollowersCallback callback) {
         if (isLoader) {
             mDialog.show();
         }

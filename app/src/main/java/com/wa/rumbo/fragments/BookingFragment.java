@@ -2,6 +2,7 @@ package com.wa.rumbo.fragments;
 
 //https://stackoverflow.com/questions/54208999/get-data-from-retrofit-call-and-send-it-to-another-activity
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Fragment;
 import android.graphics.Color;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,8 +46,7 @@ import com.wa.rumbo.model.Category_Data;
 import com.wa.rumbo.model.Status_Model;
 import com.wa.rumbo.utils;
 
-import org.json.JSONObject;
-
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -90,8 +92,10 @@ public class BookingFragment extends Fragment implements ConstantValue {
     @BindView(R.id.llCategoriesList)
     LinearLayout llCategoriesList;
     @BindView(R.id.ivBack)
+
     ImageView ivBack;
 
+    String value = "";
     BookingAdapter kakebo_adapter;
     Retrofit retrofit = RetrofitInstance.getClient();
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
@@ -101,7 +105,7 @@ public class BookingFragment extends Fragment implements ConstantValue {
     TextView tvIncome;
     Dialog mDialog;
     Animation clickAnimation;
-    String postCategory="expence";
+    String postCategory = "expence";
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -162,19 +166,19 @@ public class BookingFragment extends Fragment implements ConstantValue {
                         view.startAnimation(clickAnimation);
                         dialog.dismiss();
                         int month = datePicker1.getMonth() + 1;
-                        String stringMonth ="";
-                        stringMonth = month+"";
+                        String stringMonth = "";
+                        stringMonth = month + "";
 
-                        if(stringMonth.length()<2){
-                            stringMonth = "0"+stringMonth;
+                        if (stringMonth.length() < 2) {
+                            stringMonth = "0" + stringMonth;
 
                         }
 
-                        String stringDay ="";
-                        stringDay = datePicker1.getDayOfMonth()+"";
+                        String stringDay = "";
+                        stringDay = datePicker1.getDayOfMonth() + "";
 
-                        if(stringDay.length()<2){
-                            stringDay = "0"+stringDay;
+                        if (stringDay.length() < 2) {
+                            stringDay = "0" + stringDay;
 
                         }
 
@@ -191,6 +195,34 @@ public class BookingFragment extends Fragment implements ConstantValue {
 
             }
         });
+
+        edt_expenditure.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable view) {
+
+                String s = null;
+                try {
+                    // The comma in the format specifier does the trick
+                    s = String.format("%,d", Long.parseLong(view.toString()));
+
+                    Log.e("text12 == >>   ", s);
+                    // edt_expenditure.setText(s);
+
+                } catch (NumberFormatException e) {
+                }
+            }
+        });
+
 
         tvExpence.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -267,10 +299,19 @@ public class BookingFragment extends Fragment implements ConstantValue {
                         getPost.setCategory_image(category_image.toString());
                         getPost.setPost_category(postCategory);
 
+                        SecureRandom random = new SecureRandom();
+                        int num = random.nextInt(100000);
+                        String formatted = String.format("%05d", num);
+                        Log.e("Random number => ", formatted);
+
+
+                        getPost.setRandom_id(formatted);
+
                         if (category_id == null) {
                             Toast.makeText(getActivity(), "Please Select a Category", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
 
                         Call call = register_interfac.addPost(commonData.getString(USER_ID), commonData.getString(TOKEN), getPost);
 
@@ -302,12 +343,10 @@ public class BookingFragment extends Fragment implements ConstantValue {
                             }
                         });
                     }
-                }
-
-                else {
+                } else {
                     utils.showRegisterDialog(getActivity());
                 }
-                }
+            }
 
         });
 
@@ -409,6 +448,15 @@ public class BookingFragment extends Fragment implements ConstantValue {
         String category_name;
         String category_image;
         String post_category;
+        String random_id;
+
+        public String getRandom_id() {
+            return random_id;
+        }
+
+        public void setRandom_id(String random_id) {
+            this.random_id = random_id;
+        }
 
         public String getPost_category() {
             return post_category;

@@ -45,8 +45,8 @@ public class Notice3_Adapter extends RecyclerView.Adapter<Notice3_Adapter.MyView
         this.getAllNotificationData=getAllNotificationData;
         commonData = new CommonData(context);
     }
-
     @Override
+
     public MyViewHolder onCreateViewHolder( ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.rv_notice, viewGroup, false);
         return new Notice3_Adapter.MyViewHolder(view);

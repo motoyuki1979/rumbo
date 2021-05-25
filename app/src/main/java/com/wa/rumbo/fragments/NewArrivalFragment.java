@@ -17,15 +17,18 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
 import com.wa.rumbo.activities.MainActivity;
 import com.wa.rumbo.adapters.NewArrivalAdapter;
+import com.wa.rumbo.callbacks.GetBlockedUserCallback;
 import com.wa.rumbo.common.CommonData;
 import com.wa.rumbo.common.UsefullData;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.GetAllPost;
 import com.wa.rumbo.model.GetAllPost_Data;
+import com.wa.rumbo.model.GetBlockedListModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,8 +56,10 @@ public class NewArrivalFragment extends Fragment {
     CommonData commonData;
     GetAllPost getAllPosts;
     List<GetAllPost_Data> getAllPost_data = new ArrayList<>();
+    List<GetAllPost_Data> filterPostList = new ArrayList<>();
     Dialog mDialog;
     Animation clickAnimation;
+    public ArrayList<String> blockedUserList = new ArrayList<>();
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -76,19 +81,38 @@ public class NewArrivalFragment extends Fragment {
         //timeline_RL
 
         //MainActivity.timeline_RL.setBackgroundResource(R.drawable.tab_select_bg);
-
-        MainActivity.homeTabsLL.setVisibility(View.VISIBLE);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        Arrival_recyclerView.setLayoutManager(layoutManager);
-        UsefullData.setLocale(getActivity());
+        getBlockList();
 
         getAllPostsAPI();
 
         return view;
     }
 
+    public void getBlockList() {
+        blockedUserList.clear();
+        new Api(getActivity()).geBlockedUserApi(getActivity(), new GetBlockedUserCallback() {
+            @Override
+            public void onSuccess(GetBlockedListModel model) {
+                for (int i = 0; i < model.getObject().size(); i++) {
+                    blockedUserList.add(model.getObject().get(i).getBlockedUserId());
+                }
+                getAllPostsAPI();
+
+            }
+
+            @Override
+            public void onFailure() {
+                getAllPostsAPI();
+
+            }
+        });
+    }
 
     public void getAllPostsAPI() {
+        MainActivity.homeTabsLL.setVisibility(View.VISIBLE);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        Arrival_recyclerView.setLayoutManager(layoutManager);
+        UsefullData.setLocale(getActivity());
 
         mDialog.show();
 
@@ -112,9 +136,21 @@ public class NewArrivalFragment extends Fragment {
                     String resp = new Gson().toJson(response.body());
 
                     getAllPosts = new Gson().fromJson(resp, GetAllPost.class);
-                    getAllPost_data = getAllPosts.getObject();
 
-                    arrivalAdapter = new NewArrivalAdapter(getActivity(),getActivity(), getAllPost_data);
+                    getAllPost_data = getAllPosts.getObject();
+                    filterPostList.clear();
+                    for (int i = 0; i < getAllPost_data.size(); i++) {
+                        if (!blockedUserList.contains(getAllPost_data.get(i).getUserId())) {
+                            filterPostList.add(getAllPost_data.get(i));
+                        }
+                    }
+
+                    arrivalAdapter = new NewArrivalAdapter(getActivity(), getActivity(), filterPostList, new NewArrivalAdapter.OnBlockListner() {
+                        @Override
+                        public void onUserBlocked() {
+                            getBlockList();
+                        }
+                    });
                     Arrival_recyclerView.setAdapter(arrivalAdapter);
 
                 }

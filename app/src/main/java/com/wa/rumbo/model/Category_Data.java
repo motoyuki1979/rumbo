@@ -10,7 +10,9 @@ public class Category_Data implements Serializable {
 
     @SerializedName("category_id")
     @Expose
-    private String categoryId;
+    private String categoryId; @SerializedName("id")
+    @Expose
+    private int id;
     @SerializedName("category_name")
     @Expose
     private String categoryName;
@@ -41,6 +43,14 @@ public class Category_Data implements Serializable {
 
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
+    }
+
+      public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCategory_image(String category_image) {

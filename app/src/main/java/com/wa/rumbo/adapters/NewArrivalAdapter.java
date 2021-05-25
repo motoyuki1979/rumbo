@@ -22,13 +22,15 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
 import com.wa.rumbo.RetrofitInstance;
+import com.wa.rumbo.callbacks.DeletePostCommentCallback;
 import com.wa.rumbo.common.CommonData;
 import com.wa.rumbo.common.UsefullData;
-import com.wa.rumbo.fragments.Fragment_3Notice_ViewBinding;
 import com.wa.rumbo.fragments.Fragment_ChatWrite;
 import com.wa.rumbo.fragments.Fragment_other;
+import com.wa.rumbo.fragments.NewArrivalFragment;
 import com.wa.rumbo.fragments.OtherUserFragment;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.GetAllPost_Data;
@@ -46,6 +48,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static com.wa.rumbo.R.string.block_user;
 import static com.wa.rumbo.common.ConstantValue.TOKEN;
 import static com.wa.rumbo.common.ConstantValue.USER_ID;
 
@@ -61,11 +64,14 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
 
     Animation clickAnimation;
     Dialog mDialog;
+    NewArrivalFragment fragment;
+    public OnBlockListner onBlockListner;
 
-    public NewArrivalAdapter(Context context, Activity mActivity, List<GetAllPost_Data> getAllPost_dataList) {
+    public NewArrivalAdapter(Context context, Activity mActivity, List<GetAllPost_Data> getAllPost_dataList, OnBlockListner onBlockListner) {
         this.context = context;
         this.mActivity = mActivity;
         this.getAllPost_dataList = getAllPost_dataList;
+        this.onBlockListner = onBlockListner;
         commonData = new CommonData(context);
         clickAnimation = AnimationUtils.loadAnimation(context, R.anim.grow);
         mDialog = UsefullData.getProgressDialog(mActivity);
@@ -87,7 +93,7 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
         myView.arrival_adptr_name.setText(!getAllPost_dataList.get(i).getTitle().equals("") ? getAllPost_dataList.get(i).getTitle() : "Username");
 
 
-        myView.arrival_adptr_price_val.setText(UsefullData.getCommaPrice(mActivity ,getAllPost_dataList.get(i).getExpenditure()));
+        myView.arrival_adptr_price_val.setText(UsefullData.getCommaPrice(mActivity, getAllPost_dataList.get(i).getExpenditure()));
 
         myView.arrival_adptr_date.setText(!getAllPost_dataList.get(i).getDate().equals("") ? getAllPost_dataList.get(i).getDate() : "6-1-2016");
         myView.arrival_adptr_comment_txt.setText(getAllPost_dataList.get(i).getTodaysTweets());
@@ -115,6 +121,7 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 Bundle bundle = new Bundle();
                 // bundle.putString("data", new Gson().toJson(getAllPost_dataList.get(i))); //key and value
+                bundle.putString("id", getAllPost_dataList.get(i).getId()); //key and value
                 bundle.putString("post_id", getAllPost_dataList.get(i).getPostId()); //key and value
                 bundle.putString("title", getAllPost_dataList.get(i).getTitle()); //key and value
                 bundle.putString("description", getAllPost_dataList.get(i).getTodaysTweets()); //key and value
@@ -125,6 +132,7 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
                 bundle.putString("comment_count", getAllPost_dataList.get(i).getComments_count()); //key and value
                 bundle.putBoolean("is_like", getAllPost_dataList.get(i).getIs_like()); //key and value
                 bundle.putString("user_id", getAllPost_dataList.get(i).getUserId()); //key and value
+                bundle.putString("random_id", getAllPost_dataList.get(i).getRandomId()); //key and value
 
                 myFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.frameLayout, myFragment);
@@ -197,12 +205,110 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
             }
         });
 
+        myView.ivMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getAllPost_dataList.get(i).getUserId().equalsIgnoreCase(commonData.getString(USER_ID))) {
+                    showCustomDialog(mActivity, i, getAllPost_dataList.get(i).getId(), getAllPost_dataList.get(i).getRandomId());
+                } else {
+                    showBlockUserDialog(mActivity, getAllPost_dataList.get(i).getUserId());
+                }
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
         return getAllPost_dataList.size();
     }
+
+    private void showCustomDialog(final Activity mActivity, final int position, final String id, final String randomId) {
+        final Dialog dialog = new Dialog(mActivity);
+        dialog.setContentView(R.layout.dialog_comment_delete);
+        dialog.getWindow().setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.dialog_bg));
+
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+        TextView tvMessage = dialog.findViewById(R.id.tvMessage);
+        tvMessage.setText(mActivity.getResources().getString(R.string.are_you_sure_to_delete_post));
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
+
+        // if button is clicked, close the custom dialog
+        tvYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                new Api(mActivity).deletePostApi(mActivity, id, randomId, new DeletePostCommentCallback() {
+                    @Override
+                    public void onResponse(Status_Model model) {
+                        dialog.dismiss();
+                        getAllPost_dataList.remove(position);
+                        notifyDataSetChanged();
+                        Toast.makeText(mActivity, "Post deleted successfully", Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+            }
+        });
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void showBlockUserDialog(final Activity mActivity, final String blockedUserId) {
+        final Dialog dialog = new Dialog(mActivity);
+        dialog.setContentView(R.layout.dialog_comment_delete);
+        dialog.getWindow().setBackgroundDrawable(mActivity.getResources().getDrawable(R.drawable.dialog_bg));
+
+        ImageView ivCross = (ImageView) dialog.findViewById(R.id.ivCross);
+
+        ivCross.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        TextView tvMessage = (TextView) dialog.findViewById(R.id.tvMessage);
+        TextView tvYes = (TextView) dialog.findViewById(R.id.tvYes);
+        TextView tvNo = (TextView) dialog.findViewById(R.id.tvNo);
+
+        tvMessage.setText(mActivity.getResources().getString(block_user));
+
+        // if button is clicked, close the custom dialog
+        tvYes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Api(mActivity).blockUserApi(mActivity, blockedUserId);
+                onBlockListner.onUserBlocked();
+                dialog.dismiss();
+            }
+        });
+        tvNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
 
     void jumpToOtherPragment(String user_id) {
         Fragment myFragment = new OtherUserFragment();
@@ -223,6 +329,9 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
 
         @BindView(R.id.liked_big_heart)
         ImageView liked_big_heart;
+
+        @BindView(R.id.arrival_adapter_more)
+        ImageView ivMore;
 
         @BindView(R.id.arrival_adapter_big_heart)
         ImageView arrival_adapter_big_heart;
@@ -265,5 +374,7 @@ public class NewArrivalAdapter extends RecyclerView.Adapter<NewArrivalAdapter.My
         }
     }
 
-
+    public interface OnBlockListner {
+        void onUserBlocked ();
+    }
 }

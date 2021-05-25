@@ -65,13 +65,15 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
     TextView tv_comments_count;
     String count;
+    public Chat_Write_Adapter.OnBlockListner onBlockListner;
 
-    public Chat_Write_Adapter(Activity mActivity, Context context, List<CommentDetail> getCommentDetail, TextView tv_comments_count, String count) {
+    public Chat_Write_Adapter(Activity mActivity, Context context, List<CommentDetail> getCommentDetail, TextView tv_comments_count, String count, Chat_Write_Adapter.OnBlockListner onBlockListner) {
         this.mActivity = mActivity;
         this.context = context;
         this.tv_comments_count = tv_comments_count;
         this.getCommentDetail = getCommentDetail;
         this.count = count;
+        this.onBlockListner = onBlockListner;
         commonData = new CommonData(mActivity);
         mDialog = UsefullData.getProgressDialog(mActivity);
         mClickEffect = AnimationUtils.loadAnimation(mActivity, R.anim.grow);
@@ -240,6 +242,7 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
             @Override
             public void onClick(View v) {
                 new Api(mActivity).blockUserApi(mActivity, blockedUserId);
+                onBlockListner.onUserBlocked();
                 dialog.dismiss();
             }
         });
@@ -333,5 +336,9 @@ public class Chat_Write_Adapter extends RecyclerView.Adapter<Chat_Write_Adapter.
             ButterKnife.bind(this, itemView);
 
         }
+    }
+
+    public interface OnBlockListner {
+        void onUserBlocked ();
     }
 }
