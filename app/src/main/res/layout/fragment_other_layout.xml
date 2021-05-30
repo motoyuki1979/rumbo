@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -226,10 +227,8 @@
     <ScrollView
         android:id="@+id/scrollable"
         android:layout_width="match_parent"
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_height="match_parent"
-        android:visibility="visible"
-        xmlns:tools="http://schemas.android.com/tools">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -269,19 +268,12 @@
                         android:id="@+id/tvCurrentDate"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:gravity="center_vertical"
+                        android:text="2018年11月"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                        android:text="2018分11設"
-                        android:gravity="center_vertical"
-                        android:layout_gravity="center"/>
+                        android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
-                        android:text="(11分1B-11A30B)"
-                        android:gravity="center_vertical"
-                        android:layout_gravity="center"/>
                 </LinearLayout>
 
 

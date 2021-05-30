@@ -10,32 +10,32 @@
     <!--  Bottom Bar-->
     <string name="timeline"> タイムライン </string>
     <string name="community"> コミュニティ </string>
-    <string name="kakebo">本</string>
+    <string name="kakebo"> タイムライン</string>
     <string name="my_page"> マイページ </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">こんにちは空白のフラグメント</string>
-    <string name="expenditure"> 費用</string>
+    <string name="expenditure">費用</string>
     <string name="edt_save_money">コメントを入力してください</string>
     <string name="save_money_and_do_what">お金を貯めて何をする？</string>
     <string name="tv_title_chatwrite">もちりーなさんのコメント</string>
     <string name="tv_name_chatwrite">もちりーな</string>
     <string name="tv_price_chatwrite">支出</string>
-    <string name="edt_commentopen_hint">フェイスブック＜FB.O＞は１１日、５月までに実施される予定のインドの総選挙を控え、ファクトチェック（事実検証）体制を強化すると発表した。ユーザー数で最大の市場で、誤った情報が拡散するのを防ぐ。</string>
+    <string name="edt_commentopen_hint"></string>
     <string name="reply_to_comment">コメントへ返信</string>
-    <string name="send">发送</string>
+    <string name="send">送信</string>
     <string name="bulletin_board_list">掲示板一覧</string>
     <string name="new_arrival_order">新着順</string>
     <string name="popularity_order">人気順</string>
     <string name="tv_community">掲示板一覧</string>
-    <string name="comment_concern">评论将被发布</string>
+    <string name="comment_concern">全体に公開されます</string>
     <string name="whatisyourconcernnow">今気になっていることは</string>
     <string name="comment">コメント</string>
     <string name="tv_title_mypagefollow">もちりーな</string>
     <string name="household_diagnosis_post">家計診断 投稿する</string>
-    <string name="profile_n_settings">编辑配置文件和配置</string>
+    <string name="profile_n_settings">プロフの編集・設定</string>
     <string name="calendar">カレンダー</string>
-    <string name="househpld_book">订票</string>
+    <string name="househpld_book">収支</string>
     <string name="my_post">自分の投稿</string>
     <string name="change_profile_photo">画像を変更する</string>
     <string name="preservation">保存</string>
@@ -43,7 +43,7 @@
     <string name="nickname">ニックネーム</string>
     <string name="edt_nickname_profsetting">もちりーな</string>
     <string name="self_intro_comment">自己紹介コメント</string>
-    <string name="edt_self_intro_hint">最近子供が生まれました。妻と子供の3人暮らしです。よろしくお願いします。絡み好きなので話しかけてください。</string>
+    <string name="edt_self_intro_hint">よろしくお願いします！</string>
     <string name="save_money_ndo_what">お金を貯めて何をする？</string>
     <string name="if_it_does_movebyanychance">もし万が一緊急で動かないと</string>
 
@@ -62,13 +62,13 @@
     <string name="post_to_household_diagnostic">家計診断へ投稿</string>
 
 
-    <string name="sun">太陽</string>
+    <string name="sun">日</string>
     <string name="mon">月</string>
     <string name="tue">火</string>
-    <string name="wed">結婚した</string>
+    <string name="wed">水</string>
     <string name="thu">木</string>
     <string name="fri">金</string>
-    <string name="sat">座った</string>
+    <string name="sat">土</string>
     <string name="resume_key">ユーザー再開キーの入力</string>
     <string name="register_email_address">メールアドレス登録</string>
     <string name="block_list">ブロックリスト</string>
@@ -84,14 +84,14 @@
     <string name="mobile_n_communication">携帯・通信</string>
     <string name="residence">住居</string>
     <string name="other">その他</string>
-    <string name="please_enter_content_of_expenses">标题将适合自己</string>
+    <string name="please_enter_content_of_expenses">何をしましたか？</string>
     <string name="title">タイトル</string>
     <!--<string name="expenditure">支出</string>-->
     <string name="circle">円</string>
     <string name="income">収入</string>
-    <string name="todays_tweet">评论</string>
+    <string name="todays_tweet">コメント</string>
     <string name="grilled_meat_for_lunch">昼ごはんに焼肉！</string>
-    <string name="date">日付！</string>
+    <string name="date">日付</string>
     <string name="recommendation">オススメ</string>
     <string name="chat">雑談</string>
     <string name="household_diagnosis">家計診断</string>
@@ -100,23 +100,23 @@
     <string name="category">カテゴリー</string>
     <string name="profile_text">プロファイルの表示はまだ追加されていません。</string>
     <string name="price">価格</string>
-    <string name="total_income">收入</string>
-    <string name="total_expence">费用</string>
-    <string name="net">总</string>
+    <string name="total_income">収入</string>
+    <string name="total_expence">支出</string>
+    <string name="net">収支</string>
     <string name="yen">円</string>
     <string name="are_you_sure_to_delete_post">投稿を削除してもよろしいですか</string>
     <string name="profile">プロフィール</string>
     <string name="household_ac_book_release">家計簿公開</string>
     <string name="popup_notification">ポップアップ通知</string>
 
-    <string name="income_record_will_be_unpublished">収入記録は非公開になります</string>
+    <string name="income_record_will_be_unpublished">自分が特定されないようご注意ください</string>
     <string name="follower">フォロワー</string>
     <string name="change_email_pw">メールアドレスとパスワードを変更する</string>
     <string name="post_comment">コメントを投稿</string>
     <string name="users_comment">ユーザーコメント</string>
     <string name="are_you_sure_to_delete_comment">コメントを削除してもよろしいですか？</string>
     <string name="yes">はい</string>
-    <string name="no">番号</string>
+    <string name="no">いいえ</string>
     <string name="please_register_or_login_first">最初にログインまたは登録してください</string>
     <string name="register">登録</string>
     <string name="not_now">今はやめろ</string>
@@ -125,7 +125,7 @@
     <string name="introduction">前書き</string>
     <string name="my_follow">私のフォロー</string>
     <string name="my_follower">私のフォロワー</string>
-    <string name="mine">私の</string>
+    <string name="mine">自分のみ</string>
     <string name="all">すべて</string>
     <string name="change_email_and_password">メールアドレスとパスワードを変更する</string>
     <string name="email">Eメール</string>
@@ -135,7 +135,7 @@
     <string name="password_must_be_under_6_15_digits">パスワードは6〜15文字である必要があります</string>
     <string name="password">パスワード</string>
     <string name="password_more_than_6_letters">パスワード（6文字以上)</string>
-    <string name="change">変化する</string>
+    <string name="change">変更</string>
     <string name="login">ログイン</string>
     <string name="forgot_password">パスワードをお忘れですか</string>
     <string name="already_have_an_account">すでにアカウントをお持ちですか？</string>
@@ -145,14 +145,14 @@
     <string name="no_name">ノーネーム</string>
     <string name="hello_world">こんにちは世界</string>
     <string name="thousand_yen">1000 円</string>
-    <string name="no_data_found">何もデータが見つかりませんでした！</string>
+    <string name="no_data_found">データが見つかりませんでした</string>
     <string name="no_profile_yet">プロフィールはまだありません</string>
     <string name="register_and_try_community_hosekeep_booking">コミュニティハウスキープ予約を登録してお試しください</string>
     <string name="enter_your_nick_name">あなたのニックネームを入力します</string>
     <string name="enter_your_introduction">あなたの紹介を入力してください</string>
     <string name="take_photo">写真を撮る</string>
     <string name="choose_from_gallery">ギャラリーからお選びください</string>
-    <string name="add_photo">写真を追加する！</string>
+    <string name="add_photo">写真を追加する</string>
     <string name="cancel">キャンセル</string>
     <string name="profile_updated_successfully">プロファイルが正常に更新されました</string>
     <string name="please_write_a_comment">コメントを書いてください</string>
