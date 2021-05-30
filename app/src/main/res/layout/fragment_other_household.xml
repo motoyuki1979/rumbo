@@ -44,17 +44,10 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:gravity="center_vertical"
-                    android:text="2018分11設"
+                    android:text="2018年11月"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:text="(11分1B-11A30B)"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small" />
             </LinearLayout>
 
 
