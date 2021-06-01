@@ -49,6 +49,9 @@ public class GetCalenderBookingModel implements Serializable{
         @SerializedName("title")
         @Expose
         private String title;
+        @SerializedName("category_id")
+        @Expose
+        private int categoryId;
         @SerializedName("category_title")
         @Expose
         private String categoryTitle;
@@ -70,6 +73,14 @@ public class GetCalenderBookingModel implements Serializable{
         @SerializedName("post_category")
         @Expose
         private String post_category;
+
+        public int getCategoryId() {
+            return categoryId;
+        }
+
+        public void setCategoryId(int categoryId) {
+            this.categoryId = categoryId;
+        }
 
         public String getPost_category() {
             return post_category;

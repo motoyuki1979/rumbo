@@ -169,4 +169,6 @@ public class SplashActivity extends AppCompatActivity implements ConstantValue {
             }
         }, SPLASH_TIME_OUT);
     }
+
+
 }

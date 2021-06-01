@@ -16,20 +16,20 @@ public class ComunityCommentModel {
     @Expose
     private String success;
 
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public ArrayList<Object> getObject() {
         return object;
     }
 
     public void setObject(ArrayList<Object> object) {
         this.object = object;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getSuccess() {

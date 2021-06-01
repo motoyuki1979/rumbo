@@ -1,7 +1,10 @@
 package com.wa.rumbo.fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,7 +75,31 @@ public class ForgotPasswordFragment extends Fragment {
         } else if (!isValid(etEmail.getText().toString())) {
             Toast.makeText(getActivity(), "Please enter vaild email address", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(getActivity(), "Under construction", Toast.LENGTH_SHORT).show();
+            sendEmail();
+        }
+    }
+
+    protected void sendEmail() {
+        Log.e("Send email", "");
+        String[] TO = {"testinguser2711@gmail.com"};
+        String[] CC = {""+etEmail.getText().toString()};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            Toast.makeText(getActivity(), "email sent", Toast.LENGTH_SHORT).show();
+
+            //finish();
+            Log.e("Finished sending email...", "");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), "There is no email client installed.", Toast.LENGTH_SHORT).show();
         }
     }
 }

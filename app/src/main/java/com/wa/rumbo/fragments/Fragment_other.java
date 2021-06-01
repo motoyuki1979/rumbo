@@ -168,6 +168,7 @@ public class Fragment_other extends Fragment {
     Retrofit retrofit = RetrofitInstance.getClient();
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
     String from_user_id;
+    ArrayList<String> catIdList = new ArrayList<>();
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -470,7 +471,6 @@ public class Fragment_other extends Fragment {
             public void onRespose(GetCalenderBookingModel model) {
                 getCalenderBookingModel = new GetCalenderBookingModel.Object();
 
-
                 String[] splitterStrinng = date.split("-");  //now str[0] is "hello" and str[1] is "goodmorning,2,1"
 
                 String stYear = splitterStrinng[0];  //hello
@@ -482,61 +482,113 @@ public class Fragment_other extends Fragment {
                     String[] splitterStrinng1 = model.getObject().get(i).getDate().split("-");  //now str[0] is "hello" and str[1] is "goodmorning,2,1"
 
                     String stYear1 = splitterStrinng1[0];  //hello
-                    String stMonth1 = splitterStrinng1[1];  //hello
+                    String stMonth1 = splitterStrinng1[1]; //hello
                     Log.e("Selectedde monyh =>  ", stMonth1);
 
                     if (stMonth1.equalsIgnoreCase(stMonth)) {
                         mFilterList.add(model.getObject().get(i));
+                        catIdList.add(model.getObject().get(i).getCategoryTitle());
                     }
                 }
                 Log.e("Filter list size => ", mFilterList.size() + "");
 
-
                 long totalAmount = 0;
                 long totalIncome = 0;
                 long totalExpence = 0;
-
 
                 if (mFilterList.size() > 0) {
                     tvNoData.setVisibility(View.GONE);
                     rv2_itemname_other.setVisibility(View.VISIBLE);
                     mFinalFilterList.clear();
 
-                    for (int m = 0; m < mFilterList.size(); m++) {
-                        String categoryName = mFilterList.get(m).getCategoryImage();
-                        String newAmount = mFilterList.get(m).getAmount();
-
-                        if (mFinalFilterList.contains(categoryName)) {
-                            for (int n = 0; n < mFinalFilterList.size(); n++) {
-                                if (mFinalFilterList.get(n).getCategoryImage().equalsIgnoreCase(categoryName)) {
-                                    mFinalFilterList.get(n).setAmount(String.valueOf(Long.valueOf(mFinalFilterList.get(n).getAmount() + Long.valueOf(newAmount))));
+                    for (int i = 0; i < mFilterList.size(); i++) {
+                        if (catIdList.contains(mFilterList.get(i).getCategoryTitle())) {
+                            if (mFinalFilterList.size() > 0) {
+                                for (int j = 0; j < mFinalFilterList.size(); j++) {
+                                    if (mFinalFilterList.get(j).getCategoryTitle().equals(mFilterList.get(i).getCategoryTitle())) {
+                                        mFinalFilterList.get(j).setAmount(Long.valueOf(mFilterList.get(i).getAmount()) + Long.valueOf(mFinalFilterList.get(j).getAmount()) + "");
+                                    } else {
+                                       // mFinalFilterList.add(mFilterList.get(i));
+                                    }
                                 }
+                            } else {
+                                mFinalFilterList.add(mFilterList.get(i));
+                            }
 
+                        } else {
+                            mFinalFilterList.add(mFilterList.get(i));
+                        }
+                    }
+
+                    /*-------------------------------------*/
+
+                 /*   for (int m = 0; m < mFilterList.size(); m++) {
+
+                        if (mFinalFilterList.size() > 0) {
+
+
+                            for (int i = 0; i < mFinalFilterList.size(); i++) {
+                                Log.e(" title ====> ", mFinalFilterList.get(i).getCategoryTitle() + " == "+mFilterList.get(m).getCategoryTitle() );
+
+                                if (mFinalFilterList.get(i).getCategoryTitle().equals(mFilterList.get(m).getCategoryTitle())) {
+                                    mFinalFilterList.get(i).setAmount(Long.valueOf(mFinalFilterList.get(i).getAmount()) + Long.valueOf(mFilterList.get(m).getAmount())+"");
+                                  // break;
+                                }else{
+                                    mFinalFilterList.add(mFilterList.get(m));
+                                    break;
+                                }
+                            }
+
+
+                        } else {
+                            mFinalFilterList.add(mFilterList.get(m));
+                        }
+
+                    }
+*/
+
+                    /*---------------------*/
+                    /*for (int m = 0; m < mFilterList.size(); m++) {
+                    //    String categoryName = mFilterList.get(m).getCategoryTitle();
+                    //    String newAmount = mFilterList.get(m).getAmount();
+
+                        if (catIdList.contains(categoryName)) {
+                            if (mFinalFilterList.size() > 0) {
+                                for (int n = 0; n < mFinalFilterList.size()-1; n++) {
+                                    if (mFinalFilterList.get(n).getCategoryTitle().equalsIgnoreCase(categoryName)) {
+                                        mFinalFilterList.get(n).setAmount(Long.valueOf(mFinalFilterList.get(n).getAmount() + Long.valueOf(newAmount)) + "");
+                                    } else {
+                                        mFinalFilterList.add(mFilterList.get(n));
+                                    }
+                                }
+                            } else {
+                                mFinalFilterList.add(mFilterList.get(m));
                             }
                         } else {
                             mFinalFilterList.add(mFilterList.get(m));
                         }
-                    }
-Log.e("filter list size", mFilterList.size()+"");
-Log.e("final list size", mFinalFilterList.size()+"");
-
-                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(), getActivity(), mFinalFilterList);
-                    rv2_itemname_other.setAdapter(fragment_other_adapter);
-                    for (int j = 0; j < mFilterList.size(); j++) {
-
-                        if (mFilterList.get(j).getPost_category().equalsIgnoreCase("expence")) {
-                            totalExpence = totalExpence + Long.valueOf(mFilterList.get(j).getAmount());
-                        } else {
-                            totalIncome = totalIncome + Long.valueOf(mFilterList.get(j).getAmount());
-                        }
-                        //totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
-                    }
-
-                    totalAmount = totalIncome - totalExpence;
+                    }*/
                 } else {
                     tvNoData.setVisibility(View.VISIBLE);
                     rv2_itemname_other.setVisibility(View.GONE);
                 }
+
+                Log.e("filter list size", mFilterList.size() + "");
+                Log.e("final list size", mFinalFilterList.size() + "");
+
+                fragment_other_adapter = new Fragment_Other_Adapter(getActivity(), getActivity(), mFinalFilterList);
+                rv2_itemname_other.setAdapter(fragment_other_adapter);
+                for (int j = 0; j < mFilterList.size(); j++) {
+
+                    if (mFilterList.get(j).getPost_category().equalsIgnoreCase("expence")) {
+                        totalExpence = totalExpence + Long.valueOf(mFilterList.get(j).getAmount());
+                    } else {
+                        totalIncome = totalIncome + Long.valueOf(mFilterList.get(j).getAmount());
+                    }
+                    //totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
+                }
+
+                totalAmount = totalIncome - totalExpence;
                 tvExpense.setText(UsefullData.getCommaPrice(getActivity(), totalExpence + ""));
                 tvIncome.setText(UsefullData.getCommaPrice(getActivity(), totalIncome + ""));
 

@@ -87,7 +87,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
 
     //selected color element
     private TextView mSelectedTexView;
-    private LinearLayout mSelectedLinearLayout,prevMonthLinearLayout,nextMonthLinearLayout;
+    private LinearLayout mSelectedLinearLayout, prevMonthLinearLayout, nextMonthLinearLayout;
     private int mPreviousColor;
 
 
@@ -316,6 +316,37 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
                     }
                 });
 
+                daysContainer[index].setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        if (mSelectedLinearLayout != null) {
+                            mSelectedLinearLayout.setBackgroundResource(R.drawable.calendar_bg);
+                            mSelectedTexView.setTextColor(mPreviousColor);
+                        }
+                        if (prevMonthLinearLayout != null) {
+                            prevMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                        }
+                        if (nextMonthLinearLayout != null) {
+                            nextMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                        }
+                        mPreviousColor = mOffMonthDayColor;
+                        mSelectedTexView = days[finalIndex];
+                        daysContainer[finalIndex].setBackgroundResource(R.drawable.drawable_rectangular);
+
+                        Drawable backgroundDrawable = DrawableCompat.wrap(daysContainer[finalIndex].getBackground()).mutate();
+                        DrawableCompat.setTint(backgroundDrawable, mSelectorColor);
+
+                        prevMonthLinearLayout = daysContainer[finalIndex];
+                        days[finalIndex].setTextColor(mSelectedDayTextColor);
+
+
+                        if (mCalenderDayClickListener != null) {
+                            mCalenderDayClickListener.onGetDay(model);
+                        }
+                    }
+                });
+
                 prevCurrentDay++;
                 index++;
             }
@@ -386,6 +417,40 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
 
             final int finalIndex = index;
             days[index].setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "Hello");
+
+                   /* if (mSelectedTexView != null) {
+                        mSelectedLinearLayout.setBackgroundResource(R.drawable.border_black);
+                        mSelectedTexView.setTextColor(mPreviousColor);
+                    }*/
+                    if (mSelectedLinearLayout != null) {
+                        mSelectedLinearLayout.setBackgroundResource(R.drawable.calendar_bg);
+                        mSelectedTexView.setTextColor(mPreviousColor);
+                    }
+                    if (prevMonthLinearLayout != null) {
+                        prevMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                    }
+                    if (nextMonthLinearLayout != null) {
+                        nextMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                    }
+                    mPreviousColor = mCurrentMonthDayColor;
+                    mSelectedTexView = days[finalIndex];
+                    daysContainer[finalIndex].setBackgroundResource(R.drawable.drawable_rectangular);
+
+                    Drawable backgroundDrawable = DrawableCompat.wrap(daysContainer[finalIndex].getBackground()).mutate();
+                    DrawableCompat.setTint(backgroundDrawable, mSelectorColor);
+
+                    mSelectedLinearLayout = daysContainer[finalIndex];
+                    days[finalIndex].setTextColor(mSelectedDayTextColor);
+
+                    if (mCalenderDayClickListener != null) {
+                        mCalenderDayClickListener.onGetDay(model);
+                    }
+                }
+            });
+            daysContainer[index].setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Log.d(TAG, "Hello");
@@ -498,6 +563,40 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
                 }
             });
 
+            daysContainer[index].setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "Hello");
+                    /*if (mSelectedTexView != null) {
+                        mSelectedTexView.setTextColor(mPreviousColor);
+                        mSelectedLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                    }*/
+                    if (mSelectedLinearLayout != null) {
+                        mSelectedLinearLayout.setBackgroundResource(R.drawable.calendar_bg);
+                        mSelectedTexView.setTextColor(mPreviousColor);
+                    }
+                    if (prevMonthLinearLayout != null) {
+                        prevMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                    }
+                    if (nextMonthLinearLayout != null) {
+                        nextMonthLinearLayout.setBackgroundResource(R.drawable.month_bg);
+                    }
+                    mPreviousColor = mOffMonthDayColor;
+                    mSelectedTexView = days[finalIndex];
+                    nextMonthLinearLayout = daysContainer[finalIndex];
+                    daysContainer[finalIndex].setBackgroundResource(R.drawable.drawable_rectangular);
+
+                    Drawable backgroundDrawable = DrawableCompat.wrap(daysContainer[finalIndex].getBackground()).mutate();
+                    DrawableCompat.setTint(backgroundDrawable, mSelectorColor);
+
+                    days[finalIndex].setTextColor(mSelectedDayTextColor);
+
+                    if (mCalenderDayClickListener != null) {
+                        mCalenderDayClickListener.onGetDay(model);
+                    }
+                }
+            });
+
             index++;
         }
 
@@ -513,7 +612,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
             mCalendar.set(year + 1, 0, 1);
         }
 
-       // onNext.onNext(mCalendar.get(month));
+        // onNext.onNext(mCalendar.get(month));
         initCalender(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH));
     }
 
@@ -666,7 +765,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
 
         String date = TimeUtil.getDate(event.getTime());
 
-       // String textKey = date + TEXT_EVENT;
+        // String textKey = date + TEXT_EVENT;
         String textKey = date + TEXT_EVENT;
         String colorKey = date + COLOR_EVENT;
 
@@ -702,6 +801,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
     public interface GetOnNext {
 
         void onNext(int month);
+
         void onPrevious(int month);
     }
 }
