@@ -51,11 +51,10 @@ import static com.wa.rumbo.common.ConstantValue.USER_ID;
 public class Api {
     Activity mActivity;
     Retrofit retrofit = RetrofitInstance.getClient();
-String deviceID;
+    String deviceID;
     Dialog mDialog;
     Register_Interfac register_interfac = retrofit.create(Register_Interfac.class);
     CommonData commonData;
-
 
     public Api(Activity mActivity) {
         this.mActivity = mActivity;
@@ -66,10 +65,8 @@ String deviceID;
     }
 
     public void registerApi(String email, String password) {
-
-
-        Call<RegisterModel> call = register_interfac.registeration(deviceID, commonData.getString(ConstantValue.FIREBASE_TOKEN), email, password,"0","0");
-            mDialog.show();
+        Call<RegisterModel> call = register_interfac.registeration(deviceID, commonData.getString(ConstantValue.FIREBASE_TOKEN), email, password, "0", "0");
+        mDialog.show();
 
         call.enqueue(new Callback<RegisterModel>() {
             @Override
@@ -77,22 +74,23 @@ String deviceID;
                 if (mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
+
                 if (response.isSuccessful() && response.body() != null) {
 
-                    if (response.body().getMessage().equals("User already exists")){
-                        Toast.makeText(mActivity,"User already exists", Toast.LENGTH_SHORT).show();
-                    }else{
-                      //  register_model_request.setDevice_token(ConstantValue.DEVICE_TOKEN);
-                      //  register_model_request.setDevice_id(deviceID);
+                    if (response.body().getMessage().equals("User already exists")) {
+                        Toast.makeText(mActivity, "User already exists", Toast.LENGTH_SHORT).show();
+                    } else {
+                        //  register_model_request.setDevice_token(ConstantValue.DEVICE_TOKEN);
+                        //  register_model_request.setDevice_id(deviceID);
 
                         commonData.save("id_device", deviceID);
 
                         Toast.makeText(mActivity, "Register successfully", Toast.LENGTH_SHORT).show();
                         Log.e("Success", new Gson().toJson(response.body()));
                         //convert & save to string
-                      //  String resp = new Gson().toJson(response.body());
+                        //  String resp = new Gson().toJson(response.body());
                         //convert to model
-                       // register_model = new Gson().fromJson(resp, Register_Model.class);
+                        // register_model = new Gson().fromJson(resp, Register_Model.class);
 
                         commonData.save(ConstantValue.USER_ID, response.body().getObject().getUserId());
                         commonData.save(ConstantValue.USER_NAME, response.body().getObject().getUserName());
@@ -103,7 +101,6 @@ String deviceID;
                         Log.e("userr", commonData.getString(ConstantValue.USER_ID));
 
                         ((MainActivity) mActivity).getFragmentManager().beginTransaction().replace(R.id.frameLayout, new NewArrivalFragment()).commit();
-
                     }
                 }
                 Log.e("success", "register");
@@ -119,7 +116,6 @@ String deviceID;
     }
 
     public void getUserProfile(String user_id, final Boolean showProgressbar, final GetUserProfileCallback callback) {
-
 
         Call<GetUserProfileModel> call = register_interfac.getUserProfile(commonData.getString(TOKEN), user_id);
         if (showProgressbar) {
@@ -149,10 +145,10 @@ String deviceID;
         });
     }
 
-    public void updateUserProfile(String username, String email, String password, String introduction, String image) {
+    public void updateUserProfile(String username, String email, String password, String introduction, String image, String isEmailChanged) {
         mDialog.show();
 
-        Call<Status_Model> call = register_interfac.updateUserProfile(commonData.getString(TOKEN), commonData.getString(USER_ID), username, email, password, introduction, image);
+        Call<Status_Model> call = register_interfac.updateUserProfile(commonData.getString(TOKEN), commonData.getString(USER_ID), username, email, password, introduction, image, isEmailChanged);
         // mProgressDialog.show();
         call.enqueue(new Callback<Status_Model>() {
             @Override
@@ -163,7 +159,8 @@ String deviceID;
 
                     Log.e("profile details", new Gson().toJson(response.body()));
                     String resp = new Gson().toJson(response.body());
-                    Toast.makeText(mActivity, mActivity.getResources().getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show();
+                    //  Toast.makeText(mActivity, mActivity.getResources().getString(R.string.profile_updated_successfully), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, response.body().getMessage(), Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -236,7 +233,6 @@ String deviceID;
                     Type listType = new TypeToken<List<GetComunityComents>>() {
                     }.getType();
 
-
                     callback.onResponse(getComunityComents);
                 }
             }
@@ -267,9 +263,7 @@ String deviceID;
                     callback.onResponse(response.body());
                     Status_Model status_model = new Gson().fromJson(resp, Status_Model.class);
 
-
                     if (status_model.getMessage().contains("UnLike")) {
-
                         //   Toast.makeText(mActivity, mActivity.getResources().getString(R.string.comment_unlike_successfully), Toast.LENGTH_SHORT).show();
 
                     } else {
@@ -285,7 +279,7 @@ String deviceID;
         });
     }
 
-    public void deletePostApi(final Activity mActivity, String id, String random_id,  final DeletePostCommentCallback callback) {
+    public void deletePostApi(final Activity mActivity, String id, String random_id, final DeletePostCommentCallback callback) {
         mDialog.show();
 
         Call<Status_Model> call = register_interfac.deletePost(id, commonData.getString(TOKEN), random_id);
@@ -342,7 +336,6 @@ String deviceID;
                     Status_Model status_model = new Gson().fromJson(resp, Status_Model.class);
 
                     if (status_model.getSuccess().equals("true")) {
-
                         Toast.makeText(mActivity, mActivity.getResources().getString(R.string.comment_delete_successfully), Toast.LENGTH_SHORT).show();
                         //   getPostComment(); //refresh all comment list
                     }
@@ -376,7 +369,6 @@ String deviceID;
                     if (status_model.getSuccess().equals("true")) {
 
                         Toast.makeText(mActivity, mActivity.getResources().getString(R.string.user_blocked_successfully), Toast.LENGTH_SHORT).show();
-
                     }
                 }
             }
@@ -390,7 +382,7 @@ String deviceID;
 
     public void geBlockedUserApi(final Activity mActivity, final GetBlockedUserCallback callback) {
 
-            mDialog.show();
+        mDialog.show();
 
         Call<GetBlockedListModel> call = register_interfac.getBlockedList(commonData.getString(USER_ID), commonData.getString(TOKEN));
         // mProgressDialog.show();
@@ -420,7 +412,7 @@ String deviceID;
         });
     }
 
- public void getFollowersApi(final Activity mActivity, Boolean isLoader, final GetFollowersCallback callback) {
+    public void getFollowersApi(final Activity mActivity, Boolean isLoader, final GetFollowersCallback callback) {
         if (isLoader) {
             mDialog.show();
         }
@@ -475,7 +467,6 @@ String deviceID;
                 if (mDialog.isShowing()) {
                     mDialog.dismiss();
                 }
-
             }
         });
     }
@@ -563,7 +554,7 @@ String deviceID;
     }
 
 
-    public void getCalenderBookingApi( final GetCalenderBookingCalback callback) {
+    public void getCalenderBookingApi(final GetCalenderBookingCalback callback) {
         mDialog.show();
 
         Call<GetCalenderBookingModel> call = register_interfac.getCalenderBooking(commonData.getString(USER_ID), commonData.getString(TOKEN));

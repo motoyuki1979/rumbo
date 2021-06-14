@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.wa.rumbo.Api;
 import com.wa.rumbo.R;
@@ -67,9 +68,59 @@ public class CalendarFragment extends Fragment {
 
         calenderEvent = view.findViewById(R.id.calender_event);
 
+       /* calenderEvent = new CalenderEvent(getActivity(), new CalenderEvent.onItemClick() {
+            @Override
+            public void onNext(int month) {
+                Toast.makeText(getActivity(), "inside next", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPrevious(int month) {
+                Toast.makeText(getActivity(), "inside previous", Toast.LENGTH_SHORT).show();
+            }
+        });*/
+
 
         final Calendar calendar = Calendar.getInstance();
 
+        getCalenderApi();
+
+        calenderEvent.initCalderItemClickCallback(new CalenderDayClickListener() {
+            @Override
+            public void onGetDay(DayContainerModel dayContainerModel) {
+                Log.e("123456", dayContainerModel.getDate());
+
+                //3 April 2021
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                String date = formatter.format(Date.parse(dayContainerModel.getDate()));
+                mFilterList.clear();
+
+                for (int i = 0; i < mList.size(); i++) {
+                    if (mList.get(i).getDate().equalsIgnoreCase(date)) {
+                        mFilterList.add(mList.get(i));
+                    }
+                }
+
+                Log.e("123456 new List", mFilterList.size() + "");
+                Log.e("123456 new ", date);
+
+                EventsDetailsFragment fragment = new EventsDetailsFragment();
+                Bundle args = new Bundle();
+
+                args.putString("title", date);
+                args.putSerializable("data_list", mFilterList);
+                fragment.setArguments(args);
+
+                getFragmentManager().beginTransaction().add(R.id.frameLayout, fragment).addToBackStack(null).commit();
+
+            }
+        });
+
+        return view;
+    }
+
+
+    public void getCalenderApi(){
         new Api(getActivity()).getCalenderBookingApi(new GetCalenderBookingCalback() {
             @Override
             public void onRespose(GetCalenderBookingModel model) {
@@ -102,11 +153,11 @@ public class CalendarFragment extends Fragment {
                                 displayingAmount = displayingAmount - Long.valueOf(model.getObject().get(k).getAmount());
                             }
 
-                           // displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
+                            // displayingAmount = displayingAmount + Integer.valueOf(model.getObject().get(k).getAmount());
                         }
                     }
-                    if(String.valueOf(displayingAmount).contains("-")){
-                        displayingAmount = Long.valueOf(String.valueOf(displayingAmount).replace("-",""));
+                    if (String.valueOf(displayingAmount).contains("-")) {
+                        displayingAmount = Long.valueOf(String.valueOf(displayingAmount).replace("-", ""));
                     }
                     Event event = new Event(milliseconds, UsefullData.getCommaPrice(getActivity(), displayingAmount + ""));
                     //  Event event = new Event(milliseconds, model.getObject().get(i).getAmount());
@@ -115,21 +166,47 @@ public class CalendarFragment extends Fragment {
 
                 }
 
-                if (mList.size() > 0) {
-                    for (int j = 0; j < mList.size(); j++) {
+                final Calendar c = Calendar.getInstance();
+                final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
+                final String[] formattedDate = {df.format(c.getTime())};
+                final String[] currentSelectedMonth = {""};
+                String date = formattedDate[0];
 
-                        if (mList.get(j).getPost_category().equalsIgnoreCase("expence")) {
-                            totalExpence = totalExpence + Long.valueOf(mList.get(j).getAmount());
+                String[] splitterStrinng = date.split("-");  //now str[0] is "hello" and str[1] is "goodmorning,2,1"
+
+                String stYear = splitterStrinng[0];  //hello
+                String stMonth = splitterStrinng[1];  //hello
+                Log.e("Selectedde monyh =>  ", stMonth);
+                mFilterList.clear();
+
+                for (int i = 0; i < model.getObject().size(); i++) {
+                    String[] splitterStrinng1 = model.getObject().get(i).getDate().split("-");  //now str[0] is "hello" and str[1] is "goodmorning,2,1"
+
+                    String stYear1 = splitterStrinng1[0];  //hello
+                    String stMonth1 = splitterStrinng1[1];  //hello
+                    Log.e("Selectedde monyh =>  ", stMonth1);
+
+                    if (stMonth1.equalsIgnoreCase(stMonth)) {
+                        mFilterList.add(model.getObject().get(i));
+                    }
+                }
+
+
+                if (mFilterList.size() > 0) {
+                    for (int j = 0; j < mFilterList.size(); j++) {
+
+                        if (mFilterList.get(j).getPost_category().equalsIgnoreCase("expence")) {
+                            totalExpence = totalExpence + Long.valueOf(mFilterList.get(j).getAmount());
                         } else {
-                            totalIncome = totalIncome + Long.valueOf(mList.get(j).getAmount());
+                            totalIncome = totalIncome + Long.valueOf(mFilterList.get(j).getAmount());
                         }
-                        // totalAmount = totalAmount + Integer.valueOf(mList.get(j).getAmount());
+                        // totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
                     }
                     totalAmount = totalIncome - totalExpence;
                 }
 
-                tvExpense.setText(UsefullData.getCommaPrice(getActivity(),totalExpence + ""));
-                tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
+                tvExpense.setText(UsefullData.getCommaPrice(getActivity(), totalExpence + ""));
+                tvIncome.setText(UsefullData.getCommaPrice(getActivity(), totalIncome + ""));
 
                 if (String.valueOf(totalAmount).contains("-")) {
                     totalAmount = Long.valueOf(String.valueOf(totalAmount).replace("-", ""));
@@ -137,9 +214,7 @@ public class CalendarFragment extends Fragment {
                 } else {
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));
                 }
-                tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(),totalAmount + ""));
-
-
+                tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(), totalAmount + ""));
             }
 
             @Override
@@ -147,40 +222,6 @@ public class CalendarFragment extends Fragment {
                 Log.e("Calender Booking api's respose =>  ", "Failure");
             }
         });
-
-        calenderEvent.initCalderItemClickCallback(new
-
-                                                          CalenderDayClickListener() {
-                                                              @Override
-                                                              public void onGetDay(DayContainerModel dayContainerModel) {
-                                                                  Log.e("123456", dayContainerModel.getDate());
-
-                                                                  //3 April 2021
-                                                                  SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-                                                                  String date = formatter.format(Date.parse(dayContainerModel.getDate()));
-                                                                  mFilterList.clear();
-
-                                                                  for (int i = 0; i < mList.size(); i++) {
-                                                                      if (mList.get(i).getDate().equalsIgnoreCase(date)) {
-                                                                          mFilterList.add(mList.get(i));
-                                                                      }
-                                                                  }
-
-                                                                  Log.e("123456 new List", mFilterList.size() + "");
-                                                                  Log.e("123456 new ", date);
-
-                                                                  EventsDetailsFragment fragment = new EventsDetailsFragment();
-                                                                  Bundle args = new Bundle();
-
-                                                                  args.putString("title", date);
-                                                                  args.putSerializable("data_list", mFilterList);
-                                                                  fragment.setArguments(args);
-
-                                                                  getFragmentManager().beginTransaction().add(R.id.frameLayout, fragment).addToBackStack(null).commit();
-
-                                                              }
-                                                          });
-
-        return view;
     }
+
 }

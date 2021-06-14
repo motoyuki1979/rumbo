@@ -28,6 +28,9 @@ import com.wa.rumbo.model.GetCalenderBookingModel;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -61,6 +64,8 @@ public class Fragment_Other_Household extends Fragment {
     GetCalenderBookingModel.Object getCalenderBookingModel;
     ArrayList<GetCalenderBookingModel.Object> mList = new ArrayList<>();
     ArrayList<GetCalenderBookingModel.Object> mFilterList = new ArrayList<>();
+    ArrayList<GetCalenderBookingModel.Object> mFinalFilterList = new ArrayList<>();
+
     @BindView(R.id.tvExpense)
     TextView tvExpense;
     @BindView(R.id.tvIncome)
@@ -85,7 +90,6 @@ public class Fragment_Other_Household extends Fragment {
         rv1_itemname_other.setLayoutManager(layoutManager);
 
         settingDate(tvCurrentDate, ivPreviousMonth, ivNextMonth);
-
 
 /*
         tv_saving_n_expenses.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +145,6 @@ public class Fragment_Other_Household extends Fragment {
             public void onRespose(GetCalenderBookingModel model) {
                 getCalenderBookingModel = new GetCalenderBookingModel.Object();
 
-
                 String[] splitterStrinng = date.split("-");  //now str[0] is "hello" and str[1] is "goodmorning,2,1"
 
                 String stYear = splitterStrinng[0];  //hello
@@ -162,40 +165,90 @@ public class Fragment_Other_Household extends Fragment {
                 }
                 Log.e("Filter list size => ", mFilterList.size() + "");
 
-
                 Long totalAmount = 0L;
                 Long totalIncome = 0L;
                 Long totalExpence = 0L;
 
-
                 if (mFilterList.size() > 0) {
                     tvNoData.setVisibility(View.GONE);
                     rv1_itemname_other.setVisibility(View.VISIBLE);
-                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(),getActivity(), mFilterList);
-                    rv1_itemname_other.setAdapter(fragment_other_adapter);
-                    for (int j = 0; j < mFilterList.size(); j++) {
+
+                    mFinalFilterList.clear();
+
+                    HashMap<String, List<GetCalenderBookingModel.Object>> hashMap = new HashMap<String, List<GetCalenderBookingModel.Object>>();
+
+                    for (int i = 0; i < mFilterList.size(); i++) {
+                        if (!hashMap.containsKey(mFilterList.get(i).getCategoryTitle())) {
+                            List<GetCalenderBookingModel.Object> list = new ArrayList<GetCalenderBookingModel.Object>();
+                            list.add(mFilterList.get(i));
+
+                            hashMap.put(mFilterList.get(i).getCategoryTitle(), list);
+                        } else {
+                            hashMap.get(mFilterList.get(i).getCategoryTitle()).add(mFilterList.get(i));
+                        }
+                    }
+
+
+                    Log.e("sortedList=>  ", hashMap.toString());
+
+                    for (HashMap.Entry<String, List<GetCalenderBookingModel.Object>> entry : hashMap.entrySet()) {
+                        String key = entry.getKey();
+                        List<GetCalenderBookingModel.Object> value = entry.getValue();
+
+                        Log.e("key=>  ", key);
+                        Log.e("sortedList=>  ", value.toString());
+
+
+                        Long actualPrice = 0L;
+                        int catId = 0;
+
+                        for (int j = 0; j < value.size(); j++) {
+                            actualPrice = actualPrice + Long.valueOf(value.get(j).getAmount());
+                            catId = value.get(j).getCategoryId();
+                        }
+                        GetCalenderBookingModel.Object newObj = new GetCalenderBookingModel.Object();
+                        newObj.setAmount(actualPrice + "");
+                        newObj.setCategoryTitle(key);
+                        newObj.setCategoryId(catId);
+                        mFinalFilterList.add(newObj);
+
+                    }
+
+
+
+                     for (int j = 0; j < mFilterList.size(); j++) {
 
                         if (mFilterList.get(j).getPost_category().equalsIgnoreCase("expence")) {
                             totalExpence = totalExpence + Long.valueOf(mFilterList.get(j).getAmount());
                         } else {
                             totalIncome = totalIncome + Long.valueOf(mFilterList.get(j).getAmount());
                         }
-                       // totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
+                        // totalAmount = totalAmount + Integer.valueOf(mFilterList.get(j).getAmount());
                     }
-                    totalAmount = totalIncome - totalExpence;
 
+                    Collections.sort(mFinalFilterList, new Comparator<GetCalenderBookingModel.Object>(){
+                        public int compare(GetCalenderBookingModel.Object obj1, GetCalenderBookingModel.Object obj2) {
+
+                            return String.valueOf(obj1.getCategoryId()).compareToIgnoreCase(String.valueOf(obj2.getCategoryId())); // To compare string values
+                        }
+                    });
+
+
+                    totalAmount = totalIncome - totalExpence;
+                    fragment_other_adapter = new Fragment_Other_Adapter(getActivity(), getActivity(), mFinalFilterList);
+                    rv1_itemname_other.setAdapter(fragment_other_adapter);
 
                 } else {
                     tvNoData.setVisibility(View.VISIBLE);
                     rv1_itemname_other.setVisibility(View.GONE);
                 }
                 tvExpense.setText(UsefullData.getCommaPrice(getActivity(), totalExpence + ""));
-                tvIncome.setText(UsefullData.getCommaPrice(getActivity(),totalIncome + ""));
+                tvIncome.setText(UsefullData.getCommaPrice(getActivity(), totalIncome + ""));
 
-                if(String.valueOf(totalAmount).contains("-")){
-                    totalAmount = Long.valueOf(String.valueOf(totalAmount).replace("-","") );
+                if (String.valueOf(totalAmount).contains("-")) {
+                    totalAmount = Long.valueOf(String.valueOf(totalAmount).replace("-", ""));
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.red_color));
-                }else{
+                } else {
                     tvTotalAmount.setTextColor(getActivity().getResources().getColor(R.color.tab_selected));
                 }
                 tvTotalAmount.setText(UsefullData.getCommaPrice(getActivity(), totalAmount + ""));
@@ -208,6 +261,5 @@ public class Fragment_Other_Household extends Fragment {
                 Log.e("Calender Booking api's respose =>  ", "Failure");
             }
         });
-
     }
 }

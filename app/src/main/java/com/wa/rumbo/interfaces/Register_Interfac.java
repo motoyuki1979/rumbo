@@ -97,7 +97,7 @@ public interface Register_Interfac {
     @POST("update_user_by_id")
     Call<Status_Model> updateUserProfile(
             @Header("authenticate") String authenticate,
-            @Query("user_id") String user_id, @Query("user_name") String user_name, @Query("email") String email, @Query("password") String password, @Query("introduction") String introduction, @Query("image") String image);
+            @Query("user_id") String user_id, @Query("user_name") String user_name, @Query("email") String email, @Query("password") String password, @Query("introduction") String introduction, @Query("image") String image, @Query("isEmailChanged") String isEmailChanged);
 
     @POST("get_user_profile")
     Call<GetUserProfileModel> getUserProfile(@Header("authenticate") String authenticate, @Query("user_id") String user_id);

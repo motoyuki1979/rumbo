@@ -192,7 +192,7 @@ public class Profile_and_Settings_Frag extends Fragment {
                     if (!userProfileImage.isEmpty() && userProfileImage.equals("")) {
                         userProfileImage = userData.getImage();
                     }
-                    new Api(getActivity()).updateUserProfile(etName.getText().toString(), userData.getEmail(), userData.getPassword(), etIntroduction.getText().toString(), userProfileImage);
+                    new Api(getActivity()).updateUserProfile(etName.getText().toString(), userData.getEmail(), userData.getPassword(), etIntroduction.getText().toString(), userProfileImage, "false");
                // }
             }
         });

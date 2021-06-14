@@ -95,7 +95,7 @@ public class CommunityFragment extends Fragment {
     GetComunityComents getComunityComents;
 
     @BindView(R.id.keyboard_LL)
-  public  RelativeLayout rlKeyboard;
+    public RelativeLayout rlKeyboard;
     Boolean isComment = false;
     Animation clickAnimation;
 
@@ -169,7 +169,7 @@ public class CommunityFragment extends Fragment {
                 list_community.clear();
                 list_community = model.getObject(); //new Gson().fromJson(categoryResponse.toString(), listType);
 
-                adapter = new GetComunityCommentsAdapter(getActivity(),getActivity(), list_community);
+                adapter = new GetComunityCommentsAdapter(getActivity(), getActivity(), list_community);
 
                 rv_community.setAdapter(adapter);
             }
@@ -204,7 +204,6 @@ public class CommunityFragment extends Fragment {
                 final TextView tv_new_arrival_order = dlg.findViewById(R.id.tv_new_arrival_order);
                 final TextView tv_popularity_order = dlg.findViewById(R.id.tv_popularity_order);
 
-
                 img_down_dialog.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -228,7 +227,6 @@ public class CommunityFragment extends Fragment {
                         tv_popularity_order.setTextColor(getResources().getColor(R.color.black));
                         tv_popularity_order.setBackground(getResources().getDrawable(R.drawable.heart_white_bg));
 
-
                         FragmentTransaction transaction = getActivity().getFragmentManager().beginTransaction();
                         transaction.replace(R.id.frameLayout, new CommunityFragment());
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -236,7 +234,6 @@ public class CommunityFragment extends Fragment {
                         transaction.commit();
                     }
                 });
-
 
                 tv_new_arrival_order.setOnClickListener(new View.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -258,7 +255,6 @@ public class CommunityFragment extends Fragment {
                         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                         transaction.addToBackStack(null);
                         transaction.commit();
-
                     }
                 });
 
@@ -353,7 +349,6 @@ public class CommunityFragment extends Fragment {
             }
         });
 
-
         tvSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -382,7 +377,7 @@ public class CommunityFragment extends Fragment {
 
 
                     }
-                }else {
+                } else {
                     utils.showRegisterDialog(getActivity());
                 }
             }
@@ -407,8 +402,6 @@ public class CommunityFragment extends Fragment {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         ft.commit();
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -428,8 +421,6 @@ public class CommunityFragment extends Fragment {
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         ft.commit();
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -445,16 +436,12 @@ public class CommunityFragment extends Fragment {
         tvChat.setTextColor(getResources().getColor(R.color.tab_text_color));
         tvChat.setBackgroundColor(getResources().getColor(R.color.tab_unselected));
 
-
         Fragment fragment = new FollowComunityFragment();
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.frameLayout, fragment).addToBackStack(null);
         ft.commit();
-
-
     }
-
 
     public void getCategoryListAPI() {
 
@@ -488,7 +475,7 @@ public class CommunityFragment extends Fragment {
                     list_community.clear();
                     list_community = categoryResponse.getObject(); //new Gson().fromJson(categoryResponse.toString(), listType);
 
-                    adapter = new GetComunityCommentsAdapter(getActivity(),getActivity(), list_community);
+                    adapter = new GetComunityCommentsAdapter(getActivity(), getActivity(), list_community);
                     rv_community.setAdapter(adapter);
                 }
             }
@@ -523,7 +510,5 @@ public class CommunityFragment extends Fragment {
             }
         });
     }*/
-
-
 }
 

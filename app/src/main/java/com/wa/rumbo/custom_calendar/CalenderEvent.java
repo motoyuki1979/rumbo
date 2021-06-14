@@ -27,6 +27,7 @@ import com.wa.rumbo.custom_calendar.helper.TimeUtil;
 import com.wa.rumbo.custom_calendar.listener.CalenderDayClickListener;
 import com.wa.rumbo.custom_calendar.model.DayContainerModel;
 import com.wa.rumbo.custom_calendar.model.Event;
+import com.wa.rumbo.fragments.CalendarFragment;
 import com.wa.rumbo.model.GetCalenderBookingModel;
 import com.wa.rumbo.model.GetUserProfileModel;
 
@@ -118,12 +119,16 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
     private static final int DEFAULT_SELECTOR_COLOR = Color.parseColor("#C2CA83");
     private static final int DEFAULT_TEXT_COLOR = Color.parseColor("#808080");
     private static int EventColor = Color.parseColor("#e01818");
-
-    GetOnNext onNext;
+    onItemClick mClick;
 
     public CalenderEvent(Context context/*, GetOnNext onNext*/) {
         super(context);
         //this.onNext = onNext;
+    }
+
+    public CalenderEvent(Context context, onItemClick mClick) {
+        super(context);
+        this.mClick = mClick;
     }
 
     public CalenderEvent(Context context, @Nullable AttributeSet attrs) {
@@ -308,7 +313,6 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
 
                         prevMonthLinearLayout = daysContainer[finalIndex];
                         days[finalIndex].setTextColor(mSelectedDayTextColor);
-
 
                         if (mCalenderDayClickListener != null) {
                             mCalenderDayClickListener.onGetDay(model);
@@ -612,7 +616,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
             mCalendar.set(year + 1, 0, 1);
         }
 
-        // onNext.onNext(mCalendar.get(month));
+       // mClick.onNext(mCalendar.get(month));
         initCalender(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH));
     }
 
@@ -626,7 +630,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
             mCalendar.set(year - 1, 11, 1);
         }
 
-//        onNext.onPrevious(mCalendar.get(month));
+        //mClick.onPrevious(mCalendar.get(month));
         initCalender(mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH));
     }
 
@@ -798,7 +802,7 @@ public class CalenderEvent extends LinearLayout implements View.OnClickListener 
         this.mCalenderDayClickListener = listener;
     }
 
-    public interface GetOnNext {
+    public interface onItemClick {
 
         void onNext(int month);
 

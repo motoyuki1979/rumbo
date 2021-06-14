@@ -49,6 +49,7 @@ public class ChangeEmailPasswordFragment extends Fragment implements View.OnClic
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_change_password, container, false);
@@ -60,8 +61,7 @@ public class ChangeEmailPasswordFragment extends Fragment implements View.OnClic
         ivBack.setOnClickListener(this);
         tvChange.setOnClickListener(this);
 
-
-        new Api(getActivity()).getUserProfile(commonData.getString(USER_ID) , true, new GetUserProfileCallback() {
+        new Api(getActivity()).getUserProfile(commonData.getString(USER_ID), true, new GetUserProfileCallback() {
             @Override
             public void onResponse(GetUserProfileModel model) {
                 etEmail.setText(model.getUserDetails().get(0).getEmail());
@@ -76,9 +76,7 @@ public class ChangeEmailPasswordFragment extends Fragment implements View.OnClic
                 userData.setIntroduction(model.getUserDetails().get(0).getIntroduction());
             }
         });
-
         return view;
-
     }
 
     @Override
@@ -95,12 +93,11 @@ public class ChangeEmailPasswordFragment extends Fragment implements View.OnClic
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.enter_a_valid_email), Toast.LENGTH_SHORT).show();
                 } else if (etPassword.getText().toString().isEmpty()) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.enter_your_password), Toast.LENGTH_SHORT).show();
-                } else if (etPassword.getText().toString().length() < 6 || etPassword.getText().toString().length()>15) {
+                } else if (etPassword.getText().toString().length() < 6 || etPassword.getText().toString().length() > 15) {
                     Toast.makeText(getActivity(), getActivity().getResources().getString(R.string.password_must_be_under_6_15_digits), Toast.LENGTH_SHORT).show();
                 } else {
-                    new Api(getActivity()).updateUserProfile(userData.getUserName(), etEmail.getText().toString(), etPassword.getText().toString(),userData.getIntroduction(), userData.getImage());
+                    new Api(getActivity()).updateUserProfile(userData.getUserName(), etEmail.getText().toString(), etPassword.getText().toString(), userData.getIntroduction(), userData.getImage(), "true");
                 }
-
                 break;
         }
     }

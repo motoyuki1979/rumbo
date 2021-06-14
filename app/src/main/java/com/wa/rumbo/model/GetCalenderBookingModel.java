@@ -44,7 +44,7 @@ public class GetCalenderBookingModel implements Serializable{
         this.object = object;
     }
 
-    public static class Object implements Serializable {
+    public static class Object implements Serializable, java.lang.Comparable<Object> {
 
         @SerializedName("title")
         @Expose
@@ -144,6 +144,18 @@ public class GetCalenderBookingModel implements Serializable{
 
         public void setUserId(String userId) {
             this.userId = userId;
+        }
+
+
+        //Override compare
+        public int compareTo(Object otherStudent){
+            if(this.categoryId == otherStudent.categoryId){
+                return 0;
+            } else if(this.categoryId < otherStudent.categoryId){
+                return -1;
+            } else{
+                return 1;
+            }
         }
 
     }

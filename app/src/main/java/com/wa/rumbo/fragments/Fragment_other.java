@@ -48,6 +48,7 @@ import com.wa.rumbo.custom_calendar.model.Event;
 import com.wa.rumbo.interfaces.Register_Interfac;
 import com.wa.rumbo.model.GetAllPost;
 import com.wa.rumbo.model.GetAllPost_Data;
+import com.wa.rumbo.model.GetBlockedListModel;
 import com.wa.rumbo.model.GetCalenderBookingModel;
 import com.wa.rumbo.model.GetFollowersModel;
 import com.wa.rumbo.model.GetUserProfileModel;
@@ -57,9 +58,14 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,12 +81,12 @@ import static com.wa.rumbo.common.ConstantValue.USER_ID;
 
 public class Fragment_other extends Fragment {
 
-
     Date date = null;
     GetCalenderBookingModel.Object getCalenderBookingModel;
     ArrayList<GetCalenderBookingModel.Object> mList = new ArrayList<>();
     ArrayList<GetCalenderBookingModel.Object> mFilterList = new ArrayList<>();
     ArrayList<GetCalenderBookingModel.Object> mFinalFilterList = new ArrayList<>();
+    ArrayList<GetCalenderBookingModel.Object> mSortedList = new ArrayList<>();
 
     @BindView(R.id.tv_prof_settings)
     TextView tv_prof_settings;
@@ -225,7 +231,6 @@ public class Fragment_other extends Fragment {
                     } else {
                         tvFollowCount.setText("0");
                     }
-
                 }
 
                 @Override
@@ -337,7 +342,6 @@ public class Fragment_other extends Fragment {
                 tv_mypost.setTextColor(getResources().getColor(R.color.black));
                 tv_mypost.setBackgroundColor(getResources().getColor(R.color.white));
 
-
                 Fragment fragment = new CalendarFragment();
                 FragmentManager fm = getFragmentManager();
                 FragmentTransaction ft = fm.beginTransaction();
@@ -369,7 +373,6 @@ public class Fragment_other extends Fragment {
                 ft.replace(R.id.frameLayout_other, new Fragment_Other_Household(), "HouseHold_Fragment");
                 ft.addToBackStack(null);
                 ft.commit();
-
             }
         });
 
@@ -391,15 +394,11 @@ public class Fragment_other extends Fragment {
                 ft.replace(R.id.frameLayout_other, new NewArrivalFragment(), "NewFragmentTag");
                 ft.addToBackStack(null);
                 ft.commit();
-
             }
         });
 
-
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(getActivity());
         rv2_itemname_other.setLayoutManager(layoutManager2);
-
-
 
        /* tv_saving_n_expenses.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -501,73 +500,52 @@ public class Fragment_other extends Fragment {
                     rv2_itemname_other.setVisibility(View.VISIBLE);
                     mFinalFilterList.clear();
 
+                    HashMap<String, List<GetCalenderBookingModel.Object>> hashMap = new HashMap<String, List<GetCalenderBookingModel.Object>>();
+
                     for (int i = 0; i < mFilterList.size(); i++) {
-                        if (catIdList.contains(mFilterList.get(i).getCategoryTitle())) {
-                            if (mFinalFilterList.size() > 0) {
-                                for (int j = 0; j < mFinalFilterList.size(); j++) {
-                                    if (mFinalFilterList.get(j).getCategoryTitle().equals(mFilterList.get(i).getCategoryTitle())) {
-                                        mFinalFilterList.get(j).setAmount(Long.valueOf(mFilterList.get(i).getAmount()) + Long.valueOf(mFinalFilterList.get(j).getAmount()) + "");
-                                    } else {
-                                       // mFinalFilterList.add(mFilterList.get(i));
-                                    }
-                                }
-                            } else {
-                                mFinalFilterList.add(mFilterList.get(i));
-                            }
+                        if (!hashMap.containsKey(mFilterList.get(i).getCategoryTitle())) {
+                            List<GetCalenderBookingModel.Object> list = new ArrayList<GetCalenderBookingModel.Object>();
+                            list.add(mFilterList.get(i));
 
+                            hashMap.put(mFilterList.get(i).getCategoryTitle(), list);
                         } else {
-                            mFinalFilterList.add(mFilterList.get(i));
+                            hashMap.get(mFilterList.get(i).getCategoryTitle()).add(mFilterList.get(i));
                         }
                     }
 
-                    /*-------------------------------------*/
 
-                 /*   for (int m = 0; m < mFilterList.size(); m++) {
+                    Log.e("sortedList=>  ", hashMap.toString());
 
-                        if (mFinalFilterList.size() > 0) {
+                    for (HashMap.Entry<String, List<GetCalenderBookingModel.Object>> entry : hashMap.entrySet()) {
+                        String key = entry.getKey();
+                        List<GetCalenderBookingModel.Object> value = entry.getValue();
 
-
-                            for (int i = 0; i < mFinalFilterList.size(); i++) {
-                                Log.e(" title ====> ", mFinalFilterList.get(i).getCategoryTitle() + " == "+mFilterList.get(m).getCategoryTitle() );
-
-                                if (mFinalFilterList.get(i).getCategoryTitle().equals(mFilterList.get(m).getCategoryTitle())) {
-                                    mFinalFilterList.get(i).setAmount(Long.valueOf(mFinalFilterList.get(i).getAmount()) + Long.valueOf(mFilterList.get(m).getAmount())+"");
-                                  // break;
-                                }else{
-                                    mFinalFilterList.add(mFilterList.get(m));
-                                    break;
-                                }
-                            }
+                        Log.e("key=>  ", key);
+                        Log.e("sortedList=>  ", value.toString());
 
 
-                        } else {
-                            mFinalFilterList.add(mFilterList.get(m));
+                        Long actualPrice = 0L;
+                        int catId = 0;
+
+                        for (int j = 0; j < value.size(); j++) {
+                            actualPrice = actualPrice + Long.valueOf(value.get(j).getAmount());
+                            catId = value.get(j).getCategoryId();
                         }
+                        GetCalenderBookingModel.Object newObj = new GetCalenderBookingModel.Object();
+                        newObj.setAmount(actualPrice + "");
+                        newObj.setCategoryTitle(key);
+                        newObj.setCategoryId(catId);
+                        mFinalFilterList.add(newObj);
 
                     }
-*/
 
-                    /*---------------------*/
-                    /*for (int m = 0; m < mFilterList.size(); m++) {
-                    //    String categoryName = mFilterList.get(m).getCategoryTitle();
-                    //    String newAmount = mFilterList.get(m).getAmount();
+                    Collections.sort(mFinalFilterList, new Comparator<GetCalenderBookingModel.Object>(){
+                        public int compare(GetCalenderBookingModel.Object obj1, GetCalenderBookingModel.Object obj2) {
 
-                        if (catIdList.contains(categoryName)) {
-                            if (mFinalFilterList.size() > 0) {
-                                for (int n = 0; n < mFinalFilterList.size()-1; n++) {
-                                    if (mFinalFilterList.get(n).getCategoryTitle().equalsIgnoreCase(categoryName)) {
-                                        mFinalFilterList.get(n).setAmount(Long.valueOf(mFinalFilterList.get(n).getAmount() + Long.valueOf(newAmount)) + "");
-                                    } else {
-                                        mFinalFilterList.add(mFilterList.get(n));
-                                    }
-                                }
-                            } else {
-                                mFinalFilterList.add(mFilterList.get(m));
-                            }
-                        } else {
-                            mFinalFilterList.add(mFilterList.get(m));
+                            return String.valueOf(obj1.getCategoryId()).compareToIgnoreCase(String.valueOf(obj2.getCategoryId())); // To compare string values
                         }
-                    }*/
+                    });
+
                 } else {
                     tvNoData.setVisibility(View.VISIBLE);
                     rv2_itemname_other.setVisibility(View.GONE);
@@ -609,7 +587,6 @@ public class Fragment_other extends Fragment {
                 Log.e("Calender Booking api's respose =>  ", "Failure");
             }
         });
-
     }
 }
 

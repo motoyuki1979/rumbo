@@ -114,8 +114,4 @@ public class CommonData {
         edit.clear();
         edit.commit();
     }
-
-
-
-
 }
